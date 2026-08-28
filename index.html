@@ -174,8 +174,16 @@
       fetchWithTimeout(CLOUD_URL + "?action=list", 5000)
         .then(r => r.json())
         .then(data => {
-          if (data.status === "ok" && data.data && data.data.length > 0) {
-            renderCloudBoards(data.data);
+          let boards = [];
+          
+          if (Array.isArray(data)) {
+            boards = data;
+          } else if (data && data.status === "ok" && Array.isArray(data.data)) {
+            boards = data.data;
+          }
+
+          if (boards.length > 0) {
+            renderCloudBoards(boards);
           } else {
             renderEmpty();
           }
@@ -195,7 +203,9 @@
       boards.forEach(board => {
         const div = document.createElement('div');
         div.className = 'board-card';
-        const timeAgo = formatTimeAgo(board.lastSeen);
+        // Handle both possible schema variants (time vs lastSeen)
+        const timestamp = board.time || board.lastSeen;
+        const timeAgo = formatTimeAgo(timestamp);
         
         div.innerHTML = `
           <div class="board-info">
