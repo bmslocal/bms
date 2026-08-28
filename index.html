@@ -181,7 +181,7 @@
           // No boards found in cloud
           setTimeout(() => {
             if (!redirectFired) {
-               showError("No devices found", "Make sure your phone is connected to the same Wi-Fi as the device.");
+               showError("Device Not Found", "Ensure the controller is powered on and in range.");
             }
           }, 3000);
         }
@@ -190,7 +190,7 @@
         console.error("Cloud fetch error:", err);
         setTimeout(() => {
             if (!redirectFired) {
-               showError("Connection Failed", "Could not reach the locator service. Connect directly to 'BMS' Wi-Fi.");
+               showError("Search Completed", "Auto-connect failed. Please connect to 'BMS' Wi-Fi directly.");
             }
         }, 3000);
       });
@@ -208,23 +208,23 @@
       apBtn.className = 'board-card';
       apBtn.innerHTML = `
         <div class="board-info">
-          <div class="board-title">BMS Controller (Direct)</div>
-          <div class="board-ip">Wi-Fi: BMS_Setup</div>
+          <div class="board-title">BMS Controller</div>
+          <div class="board-ip">Offline Mode</div>
         </div>
-        <a href="http://${AP_IP}/" class="connect-btn">Connect</a>
+        <a href="http://${AP_IP}/" class="connect-btn">Open</a>
       `;
       list.appendChild(apBtn);
 
-      // Add cloud boards (without showing MACs)
+      // Add cloud boards (without showing MACs or IPs)
       foundBoards.forEach(board => {
         const div = document.createElement('div');
         div.className = 'board-card';
         div.innerHTML = `
           <div class="board-info">
             <div class="board-title">BMS Controller</div>
-            <div class="board-ip">IP: ${board.ip}</div>
+            <div class="board-ip">Cloud Connected</div>
           </div>
-          <a href="http://${board.ip}/" class="connect-btn">Connect</a>
+          <a href="http://${board.ip}/" class="connect-btn">Open</a>
         `;
         list.appendChild(div);
       });
@@ -243,10 +243,10 @@
       apBtn.className = 'board-card';
       apBtn.innerHTML = `
         <div class="board-info">
-          <div class="board-title">Direct Connection</div>
-          <div class="board-ip">192.168.4.1</div>
+          <div class="board-title">Open Dashboard</div>
+          <div class="board-ip">Requires 'BMS' Wi-Fi</div>
         </div>
-        <a href="http://${AP_IP}/" class="connect-btn">Connect</a>
+        <a href="http://${AP_IP}/" class="connect-btn">Open</a>
       `;
       list.appendChild(apBtn);
     }
