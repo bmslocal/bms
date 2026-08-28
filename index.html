@@ -144,13 +144,10 @@
     const CLOUD_URL = "https://script.google.com/macros/s/AKfycbyWCo9NEyW4QqLA6iLRpBiNqc9gO2E43JaQnth51DQTxnVcc7A1sMJyIHjYrkj22ks8FA/exec";
     const AP_IP = "192.168.4.1";
 
-    function formatTimeAgo(dateString) {
-      if (!dateString) return "Unknown";
-      const past = new Date(dateString);
-      const now = new Date();
-      const diffMs = now - past;
+    function formatTimeAgo(diffMs) {
       const diffMins = Math.floor(diffMs / 60000);
-      if (diffMins < 1) return "Just now";
+      const diffSecs = Math.floor(diffMs / 1000);
+      if (diffSecs < 60) return "Just now";
       if (diffMins === 1) return "1 min ago";
       return `${diffMins} mins ago`;
     }
@@ -196,9 +193,6 @@
     function renderCloudBoards(boards) {
       document.getElementById('spinner').classList.add('hidden');
       
-      // ЖЕЛЕЗОБЕТОННАЯ ЛОГИКА: Показываем ТОЛЬКО то, что реально в сети прямо сейчас.
-      // Плата отправляет пинг каждую 1 минуту.
-      // Если пинга не было 3 минуты - значит она 100% выключена из розетки или вне сети.
       const validBoards = boards.filter(board => {
          if (!board.ip || board.ip.includes('foo')) return false; // Убираем мусор
          const timestamp = board.time || board.lastSeen;
@@ -206,10 +200,11 @@
          
          const past = new Date(timestamp);
          const now = new Date();
-         const diffMins = Math.floor((now - past) / 60000);
+         const diffMs = now - past;
          
-         // СТРОГИЙ ФИЛЬТР: только устройства, которые выходили на связь не более 3 минут назад.
-         return diffMins <= 3; 
+         // СТРОЖАЙШИЙ ФИЛЬТР: только устройства, пинговавшие облако не более 90 секунд назад (90000 мс).
+         // Т.к. плата пингует раз в 60 сек, 90 сек дает идеальный запас на пинг без ложных "призраков".
+         return diffMs <= 90000; 
       });
 
       if (validBoards.length === 0) {
@@ -224,8 +219,13 @@
       validBoards.forEach(board => {
         const div = document.createElement('div');
         div.className = 'board-card';
+        
         const timestamp = board.time || board.lastSeen;
-        const timeAgo = formatTimeAgo(timestamp);
+        const past = new Date(timestamp);
+        const now = new Date();
+        const diffMs = now - past;
+        
+        const timeAgo = formatTimeAgo(diffMs);
         
         div.innerHTML = `
           <div class="board-info">
