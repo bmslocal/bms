@@ -196,14 +196,31 @@
 
     function renderCloudBoards(boards) {
       document.getElementById('spinner').classList.add('hidden');
+      
+      // Filter out stale devices (older than 60 minutes) and invalid IPs
+      const validBoards = boards.filter(board => {
+         if (!board.ip || board.ip.includes('foo')) return false; // Filter out test entries
+         const timestamp = board.time || board.lastSeen;
+         if (!timestamp) return false;
+         
+         const past = new Date(timestamp);
+         const now = new Date();
+         const diffMins = Math.floor((now - past) / 60000);
+         return diffMins < 60; // Only keep devices seen in the last hour
+      });
+
+      if (validBoards.length === 0) {
+          renderEmpty();
+          return;
+      }
+
       document.getElementById('title').textContent = "Devices Found";
       document.getElementById('subtitle').textContent = "Select your BMS controller to connect.";
       
       const list = document.getElementById('board-list');
-      boards.forEach(board => {
+      validBoards.forEach(board => {
         const div = document.createElement('div');
         div.className = 'board-card';
-        // Handle both possible schema variants (time vs lastSeen)
         const timestamp = board.time || board.lastSeen;
         const timeAgo = formatTimeAgo(timestamp);
         
