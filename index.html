@@ -43,7 +43,8 @@
         async function scanNetwork() {
             try {
                 log("Fetching board list from Google Cloud...");
-                const res = await fetch(DISPATCHER_URL + "?action=list");
+                const noCacheUrl = DISPATCHER_URL + "?action=list&t=" + new Date().getTime();
+                const res = await fetch(noCacheUrl, { cache: 'no-store' });
                 
                 if (res.ok) {
                     const data = await res.json();
