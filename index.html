@@ -131,7 +131,7 @@
     let redirectFired = false;
     let foundBoards = [];
 
-    // Helper: safely try to ping an IP
+    // Helper: safely try to ping an IP with CORS
     function pingIp(ip) {
       if (redirectFired) return;
       
@@ -139,19 +139,22 @@
       console.log(`Pinging ${ip}...`);
 
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 2000);
+      const timeoutId = setTimeout(() => controller.abort(), 2500);
 
-      fetch(testUrl, { signal: controller.signal, mode: 'no-cors' })
-        .then(() => {
+      // We remove mode: 'no-cors'. This ensures that if 192.168.4.1 is a regular home router, 
+      // the fetch will fail (CORS block). It will only succeed if it's our ESP32 which sends Access-Control-Allow-Origin: *
+      fetch(testUrl, { signal: controller.signal })
+        .then(response => {
           clearTimeout(timeoutId);
-          if (!redirectFired) {
+          // Only redirect if we got a valid response from the ESP32
+          if (response.ok && !redirectFired) {
             redirectFired = true;
             console.log(`Success! Redirecting to ${ip}`);
             window.location.href = `http://${ip}/`;
           }
         })
         .catch(err => {
-          console.log(`Ping failed for ${ip}`);
+          console.log(`Ping failed for ${ip} (Not a BMS board or offline)`);
         });
     }
 
@@ -170,12 +173,12 @@
              if(b.ip && b.ip !== AP_IP) pingIp(b.ip);
           });
 
-          // Give pings 2.5 seconds to succeed. If not, show manual buttons.
+          // Give pings 3 seconds to succeed. If not, show manual buttons.
           setTimeout(() => {
             if (!redirectFired) {
               renderButtons();
             }
-          }, 2500);
+          }, 3000);
 
         } else {
           // No boards found in cloud
