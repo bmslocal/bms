@@ -123,137 +123,94 @@
   <div id="board-list"></div>
 
   <script>
-    const CLOUD_URL = "https://script.google.com/macros/s/AKfycbz_77d-tFvjJ4c2VqR2G-WzFf5vN2c3v4C4f3z4X8s8/exec";
+    // THE CORRECT CLOUD URL
+    const CLOUD_URL = "https://script.google.com/macros/s/AKfycbyWCo9NEyW4QqLA6iLRpBiNqc9gO2E43JaQnth51DQTxnVcc7A1sMJyIHjYrkj22ks8FA/exec";
     
     // Fallback URL (Local AP Mode)
     const AP_IP = "192.168.4.1";
 
-    let redirectFired = false;
     let foundBoards = [];
 
-    // Helper: safely try to ping an IP with CORS
-    function pingIp(ip) {
-      if (redirectFired) return;
-      
-      const testUrl = `http://${ip}/api/data`;
-      console.log(`Pinging ${ip}...`);
-
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 2500);
-
-      // We remove mode: 'no-cors'. This ensures that if 192.168.4.1 is a regular home router, 
-      // the fetch will fail (CORS block). It will only succeed if it's our ESP32 which sends Access-Control-Allow-Origin: *
-      fetch(testUrl, { signal: controller.signal })
-        .then(response => {
-          clearTimeout(timeoutId);
-          // Only redirect if we got a valid response from the ESP32
-          if (response.ok && !redirectFired) {
-            redirectFired = true;
-            console.log(`Success! Redirecting to ${ip}`);
-            window.location.href = `http://${ip}/`;
-          }
-        })
-        .catch(err => {
-          console.log(`Ping failed for ${ip} (Not a BMS board or offline)`);
-        });
-    }
-
-    // Attempt AP mode silently
-    pingIp(AP_IP);
-
-    // Fetch from Cloud
+    // Fetch from Cloud immediately
     fetch(CLOUD_URL + "?action=list")
       .then(r => r.json())
       .then(data => {
         if (data.status === "ok" && data.data && data.data.length > 0) {
           foundBoards = data.data;
-          
-          // Silently ping all found IPs
-          foundBoards.forEach(b => {
-             if(b.ip && b.ip !== AP_IP) pingIp(b.ip);
-          });
-
-          // Give pings 3 seconds to succeed. If not, show manual buttons.
-          setTimeout(() => {
-            if (!redirectFired) {
-              renderButtons();
-            }
-          }, 3000);
-
+          renderButtons("Device Found");
         } else {
           // No boards found in cloud
-          setTimeout(() => {
-            if (!redirectFired) {
-               showError("Device Not Found", "Ensure the controller is powered on and in range.");
-            }
-          }, 3000);
+          renderButtons("No Cloud Devices");
         }
       })
       .catch(err => {
         console.error("Cloud fetch error:", err);
-        setTimeout(() => {
-            if (!redirectFired) {
-               showError("Search Completed", "Auto-connect failed. Please connect to 'BMS' Wi-Fi directly.");
-            }
-        }, 3000);
+        renderButtons("Search Completed");
       });
 
-    function renderButtons() {
+    // In case cloud is totally blocked/offline, timeout after 3s and show AP mode
+    setTimeout(() => {
+       if (document.getElementById('spinner').classList.contains('hidden') === false) {
+           renderButtons("Timeout");
+       }
+    }, 3000);
+
+    function formatTimeAgo(dateString) {
+      if (!dateString) return "Unknown";
+      const past = new Date(dateString);
+      const now = new Date();
+      const diffMs = now - past;
+      const diffMins = Math.floor(diffMs / 60000);
+      if (diffMins < 1) return "Just now";
+      if (diffMins === 1) return "1 min ago";
+      if (diffMins < 60) return `${diffMins} mins ago`;
+      return "Offline (Too old)";
+    }
+
+    function renderButtons(statusReason) {
       document.getElementById('spinner').classList.add('hidden');
-      document.getElementById('title').textContent = "Select Device";
-      document.getElementById('subtitle').textContent = "Multiple networks detected or auto-connect failed.";
+      
+      if (foundBoards.length > 0) {
+          document.getElementById('title').textContent = "Devices Found";
+          document.getElementById('subtitle').textContent = "Select your BMS controller to connect.";
+      } else {
+          document.getElementById('title').textContent = "Search Completed";
+          document.getElementById('subtitle').textContent = "Could not find devices in the cloud. You can try direct connection.";
+      }
       
       const list = document.getElementById('board-list');
       list.innerHTML = '';
 
-      // Always add AP mode as fallback
-      const apBtn = document.createElement('div');
-      apBtn.className = 'board-card';
-      apBtn.innerHTML = `
-        <div class="board-info">
-          <div class="board-title">BMS Controller</div>
-          <div class="board-ip">Offline Mode</div>
-        </div>
-        <a href="http://${AP_IP}/" class="connect-btn">Open</a>
-      `;
-      list.appendChild(apBtn);
-
-      // Add cloud boards (without showing MACs or IPs)
+      // Add cloud boards (with MACs and IPs, per user request)
       foundBoards.forEach(board => {
         const div = document.createElement('div');
         div.className = 'board-card';
+        const timeAgo = formatTimeAgo(board.lastSeen);
+        
         div.innerHTML = `
           <div class="board-info">
-            <div class="board-title">BMS Controller</div>
-            <div class="board-ip">Cloud Connected</div>
+            <div class="board-title">IP: ${board.ip}</div>
+            <div class="board-ip">MAC: ${board.mac}</div>
+            <div class="board-ip">Seen: ${timeAgo}</div>
           </div>
           <a href="http://${board.ip}/" class="connect-btn">Open</a>
         `;
         list.appendChild(div);
       });
-    }
 
-    function showError(title, msg) {
-      document.getElementById('spinner').classList.add('hidden');
-      document.getElementById('title').textContent = title;
-      document.getElementById('subtitle').textContent = msg;
-      
-      const list = document.getElementById('board-list');
-      list.innerHTML = '';
-      
-      // Fallback manual button
+      // Always add AP mode as fallback at the bottom
       const apBtn = document.createElement('div');
       apBtn.className = 'board-card';
       apBtn.innerHTML = `
         <div class="board-info">
-          <div class="board-title">Open Dashboard</div>
-          <div class="board-ip">Requires 'BMS' Wi-Fi</div>
+          <div class="board-title">Direct Connection</div>
+          <div class="board-ip">IP: 192.168.4.1</div>
+          <div class="board-ip">Use if connected to 'BMS' Wi-Fi</div>
         </div>
         <a href="http://${AP_IP}/" class="connect-btn">Open</a>
       `;
       list.appendChild(apBtn);
     }
-
   </script>
 </body>
 </html>
