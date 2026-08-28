@@ -243,7 +243,20 @@
     function renderEmpty() {
       document.getElementById('spinner').classList.add('hidden');
       document.getElementById('title').textContent = "No Devices Found";
-      document.getElementById('subtitle').textContent = "Ensure your controller is powered on and connected to Wi-Fi.";
+      document.getElementById('subtitle').textContent = "Not found in cloud. If you and the board are on the same Home Wi-Fi, try the local address.";
+      
+      const list = document.getElementById('board-list');
+      const mdnsBtn = document.createElement('div');
+      mdnsBtn.className = 'board-card';
+      mdnsBtn.innerHTML = `
+        <div class="board-info">
+          <div class="board-title">Home Network (mDNS)</div>
+          <div class="board-ip">bms.local</div>
+        </div>
+        <a href="http://bms.local/" class="connect-btn">Open</a>
+      `;
+      list.appendChild(mdnsBtn);
+      
       addRefreshButton();
     }
 
