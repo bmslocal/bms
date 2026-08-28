@@ -152,8 +152,7 @@
       const diffMins = Math.floor(diffMs / 60000);
       if (diffMins < 1) return "Just now";
       if (diffMins === 1) return "1 min ago";
-      if (diffMins < 60) return `${diffMins} mins ago`;
-      return "Offline (Too old)";
+      return `${diffMins} mins ago`;
     }
 
     function fetchWithTimeout(url, timeout = 4000) {
@@ -197,16 +196,20 @@
     function renderCloudBoards(boards) {
       document.getElementById('spinner').classList.add('hidden');
       
-      // Filter out stale devices (older than 60 minutes) and invalid IPs
+      // ЖЕЛЕЗОБЕТОННАЯ ЛОГИКА: Показываем ТОЛЬКО то, что реально в сети прямо сейчас.
+      // Плата отправляет пинг каждую 1 минуту.
+      // Если пинга не было 3 минуты - значит она 100% выключена из розетки или вне сети.
       const validBoards = boards.filter(board => {
-         if (!board.ip || board.ip.includes('foo')) return false; // Filter out test entries
+         if (!board.ip || board.ip.includes('foo')) return false; // Убираем мусор
          const timestamp = board.time || board.lastSeen;
          if (!timestamp) return false;
          
          const past = new Date(timestamp);
          const now = new Date();
          const diffMins = Math.floor((now - past) / 60000);
-         return diffMins < 60; // Only keep devices seen in the last hour
+         
+         // СТРОГИЙ ФИЛЬТР: только устройства, которые выходили на связь не более 3 минут назад.
+         return diffMins <= 3; 
       });
 
       if (validBoards.length === 0) {
