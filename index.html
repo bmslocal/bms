@@ -1,121 +1,256 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BMS Radar</title>
-    <!-- PWA Meta Tags -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#121212">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="BMS">
-    <link rel="apple-touch-icon" href="icon.png">
-    <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #121212; color: #ececec; text-align: center; padding: 40px 20px; margin: 0; }
-        .radar-spinner { width: 60px; height: 60px; border: 4px solid #3f3f46; border-top: 4px solid #4ade80; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px auto; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        h2 { margin-bottom: 10px; color: #4ade80; font-weight: 600;}
-        p { color: #a1a1aa; font-size: 14px; line-height: 1.5; max-width: 400px; margin: 0 auto 20px auto;}
-        .log-container { background: #1e1e1e; padding: 15px; border-radius: 12px; border: 1px solid #27272a; max-width: 400px; margin: 0 auto; text-align: left; }
-        .log { font-size: 13px; color: #71717a; max-height: 150px; overflow-y: auto; font-family: monospace; line-height: 1.4; }
-        .btn-retry { background: #3b82f6; color: white; border: none; padding: 12px 20px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; display: none; margin: 20px auto 0 auto; }
-        .ip-card { background: #27272a; padding: 12px; margin-top: 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; }
-        .ip-card a { color: #4ade80; text-decoration: none; font-weight: bold; background: #18181b; padding: 6px 12px; border-radius: 6px; }
-        .device-info { color: #d4d4d8; font-size: 14px; }
-        .device-time { color: #a1a1aa; font-size: 12px; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>BMS Radar</title>
+  <!-- PWA Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#121212">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon.png">
+  
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #121212;
+      color: #ffffff;
+      margin: 0;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+    
+    /* Loading Spinner */
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 4px solid #1e1e1e;
+      border-top: 4px solid #4ade80; /* Accent green */
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-top: 40px;
+      margin-bottom: 30px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    h1 {
+      font-size: 22px;
+      font-weight: 600;
+      margin: 0 0 10px 0;
+      text-align: center;
+      color: #ffffff;
+    }
+
+    p {
+      color: #a1a1aa;
+      font-size: 15px;
+      text-align: center;
+      margin: 0 0 40px 0;
+      line-height: 1.4;
+      max-width: 300px;
+    }
+
+    #board-list {
+      width: 100%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .board-card {
+      background: #1e1e1e;
+      border-radius: 16px;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .board-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .board-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: #ffffff;
+    }
+
+    .board-ip {
+      font-size: 13px;
+      color: #71717a;
+    }
+
+    .connect-btn {
+      background: #4ade80;
+      color: #000000;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 14px;
+      transition: opacity 0.2s;
+    }
+
+    .connect-btn:active {
+      opacity: 0.7;
+    }
+    
+    .hidden {
+      display: none !important;
+    }
+  </style>
 </head>
 <body>
-    <div class="radar-spinner" id="spinner"></div>
-    <h2 id="status-title">Querying Cloud Dispatcher...</h2>
-    <p>Searching for active BMS boards connected to your hotspot.</p>
+
+  <div id="spinner" class="spinner"></div>
+  <h1 id="title">Searching...</h1>
+  <p id="subtitle">Locating your BMS controller on the network.</p>
+
+  <div id="board-list"></div>
+
+  <script>
+    const CLOUD_URL = "https://script.google.com/macros/s/AKfycbz_77d-tFvjJ4c2VqR2G-WzFf5vN2c3v4C4f3z4X8s8/exec";
     
-    <button class="btn-retry" id="btn-retry" onclick="location.reload()">🔄 Scan Again</button>
+    // Fallback URL (Local AP Mode)
+    const AP_IP = "192.168.4.1";
 
-    <div id="results" style="max-width: 400px; margin: 0 auto; text-align: left; display: none;">
-        <!-- Board list will appear here -->
-    </div>
+    let redirectFired = false;
+    let foundBoards = [];
 
-    <div class="log-container" style="margin-top: 25px;">
-        <div class="log" id="log">Connecting to Cloud...<br></div>
-    </div>
+    // Helper: safely try to ping an IP
+    function pingIp(ip) {
+      if (redirectFired) return;
+      
+      const testUrl = `http://${ip}/api/data`;
+      console.log(`Pinging ${ip}...`);
 
-    <script>
-        const logEl = document.getElementById('log');
-        function log(msg) { logEl.innerHTML = msg + '<br>' + logEl.innerHTML; }
-        
-        const DISPATCHER_URL = "https://script.google.com/macros/s/AKfycbyWCo9NEyW4QqLA6iLRpBiNqc9gO2E43JaQnth51DQTxnVcc7A1sMJyIHjYrkj22ks8FA/exec";
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 2000);
 
-        async function scanNetwork() {
-            try {
-                log("Fetching board list from Google Cloud...");
-                const noCacheUrl = DISPATCHER_URL + "?action=list&t=" + new Date().getTime();
-                const res = await fetch(noCacheUrl, { cache: 'no-store' });
-                
-                if (res.ok) {
-                    const data = await res.json();
-                    log(`Found ${data.length} registered boards.`);
-                    
-                    document.getElementById('spinner').style.animation = "none";
-                    document.getElementById('spinner').style.borderColor = "#4ade80";
-                    
-                    // Sort by time (newest first)
-                    data.sort((a, b) => new Date(b.time) - new Date(a.time));
+      fetch(testUrl, { signal: controller.signal, mode: 'no-cors' })
+        .then(() => {
+          clearTimeout(timeoutId);
+          if (!redirectFired) {
+            redirectFired = true;
+            console.log(`Success! Redirecting to ${ip}`);
+            window.location.href = `http://${ip}/`;
+          }
+        })
+        .catch(err => {
+          console.log(`Ping failed for ${ip}`);
+        });
+    }
 
-                    // MAGIC BOOKMARK: Instant Auto-Redirect
-                    if (data.length > 0) {
-                        const ageMs = new Date() - new Date(data[0].time);
-                        if (ageMs < 24 * 60 * 60 * 1000) {
-                            window.location.replace(`http://${data[0].ip}`);
-                            return; // Stop execution, instantly redirect
-                        }
-                    }
+    // Attempt AP mode silently
+    pingIp(AP_IP);
 
-                    if (data.length === 0) {
-                        document.getElementById('status-title').innerText = "No Boards Registered";
-                        document.getElementById('status-title').style.color = "#ef4444";
-                        log("<span style='color:#ef4444;'>No boards have reported their IP yet.</span>");
-                        document.getElementById('btn-retry').style.display = "block";
-                        return;
-                    }
-                    
-                    document.getElementById('status-title').innerText = "Cloud Query Complete";
-                    document.getElementById('results').style.display = "block";
-                    
-                    let html = `<h3 style="color:#ececec; margin-bottom: 10px; font-size: 16px;">Select your board:</h3>`;
-                    
-                    data.forEach(board => {
-                        const date = new Date(board.time);
-                        const timeStr = date.toLocaleString();
-                        
-                        html += `
-                        <div class="ip-card">
-                            <div>
-                                <div class="device-info">MAC: ${board.mac}</div>
-                                <div class="device-time">Last seen: ${timeStr}</div>
-                            </div>
-                            <a href="http://${board.ip}">Connect</a>
-                        </div>`;
-                    });
-                    
-                    document.getElementById('results').innerHTML = html;
-                } else {
-                    throw new Error("HTTP " + res.status);
-                }
-            } catch (e) {
-                document.getElementById('status-title').innerText = "Cloud Error";
-                document.getElementById('status-title').style.color = "#ef4444";
-                document.getElementById('spinner').style.animation = "none";
-                document.getElementById('spinner').style.borderColor = "#3f3f46";
-                document.getElementById('spinner').style.borderTopColor = "#ef4444";
-                document.getElementById('btn-retry').style.display = "block";
-                log("<span style='color:#ef4444; font-weight:bold;'>Failed to connect to Cloud.</span>");
-                log(e.message);
+    // Fetch from Cloud
+    fetch(CLOUD_URL + "?action=list")
+      .then(r => r.json())
+      .then(data => {
+        if (data.status === "ok" && data.data && data.data.length > 0) {
+          foundBoards = data.data;
+          
+          // Silently ping all found IPs
+          foundBoards.forEach(b => {
+             if(b.ip && b.ip !== AP_IP) pingIp(b.ip);
+          });
+
+          // Give pings 2.5 seconds to succeed. If not, show manual buttons.
+          setTimeout(() => {
+            if (!redirectFired) {
+              renderButtons();
             }
-        }
+          }, 2500);
 
-        setTimeout(scanNetwork, 500);
-    </script>
+        } else {
+          // No boards found in cloud
+          setTimeout(() => {
+            if (!redirectFired) {
+               showError("No devices found", "Make sure your phone is connected to the same Wi-Fi as the device.");
+            }
+          }, 3000);
+        }
+      })
+      .catch(err => {
+        console.error("Cloud fetch error:", err);
+        setTimeout(() => {
+            if (!redirectFired) {
+               showError("Connection Failed", "Could not reach the locator service. Connect directly to 'BMS' Wi-Fi.");
+            }
+        }, 3000);
+      });
+
+    function renderButtons() {
+      document.getElementById('spinner').classList.add('hidden');
+      document.getElementById('title').textContent = "Select Device";
+      document.getElementById('subtitle').textContent = "Multiple networks detected or auto-connect failed.";
+      
+      const list = document.getElementById('board-list');
+      list.innerHTML = '';
+
+      // Always add AP mode as fallback
+      const apBtn = document.createElement('div');
+      apBtn.className = 'board-card';
+      apBtn.innerHTML = `
+        <div class="board-info">
+          <div class="board-title">BMS Controller (Direct)</div>
+          <div class="board-ip">Wi-Fi: BMS_Setup</div>
+        </div>
+        <a href="http://${AP_IP}/" class="connect-btn">Connect</a>
+      `;
+      list.appendChild(apBtn);
+
+      // Add cloud boards (without showing MACs)
+      foundBoards.forEach(board => {
+        const div = document.createElement('div');
+        div.className = 'board-card';
+        div.innerHTML = `
+          <div class="board-info">
+            <div class="board-title">BMS Controller</div>
+            <div class="board-ip">IP: ${board.ip}</div>
+          </div>
+          <a href="http://${board.ip}/" class="connect-btn">Connect</a>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    function showError(title, msg) {
+      document.getElementById('spinner').classList.add('hidden');
+      document.getElementById('title').textContent = title;
+      document.getElementById('subtitle').textContent = msg;
+      
+      const list = document.getElementById('board-list');
+      list.innerHTML = '';
+      
+      // Fallback manual button
+      const apBtn = document.createElement('div');
+      apBtn.className = 'board-card';
+      apBtn.innerHTML = `
+        <div class="board-info">
+          <div class="board-title">Direct Connection</div>
+          <div class="board-ip">192.168.4.1</div>
+        </div>
+        <a href="http://${AP_IP}/" class="connect-btn">Connect</a>
+      `;
+      list.appendChild(apBtn);
+    }
+
+  </script>
 </body>
 </html>
