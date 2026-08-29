@@ -481,7 +481,7 @@
        // Listen in real-time
        unsubscribe = onSnapshot(doc(db, "boards", macId), (docSnapshot) => {
           let doc = docSnapshot;
-          if (doc.exists) {
+          if (doc.exists()) {
               const d = doc.data();
               updateDashboardUI(d);
           }
