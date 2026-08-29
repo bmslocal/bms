@@ -420,14 +420,20 @@
             validBoards.forEach(board => {
                const div = document.createElement('div');
                div.className = 'board-card';
+               
+               let titleText = "Prius BMS";
+               if (board.version === "ACTIVATOR") {
+                   titleText = "⚠️ Device Needs Activation";
+               }
+               
                div.innerHTML = `
                  <div class="board-info">
-                   <div class="board-title">Prius BMS</div>
+                   <div class="board-title">${titleText}</div>
                    <div class="board-ip">MAC: ${board.mac}</div>
                  </div>
                  <div style="color: #4ade80; font-size: 24px;">→</div>
                `;
-               div.onclick = () => openDashboard(board.id);
+               div.onclick = () => openDashboard(board);
                list.appendChild(div);
             });
          } else {
@@ -441,7 +447,20 @@
       });
     }
 
-    function openDashboard(macId) {
+    function openDashboard(boardData) {
+       if (boardData.version === "ACTIVATOR") {
+           // Redirect straight to local IP for activation UI
+           if (boardData.ip) {
+               document.getElementById('title').textContent = "Redirecting...";
+               document.getElementById('subtitle').textContent = "Connecting to device activation page...";
+               document.getElementById('board-list').innerHTML = '';
+               document.getElementById('spinner').classList.remove('hidden');
+               window.location = "http://" + boardData.ip;
+           }
+           return;
+       }
+       
+       let macId = boardData.id;
        document.getElementById('view-radar').classList.add('hidden');
        document.getElementById('view-dashboard').classList.remove('hidden');
        currentMac = macId;
