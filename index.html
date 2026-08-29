@@ -7,22 +7,6 @@
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; text-align: center; background: #121212; color: #ececec; margin: 0; padding: 15px; padding-bottom: 30px;}
         .container { max-width: 450px; margin: auto; }
-        .card { background: #1e1e1e; padding: 18px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); text-align: left; }
-        .banner { padding: 12px; font-weight: 600; font-size: 1em; border-radius: 8px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; text-align: center; }
-        .banner-green { background: rgba(39, 174, 96, 0.2); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3); }
-        .banner-yellow { background: rgba(243, 156, 18, 0.2); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3); }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; text-align: left; }
-        .grid-box { background: #27272a; padding: 15px; border-radius: 10px; }
-        .grid-box.right-align { text-align: right; }
-        .grid-label { font-size: 0.75em; color: #a1a1aa; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; margin-bottom: 6px; }
-        .val-temp { font-size: 2.8em; font-weight: 700; color: #4ade80; line-height: 1; }
-        .val-fan { font-size: 2.8em; font-weight: 700; color: #38bdf8; line-height: 1; }
-        .unit { font-size: 0.4em; color: #a1a1aa; margin-left: 2px; font-weight: 600; vertical-align: baseline; }
-        hr { border: 0; border-top: 1px solid #3f3f46; margin: 15px 0; }
-        .btn { display: inline-block; width: 100%; padding: 14px; background: #3b82f6; color: white; border: none; border-radius: 8px; font-size: 1.1em; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; box-sizing: border-box; }
-        .btn:hover { background: #2563eb; }
-        .btn-secondary { background: #3f3f46; color: #fff; }
-        .btn-secondary:hover { background: #52525b; }
         .hidden { display: none !important; }
         
         .spinner {
@@ -39,7 +23,7 @@
         }
         .board-card:hover { border-color: #4ade80; }
         .board-title { font-weight: 600; font-size: 1.1em; margin-bottom: 4px; color: #fff; text-align: left; }
-        .board-ip { font-size: 0.85em; color: #a1a1aa; text-align: left; }
+        .board-ip { font-size: 0.85em; color: #a1a1aa; text-align: left; line-height: 1.4; }
     </style>
 </head>
 <body>
@@ -52,54 +36,17 @@
         <div id="board-list" style="margin-top: 30px; text-align: left;"></div>
     </div>
 
-    <div class="container hidden" id="view-dashboard">
-        <button class="btn btn-secondary" onclick="closeDashboard()" style="margin-bottom: 15px; font-size: 0.9em; padding: 10px;">&larr; Back to Radar</button>
-        
-        <div id="status-banner" class="banner banner-green">System Active</div>
-        
-        <div class="card">
-            <div class="grid-2">
-                <div class="grid-box">
-                    <div class="grid-label">Battery Temp</div>
-                    <div id="max-container" class="val-temp"><span id="max">--</span><span class="unit">&deg;C</span></div>
-                </div>
-                <div class="grid-box right-align">
-                    <div class="grid-label">Fan Speed</div>
-                    <div class="val-fan" id="fan">--</div>
-                </div>
-            </div>
-            
-            <div style="margin-top: 15px; background: #18181b; padding: 12px; border-radius: 8px; font-size: 0.85em; display: flex; justify-content: space-between; align-items: center; border: 1px solid #27272a;">
-                <div style="font-weight: 600; color: #e4e4e7;">☁️ Cloud Telemetry</div>
-                <div id="mini-status" style="font-weight: 600; color: #4ade80;">🟢 Live</div>
-            </div>
-
-            <hr>
-            <div style="color: #a1a1aa; font-size: 0.85em; display: flex; justify-content: space-between;">
-                <div>Firmware: <span id="fw-version" style="color: #d4d4d8;">--</span></div>
-                <div>MAC: <span id="fw-mac" style="color: #d4d4d8;">--</span></div>
-            </div>
-
-            <div style="margin-top: 15px;">
-                <a href="#" id="btn-local-ui" class="btn" target="_blank" style="display: none; font-size: 0.95em;">⚙️ Open Local Settings (OTA)</a>
-            </div>
-        </div>
-    </div>
-
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, getDocs, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const app = initializeApp({
             projectId: "xerotic-upgrade-g3bk6",
         });
         const db = getFirestore(app, "ai-studio-esp32c3-cb928313-45c6-4020-81d9-0e18614bb8c8");
         
-        let unsubscribe = null;
-
         function startSearch() {
             document.getElementById('view-radar').classList.remove('hidden');
-            document.getElementById('view-dashboard').classList.add('hidden');
             document.getElementById('spinner').classList.remove('hidden');
             document.getElementById('board-list').innerHTML = '';
             
@@ -114,7 +61,7 @@
                 
                 if (validBoards.length > 0) {
                     document.getElementById('title').textContent = "Devices Found";
-                    document.getElementById('subtitle').textContent = "Select your BMS controller to view cloud telemetry.";
+                    document.getElementById('subtitle').textContent = "Select your BMS controller to connect locally.";
                     
                     const list = document.getElementById('board-list');
                     validBoards.forEach(board => {
@@ -124,10 +71,16 @@
                         if (board.version === "ACTIVATOR") {
                             titleText = "⚠️ Device Needs Activation";
                         }
+                        
+                        let ipText = board.ip ? board.ip : "Unknown";
+                        
                         div.innerHTML = `
                             <div class="board-info">
                                 <div class="board-title">${titleText}</div>
-                                <div class="board-ip">MAC: ${board.mac}</div>
+                                <div class="board-ip">
+                                    MAC: ${board.mac}<br>
+                                    IP: ${ipText}
+                                </div>
                             </div>
                             <div style="color: #4ade80; font-size: 24px;">&rarr;</div>
                         `;
@@ -147,77 +100,17 @@
         }
 
         window.openDashboard = function(boardData) {
-            if (boardData.version === "ACTIVATOR") {
-                if (boardData.ip) {
-                    document.getElementById('title').textContent = "Redirecting...";
-                    document.getElementById('subtitle').textContent = "Connecting to device activation page...";
-                    document.getElementById('board-list').innerHTML = '';
-                    document.getElementById('spinner').classList.remove('hidden');
-                    window.location = "http://" + boardData.ip;
-                }
-                return;
-            }
-            
-            let macId = boardData.id;
-            document.getElementById('view-radar').classList.add('hidden');
-            document.getElementById('view-dashboard').classList.remove('hidden');
-            
             if (boardData.ip) {
-                let btnLocal = document.getElementById('btn-local-ui');
-                btnLocal.href = "http://" + boardData.ip;
-                btnLocal.style.display = "block";
+                document.getElementById('title').textContent = "Redirecting...";
+                document.getElementById('subtitle').textContent = "Connecting to device local page...";
+                document.getElementById('board-list').innerHTML = '';
+                document.getElementById('spinner').classList.remove('hidden');
+                window.location = "http://" + boardData.ip;
             } else {
-                document.getElementById('btn-local-ui').style.display = "none";
+                alert("IP address not found for this device.");
             }
-            
-            // Listen in real-time
-            unsubscribe = onSnapshot(doc(db, "boards", macId), (docSnapshot) => {
-                if (docSnapshot.exists()) {
-                    updateDashboardUI(docSnapshot.data());
-                }
-            });
         };
         
-        window.closeDashboard = function() {
-            if (unsubscribe) unsubscribe();
-            startSearch();
-        };
-
-        function updateDashboardUI(d) {
-            let banner = document.getElementById('status-banner');
-            let maxContainer = document.getElementById('max-container');
-
-            let isValid = (d.t1 !== undefined && d.t1 !== 0) || (d.fan > 0);
-            
-            if (isValid) {
-                banner.className = 'banner banner-green';
-                banner.innerText = 'System Active';
-                
-                let maxTemp = Math.max(d.t1 || 0, d.t2 || 0, d.t3 || 0, d.t4 || 0);
-                if (maxTemp < 40) { maxContainer.style.color = '#4ade80'; }
-                else if (maxTemp < 48) { maxContainer.style.color = '#f59e0b'; }
-                else { maxContainer.style.color = '#ef4444'; }
-                
-                document.getElementById('max').innerText = maxTemp.toFixed(1);
-                document.getElementById('fan').innerText = d.fan;
-            } else {
-                banner.className = 'banner banner-yellow';
-                banner.innerText = 'Standby (Waiting for car)';
-                maxContainer.style.color = '#a1a1aa';
-                document.getElementById('max').innerText = '--';
-                document.getElementById('fan').innerText = '--';
-            }
-
-            document.getElementById('fw-version').innerText = d.version || '--';
-            document.getElementById('fw-mac').innerText = d.mac || '--';
-            
-            if (d.ip) {
-                let btnLocal = document.getElementById('btn-local-ui');
-                btnLocal.href = "http://" + d.ip;
-                btnLocal.style.display = "block";
-            }
-        }
-
         // Auto-start
         startSearch();
     </script>
