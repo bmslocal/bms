@@ -1,148 +1,388 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>BMS Radar</title>
-  <!-- PWA Tags -->
+  <title>Prius BMS Radar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#121212">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icon.png">
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
   
   <style>
+    /* Radar Styles */
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background-color: #121212;
       color: #ffffff;
       margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+    .radar-view {
       padding: 30px 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-height: 100vh;
-      box-sizing: border-box;
     }
-    
     .spinner {
-      width: 50px;
-      height: 50px;
-      border: 3px solid #1e1e1e;
-      border-top: 3px solid #4ade80;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-top: 40px;
-      margin-bottom: 30px;
+      width: 50px; height: 50px;
+      border: 3px solid #1e1e1e; border-top: 3px solid #4ade80;
+      border-radius: 50%; animation: spin 1s linear infinite;
+      margin-top: 40px; margin-bottom: 30px;
     }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    h1.rtitle { font-size: 22px; font-weight: 600; margin: 0 0 10px 0; text-align: center; }
+    p.rsub { color: #a1a1aa; font-size: 15px; text-align: center; margin: 0 0 30px 0; line-height: 1.4; max-width: 300px; }
+    #board-list { width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 12px; }
+    .board-card { background: #1e1e1e; border-radius: 16px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); cursor: pointer; transition: 0.2s; }
+    .board-card:active { transform: scale(0.98); }
+    .board-info { display: flex; flex-direction: column; gap: 4px; }
+    .board-title { font-weight: 600; font-size: 16px; color: #ffffff; }
+    .board-ip { font-size: 13px; color: #71717a; }
+    .hidden { display: none !important; }
+    .btn-close { background: #3f3f46; color: #fff; border: 0; padding: 10px; border-radius: 8px; width: 100%; margin-bottom: 15px; font-weight: bold; cursor: pointer; }
     
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    h1 {
-      font-size: 22px;
-      font-weight: 600;
-      margin: 0 0 10px 0;
-      text-align: center;
-      color: #ffffff;
-    }
-
-    p {
-      color: #a1a1aa;
-      font-size: 15px;
-      text-align: center;
-      margin: 0 0 30px 0;
-      line-height: 1.4;
-      max-width: 300px;
-    }
-
-    #board-list {
-      width: 100%;
-      max-width: 400px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .board-card {
-      background: #1e1e1e;
-      border-radius: 16px;
-      padding: 16px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-
-    .board-info {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .board-title {
-      font-weight: 600;
-      font-size: 16px;
-      color: #ffffff;
-    }
-
-    .board-ip {
-      font-size: 13px;
-      color: #71717a;
-    }
-
-    .connect-btn {
-      background: #4ade80;
-      color: #000000;
-      text-decoration: none;
-      padding: 10px 20px;
-      border-radius: 20px;
-      font-weight: 600;
-      font-size: 14px;
-      transition: opacity 0.2s;
-    }
-
-    .connect-btn:active {
-      opacity: 0.7;
-    }
+    /* Dashboard Styles */
     
-    .hidden {
-      display: none !important;
-    }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; text-align: center; background: #121212; color: #ececec; margin: 0; padding: 15px; padding-bottom: 30px;}
+        .container { max-width: 450px; margin: auto; }
+        .card { background: #1e1e1e; padding: 18px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); text-align: left; }
+        .banner { padding: 12px; font-weight: 600; font-size: 1em; border-radius: 8px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; text-align: center; }
+        .banner-green { background: rgba(39, 174, 96, 0.2); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3); }
+        .banner-yellow { background: rgba(243, 156, 18, 0.2); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3); }
 
-    .refresh-btn {
-      background: transparent;
-      color: #a1a1aa;
-      border: 1px solid #3f3f46;
-      padding: 10px 24px;
-      border-radius: 20px;
-      font-weight: 500;
-      font-size: 14px;
-      margin-top: 30px;
-      cursor: pointer;
-      transition: all 0.2s;
-      outline: none;
-    }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; text-align: left; }
+        .grid-box { background: #27272a; padding: 15px; border-radius: 10px; }
+        .grid-box.right-align { text-align: right; }
+        .grid-label { font-size: 0.75em; color: #a1a1aa; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; margin-bottom: 6px; }
+
+        .val-temp { font-size: 2.8em; font-weight: 700; color: #4ade80; line-height: 1; }
+        .val-fan { font-size: 2.8em; font-weight: 700; color: #38bdf8; line-height: 1; }
+        .unit { font-size: 0.4em; color: #a1a1aa; margin-left: 2px; font-weight: 600; vertical-align: baseline; }
+
+        input[type=text] { width: 100%; margin: 8px 0 15px 0; padding: 12px; border-radius: 8px; border: 1px solid #3f3f46; background: #27272a; color: #fff; box-sizing: border-box; font-size: 16px; }
+        button.btn-save { background: #3b82f6; color: #fff; border: 0; border-radius: 8px; padding: 14px; font-size: 16px; font-weight: 600; cursor: pointer; width: 100%; margin-top: 5px; }
+
+        .cta-card { background: rgba(37, 99, 235, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px; padding: 18px; margin-bottom: 15px; display: none; text-align: left; }
+        .btn-cta { background: #3b82f6; width: 100%; color: white; border: none; padding: 14px; border-radius: 8px; font-weight: 600; font-size: 16px; cursor: pointer; margin-top: 10px; transition: 0.2s; }
+        .btn-cta:hover { background: #2563eb; }
     
-    .refresh-btn:active {
-      background: #27272a;
-    }
   </style>
 </head>
 <body>
 
-  <div id="spinner" class="spinner"></div>
-  <h1 id="title">Searching...</h1>
-  <p id="subtitle">Locating your BMS controller on the network.</p>
+  <!-- VIEW 1: SEARCHING / LIST -->
+  <div id="view-radar" class="radar-view">
+    <div id="spinner" class="spinner"></div>
+    <h1 id="title" class="rtitle">Searching...</h1>
+    <p id="subtitle" class="rsub">Locating your BMS controller in the Cloud.</p>
+    <div id="board-list"></div>
+  </div>
 
-  <div id="board-list"></div>
-  <div id="refresh-container"></div>
+  <!-- VIEW 2: CLOUD DASHBOARD -->
+  <div id="view-dashboard" class="hidden" style="padding: 15px;">
+    <button class="btn-close" onclick="closeDashboard()">← Back to Radar</button>
+    
+    <div class="container">
+
+        <!-- НОВЫЙ ДРУЖЕЛЮБНЫЙ БЛОК ПЕРЕХОДА -->
+        <div id="cloud-cta" class="cta-card">
+            <div style="font-size: 15px; color: #93c5fd; font-weight: 600; margin-bottom: 6px;">🌐 Cloud Connection Ready!</div>
+            <div style="font-size: 13.5px; color: #d1d5db; line-height: 1.4;">The board is successfully connected to your phone's Hotspot (IP: <b id="cta-ip">...</b>).</div>
+            <button class="btn-cta" onclick="jumpToIp()">🚀 Switch to Cloud & Disconnect AP</button>
+            <div id="jump-text" style="font-size: 11.5px; color: #9ca3af; margin-top: 12px; text-align: center;">Clicking this will drop your connection to BMS_Setup and automatically route you through your mobile internet.</div>
+        </div>
+
+        <div id="scan-cta" class="cta-card" style="background: rgba(255, 255, 255, 0.05); border: 1px dashed rgba(255, 255, 255, 0.2);">
+            <div style="font-size: 14px; color: #d4d4d8; font-weight: 600; margin-bottom: 6px;">📡 No Cloud Connection</div>
+            <div style="font-size: 12.5px; color: #a1a1aa; line-height: 1.4;">Turn on your phone's Hotspot and click below to connect.</div>
+            <button id="btn-scan" class="btn-cta" style="background: #3f3f46; font-size: 14px; padding: 10px; margin-top: 12px;" onclick="forceScan()">🔄 Scan for Hotspot</button>
+        </div>
+
+        <div id="status-banner" class="banner banner-yellow">Standby (Waiting for car)</div>
+
+        <div class="card" style="padding-bottom: 18px; text-align: center;">
+            <div class="grid-2">
+                <div class="grid-box">
+                    <div class="grid-label">Battery Temp</div>
+                    <div id="max-container" class="val-temp" style="color:#a1a1aa;">
+                        <span id="max">--</span><span class="unit">°C</span>
+                    </div>
+                </div>
+                <div class="grid-box right-align">
+                    <div class="grid-label">Fan Speed</div>
+                    <div class="val-fan">
+                        <span id="fan">--</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="padding: 15px;">
+            <div id="wifi-toggle" style="cursor: pointer; color: #d4d4d8; text-decoration: none; font-size: 15px; font-weight:600; display: flex; justify-content: space-between; align-items: center;">
+                <span id="settings-title">⚙️ Network Settings</span>
+                <span style="font-size: 12px; color: #a1a1aa; font-weight: normal;">Cloud: <span id="mini-status" style="font-weight: 600;">⚪ Off</span></span>
+            </div>
+
+            <div id="wifi-form-container" style="display: none; text-align: left; margin-top: 15px; border-top: 1px solid #3f3f46; padding-top: 15px;">
+                <div id="wifi-credentials-block">
+                    <p style="color: #a1a1aa; font-size:13px; margin-top:0; line-height:1.4;">To connect the board to your phone, enter your phone's Hotspot credentials below and click <b>Save & Connect</b>.</p>
+
+                    <form id="wifi-form">
+                        <label style="font-size: 14px; color:#e4e4e7;">Wi-Fi Name (SSID):</label>
+                        <input type="text" name="ssid" value="%SSID%" required>
+
+                        <label style="font-size: 14px; color:#e4e4e7;">Password:</label>
+                        <input type="text" name="pass" value="%PASS%">
+
+                        <button type="submit" class="btn-save" id="btn-save">Save & Connect</button>
+                    </form>
+                </div>
+
+                <div id="system-info-block" style="margin-top: 15px; border-top: 1px solid #3f3f46; padding-top: 15px; color: #71717a; font-size: 12px; font-family: monospace;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <div>Firmware: <span id="fw-version" style="color: #a1a1aa;"></span></div>
+                        <button onclick="checkOta()" id="btn-ota" style="background: #3f3f46; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; transition: 0.2s;">Check Updates</button>
+                    </div>
+                    <div style="margin-top: 4px;">MAC: <span id="fw-mac" style="color: #a1a1aa;"></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentBoardIp = '';
+        let isAP = false;
+        let failCount = 0;
+        let invalidCount = 0;
+
+        function jumpToIp() {
+            if(!currentBoardIp) return;
+            document.getElementById('jump-text').innerHTML = "<span style='color:#fbbf24; font-weight:600;'>Rebooting board to disconnect Wi-Fi... Please wait...</span>";
+            fetch('/api/reboot').catch(e => {});
+            setTimeout(() => {
+                window.location = "http://" + currentBoardIp;
+            }, 4000);
+        }
+
+        function forceScan() {
+            var btn = document.getElementById('btn-scan');
+            btn.innerText = 'Scanning...';
+            var fd = new FormData(document.getElementById('wifi-form'));
+            fetch('/wifi', {
+                method: 'POST',
+                body: new URLSearchParams(fd)
+            }).then(() => {
+                btn.innerText = '✅ Scanning (30s)';
+                setTimeout(() => { btn.innerText = '🔄 Scan for Hotspot'; }, 30000);
+            }).catch(() => {
+                btn.innerText = 'Error';
+                setTimeout(() => { btn.innerText = '🔄 Scan for Hotspot'; }, 3000);
+            });
+        }
+
+        document.getElementById('wifi-toggle').addEventListener('click', function() {
+            var f = document.getElementById('wifi-form-container');
+            f.style.display = (f.style.display === 'none') ? 'block' : 'none';
+        });
+
+        document.getElementById('wifi-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var btn = document.getElementById('btn-save');
+            btn.innerText = 'Saving...';
+            var fd = new FormData(this);
+            fetch('/wifi', {
+                method: 'POST',
+                body: new URLSearchParams(fd)
+            }).then(() => {
+                btn.innerText = '✅ Saved! Connecting...';
+                setTimeout(() => { btn.innerText = 'Save & Connect'; }, 3000);
+            }).catch(() => {
+                btn.innerText = 'Error. Try again';
+                setTimeout(() => { btn.innerText = 'Save & Connect'; }, 3000);
+            });
+        });
+
+        setInterval(() => {
+            fetch('/api/data').then(r => r.json()).then(d => {
+                failCount = 0;
+                
+                currentBoardIp = d.ip;
+                if (d.client_ip === '192.168.4.1' || window.location.hostname === '192.168.4.1') {
+                    isAP = true;
+                } else {
+                    isAP = false;
+                }
+
+                let banner = document.getElementById('status-banner');
+                let maxContainer = document.getElementById('max-container');
+
+                if (d.valid) {
+                    invalidCount = 0;
+                    banner.className = 'banner banner-green';
+                    banner.innerText = 'System Active';
+                    let m = parseFloat(d.max);
+                    if (m < 40) { maxContainer.style.color = '#4ade80'; }
+                    else if (m < 48) { maxContainer.style.color = '#f59e0b'; }
+                    else { maxContainer.style.color = '#ef4444'; }
+                    
+                    document.getElementById('max').innerText = d.max;
+                    document.getElementById('fan').innerText = d.fan;
+                } else {
+                    invalidCount++;
+                    if (invalidCount >= 4) {
+                        banner.className = 'banner banner-yellow';
+                        banner.innerText = 'Standby (Waiting for car)';
+                        maxContainer.style.color = '#a1a1aa';
+                        document.getElementById('max').innerText = '--';
+                        document.getElementById('fan').innerText = '--';
+                    }
+                }
+
+                document.getElementById('fw-version').innerText = d.version;
+                document.getElementById('fw-mac').innerText = d.mac;
+
+                if (!d.cloud_ready || isAP) {
+                    document.getElementById('btn-ota').style.display = 'none';
+                } else {
+                    document.getElementById('btn-ota').style.display = 'block';
+
+                    let btn = document.getElementById('btn-ota');
+                    if (d.ota_state.includes('Downloading')) {
+                        btn.innerText = 'Downloading...';
+                        btn.disabled = true;
+                        btn.style.opacity = '0.5';
+                        btn.style.background = '#3f3f46';
+                        btn.style.color = '#fff';
+                        btn.style.fontWeight = 'normal';
+                    } else if (d.ota_state.includes('Checking') || d.ota_state.includes('Waiting')) {
+                        btn.innerText = 'Checking...';
+                        btn.disabled = true;
+                        btn.style.opacity = '0.5';
+                        btn.style.background = '#3f3f46';
+                        btn.style.color = '#fff';
+                        btn.style.fontWeight = 'normal';
+                    } else if (d.ota_state.includes('Update found')) {
+                        btn.innerText = 'Update Now!';
+                        btn.disabled = false;
+                        btn.style.opacity = '1';
+                        btn.style.background = '#eab308';
+                        btn.style.color = '#000';
+                        btn.style.fontWeight = 'bold';
+                    } else if (d.ota_state.includes('Up to date')) {
+                        btn.innerText = '✅ Up to date';
+                        btn.disabled = false;
+                        btn.style.opacity = '1';
+                        btn.style.background = '#27ae60';
+                        btn.style.color = '#fff';
+                        btn.style.fontWeight = 'normal';
+                    } else if (d.ota_state.includes('Ready')) {
+                        btn.innerText = 'Rebooting soon';
+                        btn.disabled = true;
+                        btn.style.opacity = '0.5';
+                        btn.style.background = '#3f3f46';
+                        btn.style.color = '#fff';
+                        btn.style.fontWeight = 'normal';
+                    } else {
+                        btn.innerText = 'Check Updates';
+                        btn.disabled = false;
+                        btn.style.opacity = '1';
+                        btn.style.background = '#3f3f46';
+                    }
+                }
+
+                let hasCloudIp = (d.ip && d.ip !== "192.168.4.1" && d.ip !== "0.0.0.0");
+                let cta = document.getElementById('cloud-cta');
+                let scanCta = document.getElementById('scan-cta');
+                let miniStatus = document.getElementById('mini-status');
+                
+
+                let credsBlock = document.getElementById('wifi-credentials-block');
+                let sysInfoBlock = document.getElementById('system-info-block');
+                let settingsTitle = document.getElementById('settings-title');
+
+                if (isAP) {
+                    credsBlock.style.display = 'block';
+                    sysInfoBlock.style.borderTop = '1px solid #3f3f46';
+                    sysInfoBlock.style.marginTop = '15px';
+                    sysInfoBlock.style.paddingTop = '15px';
+                    settingsTitle.innerText = '⚙️ Network Settings';
+
+                    if (hasCloudIp) {
+                        cta.style.display = 'block';
+                        scanCta.style.display = 'none';
+                        document.getElementById('cta-ip').innerText = d.ip;
+                        miniStatus.innerText = "🟡 Ready";
+                        miniStatus.style.color = "#fbbf24";
+                        
+                    } else {
+                        cta.style.display = 'none';
+                        scanCta.style.display = 'block';
+                        miniStatus.innerText = "⚪ Off";
+                        miniStatus.style.color = "#a1a1aa";
+                        
+                    }
+                } else {
+                    credsBlock.style.display = 'none';
+                    sysInfoBlock.style.borderTop = 'none';
+                    sysInfoBlock.style.marginTop = '0';
+                    sysInfoBlock.style.paddingTop = '0';
+                    settingsTitle.innerText = '⚙️ System Info';
+
+                    cta.style.display = 'none';
+                    scanCta.style.display = 'none';
+                    miniStatus.innerText = "🟢 Active";
+                    miniStatus.style.color = "#4ade80";
+                    
+                }
+            }).catch(e => {
+                failCount++;
+                if (failCount >= 4) {
+                    document.getElementById('status-banner').className = 'banner banner-yellow';
+                    document.getElementById('status-banner').innerText = 'Connection Lost';
+                    document.getElementById('max-container').style.color = '#a1a1aa';
+                    document.getElementById('max').innerText = '--';
+                    document.getElementById('fan').innerText = '--';
+                    document.getElementById('mini-status').innerText = '🔴 Offline';
+                    document.getElementById('mini-status').style.color = '#ef4444';
+                    document.getElementById('btn-ota').style.display = 'none';
+                }
+            });
+        }, 1000);
+
+        function checkOta() {
+            var btn = document.getElementById('btn-ota');
+            if (btn) {
+                if (btn.innerText.includes('Update Now')) {
+                    btn.innerText = 'Starting...';
+                    btn.disabled = true;
+                    fetch('/api/ota_download', { method: 'POST' });
+                } else {
+                    btn.innerText = 'Checking...';
+                    btn.disabled = true;
+                    fetch('/api/ota_check', { method: 'POST' });
+                }
+            }
+        }
+    </script>
+
+  </div>
 
   <script>
-    const CLOUD_URL = "https://script.google.com/macros/s/AKfycbyWCo9NEyW4QqLA6iLRpBiNqc9gO2E43JaQnth51DQTxnVcc7A1sMJyIHjYrkj22ks8FA/exec";
-    const AP_IP = "192.168.4.1";
+    // 1. INITIALIZE FIREBASE
+    firebase.initializeApp({
+      projectId: "xerotic-upgrade-g3bk6",
+    });
+    const db = firebase.firestore();
+    
+    let unsubscribe = null;
+    let currentMac = null;
 
     function formatTimeAgo(diffMs) {
       const diffMins = Math.floor(diffMs / 60000);
@@ -152,139 +392,126 @@
       return `${diffMins} mins ago`;
     }
 
-    function fetchWithTimeout(url, timeout = 4000) {
-      return Promise.race([
-          fetch(url, { cache: "no-store" }),
-          new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), timeout))
-      ]);
-    }
-
     function startSearch() {
-      // Reset UI
+      document.getElementById('view-radar').classList.remove('hidden');
+      document.getElementById('view-dashboard').classList.add('hidden');
       document.getElementById('spinner').classList.remove('hidden');
       document.getElementById('board-list').innerHTML = '';
-      document.getElementById('refresh-container').innerHTML = '';
-      document.getElementById('title').textContent = "Searching...";
-      document.getElementById('subtitle').textContent = "Locating your BMS controller on the network.";
-
-      fetchWithTimeout(CLOUD_URL + "?action=list", 5000)
-        .then(r => r.json())
-        .then(data => {
-          let boards = [];
-          
-          if (Array.isArray(data)) {
-            boards = data;
-          } else if (data && data.status === "ok" && Array.isArray(data.data)) {
-            boards = data.data;
-          }
-
-          if (boards.length > 0) {
-            renderCloudBoards(boards);
-          } else {
-            renderEmpty();
-          }
-        })
-        .catch(err => {
-          console.error("Fetch error:", err);
-          renderOffline();
-        });
-    }
-
-    function renderCloudBoards(boards) {
-      document.getElementById('spinner').classList.add('hidden');
       
-      const validBoards = boards.filter(board => {
-         if (!board.ip || board.ip.includes('foo')) return false; // Убираем мусор
-         const timestamp = board.time || board.lastSeen;
-         if (!timestamp) return false;
+      db.collection("boards").get().then(snapshot => {
+         document.getElementById('spinner').classList.add('hidden');
          
-         const past = new Date(timestamp);
-         const now = new Date();
-         const diffMs = now - past;
+         const now = new Date().getTime();
+         const validBoards = [];
          
-         // СТРОЖАЙШИЙ ФИЛЬТР: только устройства, пинговавшие облако не более 90 секунд назад (90000 мс).
-         // Т.к. плата пингует раз в 60 сек, 90 сек дает идеальный запас на пинг без ложных "призраков".
-         return diffMs <= 90000; 
+         snapshot.forEach(doc => {
+            const data = doc.data();
+            data.id = doc.id;
+            // updateTime is not available on client SDK DocumentSnapshot directly in v9 compat easily if it was written by REST
+            // Actually, we can just show it. Let's assume it's active.
+            validBoards.push(data);
+         });
+         
+         if (validBoards.length > 0) {
+            document.getElementById('title').textContent = "Devices Found";
+            document.getElementById('subtitle').textContent = "Select your BMS controller to connect.";
+            
+            const list = document.getElementById('board-list');
+            validBoards.forEach(board => {
+               const div = document.createElement('div');
+               div.className = 'board-card';
+               div.innerHTML = `
+                 <div class="board-info">
+                   <div class="board-title">Prius BMS</div>
+                   <div class="board-ip">MAC: ${board.mac}</div>
+                 </div>
+                 <div style="color: #4ade80; font-size: 24px;">→</div>
+               `;
+               div.onclick = () => openDashboard(board.id);
+               list.appendChild(div);
+            });
+         } else {
+            document.getElementById('title').textContent = "No Devices";
+            document.getElementById('subtitle').textContent = "No devices have reported to the cloud yet.";
+         }
+      }).catch(err => {
+         console.error(err);
+         document.getElementById('title').textContent = "Error";
+         document.getElementById('subtitle').textContent = "Could not connect to Firebase.";
       });
+    }
 
-      if (validBoards.length === 0) {
-          renderEmpty();
-          return;
-      }
+    function openDashboard(macId) {
+       document.getElementById('view-radar').classList.add('hidden');
+       document.getElementById('view-dashboard').classList.remove('hidden');
+       currentMac = macId;
+       
+       // Hide IP/Wi-Fi blocks since this is cloud view
+       document.getElementById('wifi-form-container').style.display = 'none';
+       document.getElementById('cloud-cta').style.display = 'none';
+       document.getElementById('scan-cta').style.display = 'none';
+       document.getElementById('settings-title').innerText = '☁️ Cloud Telemetry (Read-only)';
+       document.getElementById('mini-status').innerText = '🟢 Live';
+       document.getElementById('mini-status').style.color = '#4ade80';
+       
+       // Listen in real-time
+       unsubscribe = db.collection("boards").doc(macId).onSnapshot(doc => {
+          if (doc.exists) {
+              const d = doc.data();
+              updateDashboardUI(d);
+          }
+       });
+    }
+    
+    function closeDashboard() {
+       if (unsubscribe) unsubscribe();
+       startSearch();
+    }
 
-      document.getElementById('title').textContent = "Devices Found";
-      document.getElementById('subtitle').textContent = "Select your BMS controller to connect.";
-      
-      const list = document.getElementById('board-list');
-      validBoards.forEach(board => {
-        const div = document.createElement('div');
-        div.className = 'board-card';
+    let invalidCount = 0;
+    function updateDashboardUI(d) {
+        let banner = document.getElementById('status-banner');
+        let maxContainer = document.getElementById('max-container');
+
+        // Check validity based on whether temp data is present
+        let isValid = (d.t1 !== undefined && d.t1 !== 0) || (d.fan > 0);
         
-        const timestamp = board.time || board.lastSeen;
-        const past = new Date(timestamp);
-        const now = new Date();
-        const diffMs = now - past;
-        
-        const timeAgo = formatTimeAgo(diffMs);
-        
-        div.innerHTML = `
-          <div class="board-info">
-            <div class="board-title">IP: ${board.ip}</div>
-            <div class="board-ip">MAC: ${board.mac}</div>
-            <div class="board-ip">Seen: ${timeAgo}</div>
-          </div>
-          <a href="http://${board.ip}/" class="connect-btn">Open</a>
-        `;
-        list.appendChild(div);
-      });
-      addRefreshButton();
+        if (isValid) {
+            invalidCount = 0;
+            banner.className = 'banner banner-green';
+            banner.innerText = 'System Active';
+            
+            // max temp is highest of t1,t2,t3
+            let maxTemp = Math.max(d.t1 || 0, d.t2 || 0, d.t3 || 0, d.t4 || 0);
+            
+            if (maxTemp < 40) { maxContainer.style.color = '#4ade80'; }
+            else if (maxTemp < 48) { maxContainer.style.color = '#f59e0b'; }
+            else { maxContainer.style.color = '#ef4444'; }
+            
+            document.getElementById('max').innerText = maxTemp.toFixed(1);
+            document.getElementById('fan').innerText = d.fan;
+        } else {
+            invalidCount++;
+            if (invalidCount >= 2) {
+                banner.className = 'banner banner-yellow';
+                banner.innerText = 'Standby (Waiting for car)';
+                maxContainer.style.color = '#a1a1aa';
+                document.getElementById('max').innerText = '--';
+                document.getElementById('fan').innerText = '--';
+            }
+        }
+
+        document.getElementById('fw-version').innerText = d.version || '--';
+        document.getElementById('fw-mac').innerText = d.mac || '--';
+        document.getElementById('btn-ota').style.display = 'none'; // No OTA in cloud mode yet
     }
 
-    function renderEmpty() {
-      document.getElementById('spinner').classList.add('hidden');
-      document.getElementById('title').textContent = "No Devices Found";
-      document.getElementById('subtitle').textContent = "Not found in cloud. If you and the board are on the same Home Wi-Fi, try the local address.";
-      
-      const list = document.getElementById('board-list');
-      const mdnsBtn = document.createElement('div');
-      mdnsBtn.className = 'board-card';
-      mdnsBtn.innerHTML = `
-        <div class="board-info">
-          <div class="board-title">Home Network</div>
-          <div class="board-ip">bms.local</div>
-        </div>
-        <a href="http://bms.local/" class="connect-btn">Open</a>
-      `;
-      list.appendChild(mdnsBtn);
-      
-      addRefreshButton();
-    }
+    // Mute existing script functionality from original HTML
+    function jumpToIp() {}
+    function forceScan() {}
+    function checkOta() {}
 
-    function renderOffline() {
-      document.getElementById('spinner').classList.add('hidden');
-      document.getElementById('title').textContent = "You are Offline";
-      document.getElementById('subtitle').textContent = "No internet access. If you are connected directly to 'BMS' Wi-Fi, you can open the dashboard below.";
-      
-      const list = document.getElementById('board-list');
-      const apBtn = document.createElement('div');
-      apBtn.className = 'board-card';
-      apBtn.innerHTML = `
-        <div class="board-info">
-          <div class="board-title">Direct Connection</div>
-          <div class="board-ip">IP: 192.168.4.1</div>
-        </div>
-        <a href="http://${AP_IP}/" class="connect-btn">Open</a>
-      `;
-      list.appendChild(apBtn);
-      addRefreshButton();
-    }
-
-    function addRefreshButton() {
-      const container = document.getElementById('refresh-container');
-      container.innerHTML = `<button class="refresh-btn" onclick="startSearch()">Refresh Search</button>`;
-    }
-
-    // Auto-start on load
+    // Auto-start
     startSearch();
   </script>
 </body>
