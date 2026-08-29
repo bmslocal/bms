@@ -10,8 +10,8 @@
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icon.png">
 
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  
+  
   
   <style>
     /* Radar Styles */
@@ -374,12 +374,17 @@
 
   </div>
 
-  <script>
+  <script type="module">
     // 1. INITIALIZE FIREBASE
-    firebase.initializeApp({
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, getDocs, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const app = initializeApp({
       projectId: "xerotic-upgrade-g3bk6",
     });
-    const db = firebase.firestore();
+    // Crucial: Pass the explicit database ID here!
+    const db = getFirestore(app, "ai-studio-esp32c3-cb928313-45c6-4020-81d9-0e18614bb8c8");
+
     
     let unsubscribe = null;
     let currentMac = null;
@@ -398,7 +403,7 @@
       document.getElementById('spinner').classList.remove('hidden');
       document.getElementById('board-list').innerHTML = '';
       
-      db.collection("boards").get().then(snapshot => {
+      getDocs(collection(db, "boards")).then(snapshot => {
          document.getElementById('spinner').classList.add('hidden');
          
          const now = new Date().getTime();
@@ -474,7 +479,8 @@
        document.getElementById('mini-status').style.color = '#4ade80';
        
        // Listen in real-time
-       unsubscribe = db.collection("boards").doc(macId).onSnapshot(doc => {
+       unsubscribe = onSnapshot(doc(db, "boards", macId), (docSnapshot) => {
+          let doc = docSnapshot;
           if (doc.exists) {
               const d = doc.data();
               updateDashboardUI(d);
