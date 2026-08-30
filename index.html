@@ -36,71 +36,96 @@
         <div id="board-list" style="margin-top: 30px; text-align: left;"></div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    <script>
+        const FIRESTORE_URL = "https://firestore.googleapis.com/v1/projects/xerotic-upgrade-g3bk6/databases/ai-studio-esp32c3-cb928313-45c6-4020-81d9-0e18614bb8c8/documents/boards";
 
-        const app = initializeApp({
-            projectId: "xerotic-upgrade-g3bk6",
-        });
-        const db = getFirestore(app, "ai-studio-esp32c3-cb928313-45c6-4020-81d9-0e18614bb8c8");
-        
         function startSearch() {
             document.getElementById('view-radar').classList.remove('hidden');
             document.getElementById('spinner').classList.remove('hidden');
+            document.getElementById('title').textContent = "Searching...";
+            document.getElementById('subtitle').textContent = "Locating active BMS controllers in the Cloud.";
             document.getElementById('board-list').innerHTML = '';
             
-            getDocs(collection(db, "boards")).then(snapshot => {
-                document.getElementById('spinner').classList.add('hidden');
-                const validBoards = [];
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    data.id = doc.id;
-                    validBoards.push(data);
-                });
-                
-                if (validBoards.length > 0) {
-                    document.getElementById('title').textContent = "Devices Found";
-                    document.getElementById('subtitle').textContent = "Select your BMS controller to connect locally.";
+            fetch(FIRESTORE_URL)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('spinner').classList.add('hidden');
+                    const validBoards = [];
+                    const now = new Date();
                     
-                    const list = document.getElementById('board-list');
-                    validBoards.forEach(board => {
-                        const div = document.createElement('div');
-                        div.className = 'board-card';
-                        let titleText = "Hybrid BMS Controller";
-                        if (board.version === "ACTIVATOR") {
-                            titleText = "⚠️ Device Needs Activation";
-                        }
+                    if (data.documents) {
+                        data.documents.forEach(doc => {
+                            const updateTime = new Date(doc.updateTime);
+                            const diffSec = (now - updateTime) / 1000;
+                            
+                            // Only show devices that have reported in the last 3 minutes (180 seconds)
+                            if (diffSec < 180) {
+                                const fields = doc.fields || {};
+                                validBoards.push({
+                                    mac: fields.mac ? fields.mac.stringValue : "Unknown",
+                                    ip: fields.ip ? fields.ip.stringValue : "Unknown",
+                                    version: fields.version ? fields.version.stringValue : "Unknown"
+                                });
+                            }
+                        });
+                    }
+                    
+                    if (validBoards.length > 0) {
+                        document.getElementById('title').textContent = "Devices Found";
+                        document.getElementById('subtitle').textContent = "Select your BMS controller to connect locally.";
                         
-                        let ipText = board.ip ? board.ip : "Unknown";
-                        
-                        div.innerHTML = `
-                            <div class="board-info">
-                                <div class="board-title">${titleText}</div>
-                                <div class="board-ip">
-                                    MAC: ${board.mac}<br>
-                                    IP: ${ipText}
+                        const list = document.getElementById('board-list');
+                        validBoards.forEach(board => {
+                            const div = document.createElement('div');
+                            div.className = 'board-card';
+                            let titleText = "Hybrid BMS Controller";
+                            if (board.version === "ACTIVATOR") {
+                                titleText = "⚠️ Device Needs Activation";
+                            }
+                            
+                            let ipText = board.ip ? board.ip : "Unknown";
+                            
+                            div.innerHTML = `
+                                <div class="board-info">
+                                    <div class="board-title">${titleText}</div>
+                                    <div class="board-ip">
+                                        MAC: ${board.mac}<br>
+                                        IP: ${ipText}
+                                    </div>
                                 </div>
-                            </div>
-                            <div style="color: #4ade80; font-size: 24px;">&rarr;</div>
-                        `;
-                        div.onclick = () => window.openDashboard(board);
-                        list.appendChild(div);
-                    });
-                } else {
-                    document.getElementById('title').textContent = "No Devices";
-                    document.getElementById('subtitle').textContent = "No devices have reported to the cloud yet.";
-                }
-            }).catch(err => {
-                console.error(err);
-                document.getElementById('spinner').classList.add('hidden');
-                document.getElementById('title').textContent = "Error";
-                document.getElementById('subtitle').textContent = "Could not connect to Firebase. Check internet connection.";
-            });
+                                <div style="color: #4ade80; font-size: 24px;">&rarr;</div>
+                            `;
+                            div.onclick = () => window.openDashboard(board);
+                            list.appendChild(div);
+                        });
+                        
+                        // Add refresh button at the bottom
+                        const refreshBtn = document.createElement('div');
+                        refreshBtn.style.marginTop = "20px";
+                        refreshBtn.style.textAlign = "center";
+                        refreshBtn.innerHTML = `<button onclick="startSearch()" style="background: transparent; border: 1px solid #4ade80; color: #4ade80; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-size: 0.9em; transition: 0.2s;">Refresh Search</button>`;
+                        list.appendChild(refreshBtn);
+                    } else {
+                        document.getElementById('title').textContent = "No Devices";
+                        document.getElementById('subtitle').textContent = "No active devices found. Make sure your controller is powered on.";
+                        
+                        const list = document.getElementById('board-list');
+                        const refreshBtn = document.createElement('div');
+                        refreshBtn.style.marginTop = "20px";
+                        refreshBtn.style.textAlign = "center";
+                        refreshBtn.innerHTML = `<button onclick="startSearch()" style="background: transparent; border: 1px solid #4ade80; color: #4ade80; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-size: 0.9em; transition: 0.2s;">Search Again</button>`;
+                        list.appendChild(refreshBtn);
+                    }
+                }).catch(err => {
+                    console.error(err);
+                    document.getElementById('spinner').classList.add('hidden');
+                    document.getElementById('title').textContent = "Error";
+                    document.getElementById('subtitle').textContent = "Could not connect to Firebase. Check internet connection.";
+                });
         }
 
         window.openDashboard = function(boardData) {
-            if (boardData.ip) {
+            if (boardData.ip && boardData.ip !== "Unknown") {
                 document.getElementById('title').textContent = "Redirecting...";
                 document.getElementById('subtitle').textContent = "Connecting to device local page...";
                 document.getElementById('board-list').innerHTML = '';
