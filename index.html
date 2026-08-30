@@ -37,7 +37,7 @@
     </div>
 
     <script>
-        const FIRESTORE_URL = "https://firestore.googleapis.com/v1/projects/xerotic-upgrade-g3bk6/databases/ai-studio-esp32c3-cb928313-45c6-4020-81d9-0e18614bb8c8/documents/boards";
+        const FIRESTORE_URL = "https://firestore.googleapis.com/v1/projects/xerotic-upgrade-g3bk6/databases/ai-studio-esp32c3-cb928313-45c6-4020-81d9-0e18614bb8c8/documents:runQuery";
 
         function startSearch() {
             document.getElementById('view-radar').classList.remove('hidden');
@@ -46,26 +46,39 @@
             document.getElementById('subtitle').textContent = "Locating active BMS controllers in the Cloud.";
             document.getElementById('board-list').innerHTML = '';
             
-            fetch(FIRESTORE_URL)
+            fetch(FIRESTORE_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    structuredQuery: {
+                        from: [{ collectionId: "boards" }]
+                    }
+                })
+            })
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('spinner').classList.add('hidden');
                     const validBoards = [];
                     const now = new Date();
                     
-                    if (data.documents) {
-                        data.documents.forEach(doc => {
-                            const updateTime = new Date(doc.updateTime);
-                            const diffSec = (now - updateTime) / 1000;
-                            
-                            // Only show devices that have reported in the last 3 minutes (180 seconds)
-                            if (diffSec < 180) {
-                                const fields = doc.fields || {};
-                                validBoards.push({
-                                    mac: fields.mac ? fields.mac.stringValue : "Unknown",
-                                    ip: fields.ip ? fields.ip.stringValue : "Unknown",
-                                    version: fields.version ? fields.version.stringValue : "Unknown"
-                                });
+                    if (Array.isArray(data)) {
+                        data.forEach(item => {
+                            if (item.document) {
+                                const doc = item.document;
+                                const updateTime = new Date(doc.updateTime);
+                                const diffSec = (now - updateTime) / 1000;
+                                
+                                // Only show devices that have reported in the last 3 minutes (180 seconds)
+                                if (diffSec < 180) {
+                                    const fields = doc.fields || {};
+                                    validBoards.push({
+                                        mac: fields.mac ? fields.mac.stringValue : "Unknown",
+                                        ip: fields.ip ? fields.ip.stringValue : "Unknown",
+                                        version: fields.version ? fields.version.stringValue : "Unknown"
+                                    });
+                                }
                             }
                         });
                     }
