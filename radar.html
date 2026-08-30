@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Hybrid BMS Radar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; text-align: center; background: #121212; color: #ececec; margin: 0; padding: 15px; padding-bottom: 30px;}
+        .container { max-width: 450px; margin: auto; }
+        .hidden { display: none !important; }
+        
+        .spinner {
+            width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.1);
+            border-left-color: #4ade80; border-radius: 50%;
+            animation: spin 1s linear infinite; margin: 20px auto;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        
+        .board-card {
+            background: #27272a; border-radius: 10px; padding: 15px; margin-bottom: 10px;
+            display: flex; justify-content: space-between; align-items: center; cursor: pointer;
+            border: 1px solid #3f3f46; transition: 0.2s;
+        }
+        .board-card:hover { border-color: #4ade80; }
+        .board-title { font-weight: 600; font-size: 1.1em; margin-bottom: 4px; color: #fff; text-align: left; }
+        .board-ip { font-size: 0.85em; color: #a1a1aa; text-align: left; line-height: 1.4; }
+    </style>
+</head>
+<body>
+    <div class="container" id="view-radar">
+        <div style="margin-top: 50px;">
+            <div class="spinner" id="spinner"></div>
+            <h2 id="title" style="margin-bottom: 5px;">Searching...</h2>
+            <p id="subtitle" style="color: #a1a1aa; margin-top: 0; font-size: 0.9em;">Locating your BMS controller in the Cloud.</p>
+        </div>
+        <div id="board-list" style="margin-top: 30px; text-align: left;"></div>
+    </div>
+
+    <script>
+        const FIRESTORE_URL = "https://firestore.googleapis.com/v1/projects/xerotic-upgrade-g3bk6/databases/ai-studio-esp32c3-cb928313-45c6-4020-81d9-0e18614bb8c8/documents:runQuery";
+
+        function startSearch() {
+            document.getElementById('view-radar').classList.remove('hidden');
+            document.getElementById('spinner').classList.remove('hidden');
+            document.getElementById('title').textContent = "Searching...";
+            document.getElementById('subtitle').textContent = "Locating active BMS controllers in the Cloud.";
+            document.getElementById('board-list').innerHTML = '';
+            
+            fetch(FIRESTORE_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    structuredQuery: {
+                        from: [{ collectionId: "boards" }]
+                    }
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('spinner').classList.add('hidden');
+                    const validBoards = [];
+                    const now = new Date();
+                    
+                    if (Array.isArray(data)) {
+                        data.forEach(item => {
+                            if (item.document) {
+                                const doc = item.document;
+                                const updateTime = new Date(doc.updateTime);
+                                const diffSec = (now - updateTime) / 1000;
+                                
+                                // Only show devices that have reported in the last 30 seconds
+                                if (diffSec < 30) {
+                                    const fields = doc.fields || {};
+                                    validBoards.push({
+                                        mac: fields.mac ? fields.mac.stringValue : "Unknown",
+                                        ip: fields.ip ? fields.ip.stringValue : "Unknown",
+                                        version: fields.version ? fields.version.stringValue : "Unknown"
+                                    });
+                                }
+                            }
+                        });
+                    }
+                    
+                    if (validBoards.length > 0) {
+                        document.getElementById('title').textContent = "Devices Found";
+                        document.getElementById('subtitle').textContent = "Select your BMS controller to connect locally.";
+                        
+                        const list = document.getElementById('board-list');
+                        validBoards.forEach(board => {
+                            const div = document.createElement('div');
+                            div.className = 'board-card';
+                            let titleText = "Hybrid BMS Controller";
+                            if (board.version === "ACTIVATOR") {
+                                titleText = "⚠️ Device Needs Activation";
+                            }
+                            
+                            let ipText = board.ip ? board.ip : "Unknown";
+                            
+                            div.innerHTML = `
+                                <div class="board-info">
+                                    <div class="board-title">${titleText}</div>
+                                    <div class="board-ip">
+                                        MAC: ${board.mac}<br>
+                                        IP: ${ipText}
+                                    </div>
+                                </div>
+                                <div style="color: #4ade80; font-size: 24px;">&rarr;</div>
+                            `;
+                            div.onclick = () => window.openDashboard(board);
+                            list.appendChild(div);
+                        });
+                        
+                        // Add refresh button at the bottom
+                        const refreshBtn = document.createElement('div');
+                        refreshBtn.style.marginTop = "20px";
+                        refreshBtn.style.textAlign = "center";
+                        refreshBtn.innerHTML = `<button onclick="startSearch()" style="background: transparent; border: 1px solid #4ade80; color: #4ade80; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-size: 0.9em; transition: 0.2s;">Refresh Search</button>`;
+                        list.appendChild(refreshBtn);
+                    } else {
+                        document.getElementById('title').textContent = "No Devices";
+                        document.getElementById('subtitle').textContent = "No active devices found. Make sure your controller is powered on.";
+                        
+                        const list = document.getElementById('board-list');
+                        const refreshBtn = document.createElement('div');
+                        refreshBtn.style.marginTop = "20px";
+                        refreshBtn.style.textAlign = "center";
+                        refreshBtn.innerHTML = `<button onclick="startSearch()" style="background: transparent; border: 1px solid #4ade80; color: #4ade80; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-size: 0.9em; transition: 0.2s;">Search Again</button>`;
+                        list.appendChild(refreshBtn);
+                    }
+                }).catch(err => {
+                    console.error(err);
+                    document.getElementById('spinner').classList.add('hidden');
+                    document.getElementById('title').textContent = "Error";
+                    document.getElementById('subtitle').textContent = "Could not connect to Firebase. Check internet connection.";
+                });
+        }
+
+        window.openDashboard = function(boardData) {
+            if (boardData.ip && boardData.ip !== "Unknown") {
+                document.getElementById('title').textContent = "Redirecting...";
+                document.getElementById('subtitle').textContent = "Connecting to device local page...";
+                document.getElementById('board-list').innerHTML = '';
+                document.getElementById('spinner').classList.remove('hidden');
+                window.location = "http://" + boardData.ip;
+            } else {
+                alert("IP address not found for this device.");
+            }
+        };
+        
+        // Auto-start
+        startSearch();
+    </script>
+</body>
+</html>
