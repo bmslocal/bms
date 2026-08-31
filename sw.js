@@ -1,9 +1,9 @@
-const CACHE_NAME = 'bms-radar-v1';
+const CACHE_NAME = 'bms-radar-v2';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
-  './radar.html',
-  './manifest.json'
+  './manifest.json',
+  './icon.png'
 ];
 
 self.addEventListener('install', (event) => {
