@@ -1,11 +1,13 @@
 {
-  "name": "BMS Radar",
+  "name": "BMS Controller",
   "short_name": "BMS",
-  "start_url": ".",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#121212",
-  "theme_color": "#4ade80",
-  "description": "Автоматический поиск и подключение к платам BMS",
+  "orientation": "portrait",
+  "background_color": "#121214",
+  "theme_color": "#18181b",
+  "description": "Автономный контроллер охлаждения ВББ для гибридов Toyota и Lexus",
   "icons": [
     {
       "src": "icon.png",
