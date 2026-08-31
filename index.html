@@ -7,7 +7,7 @@
     <meta name="theme-color" content="#121214">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="BMS">
+    <meta name="apple-mobile-web-app-title" content="BMS Controller">
     <link rel="manifest" href="manifest.json">
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -190,7 +190,7 @@
             background: #3f3f46;
         }
 
-        /* Help & Accordion */
+        /* Guide & Troubleshooting Accordion */
         .help-card {
             background: #18181b;
             border: 1px solid #27272a;
@@ -208,22 +208,145 @@
             color: #d4d4d8;
             user-select: none;
         }
+        .help-toggle:hover {
+            color: #ffffff;
+        }
         .help-content {
             display: none;
             margin-top: 14px;
             border-top: 1px solid #27272a;
-            padding-top: 12px;
+            padding-top: 14px;
             font-size: 13px;
             line-height: 1.5;
             color: #a1a1aa;
         }
-        .help-step {
-            margin-bottom: 12px;
-            padding-left: 8px;
-            border-left: 2px solid #3f3f46;
+
+        /* Guide Tabs */
+        .guide-tabs {
+            display: flex;
+            gap: 6px;
+            background: #27272a;
+            padding: 4px;
+            border-radius: 10px;
+            margin-bottom: 16px;
         }
-        .help-step b {
+        .guide-tab {
+            flex: 1;
+            padding: 8px 10px;
+            text-align: center;
+            font-size: 12.5px;
+            font-weight: 600;
+            border-radius: 7px;
+            border: none;
+            background: transparent;
+            color: #a1a1aa;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .guide-tab.active {
+            background: #3f3f46;
+            color: #ffffff;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+        }
+
+        /* Steps Layout */
+        .guide-step {
+            margin-bottom: 16px;
+            background: #202024;
+            border: 1px solid #2d2d32;
+            border-radius: 10px;
+            padding: 12px 14px;
+        }
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .step-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            background: #3b82f6;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .step-title {
+            font-size: 13.5px;
+            font-weight: 600;
             color: #f4f4f5;
+        }
+        .step-body {
+            font-size: 12.5px;
+            line-height: 1.5;
+            color: #a1a1aa;
+            padding-left: 30px;
+        }
+        .step-body b {
+            color: #e4e4e7;
+        }
+        .step-body code, .trouble-a code {
+            background: #18181b;
+            color: #38bdf8;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 12px;
+            border: 1px solid #3f3f46;
+        }
+
+        .option-box {
+            background: #18181b;
+            border: 1px solid #2e2e34;
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-top: 8px;
+        }
+        .option-title {
+            font-weight: 600;
+            color: #93c5fd;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+        .cred-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 6px 0;
+            font-size: 12px;
+        }
+        .option-note {
+            font-size: 11.5px;
+            color: #71717a;
+            margin-top: 4px;
+        }
+
+        /* Troubleshooting List */
+        .trouble-item {
+            background: #202024;
+            border: 1px solid #2d2d32;
+            border-radius: 10px;
+            padding: 12px 14px;
+            margin-bottom: 12px;
+        }
+        .trouble-q {
+            font-size: 13px;
+            font-weight: 600;
+            color: #f4f4f5;
+            margin-bottom: 6px;
+        }
+        .trouble-a {
+            font-size: 12px;
+            line-height: 1.5;
+            color: #a1a1aa;
+        }
+        .trouble-a b {
+            color: #e4e4e7;
         }
 
         /* Edit Modal / Inline */
@@ -324,27 +447,95 @@
             </div>
         </div>
 
-        <!-- Help Section -->
-        <div class="help-card">
+        <!-- Setup & Troubleshooting Guide -->
+        <div class="help-card" id="guide-card">
             <div class="help-toggle" onclick="toggleHelp()">
-                <span>❓ Device not connecting? Help & Setup</span>
+                <span>📖 Setup & Troubleshooting Guide</span>
                 <span id="help-arrow">▼</span>
             </div>
             <div id="help-content" class="help-content">
-                <div class="help-step">
-                    <b>1. Check Hotspot / Wi-Fi Network:</b><br>
-                    Make sure your phone's Personal Hotspot or Wi-Fi network is turned ON and car ignition is ON (Default: <b>BMS</b> / password: <code>bms.local</code>, unless customized).
+                <!-- Tabs -->
+                <div class="guide-tabs">
+                    <button id="tab-btn-setup" class="guide-tab active" onclick="switchGuideTab('setup')">🚀 First-Time Setup</button>
+                    <button id="tab-btn-trouble" class="guide-tab" onclick="switchGuideTab('trouble')">❓ Troubleshooting</button>
                 </div>
-                <div class="help-step">
-                    <b>2. Auto-Sync via Device Wi-Fi:</b><br>
-                    If the IP address changed:<br>
-                    • Connect your phone's Wi-Fi to network <b>BMS_Setup</b> (password: <code>bms.local</code>).<br>
-                    • Tap <i>«📡 Auto-Sync via BMS_Setup»</i> button above.<br>
-                    The controller will link the new IP address and switch back to your network automatically.
+
+                <!-- First-Time Setup Panel -->
+                <div id="panel-setup" class="guide-panel" style="display: block;">
+                    <div class="guide-step">
+                        <div class="step-header">
+                            <span class="step-num">1</span>
+                            <span class="step-title">Plug into Car & Power ON</span>
+                        </div>
+                        <div class="step-body">
+                            Insert the controller into your vehicle's <b>OBD2 port</b> (under the steering wheel) and power on the car (<b>READY</b> or <b>ON</b> mode). The LED on the device will blink.
+                        </div>
+                    </div>
+
+                    <div class="guide-step">
+                        <div class="step-header">
+                            <span class="step-num">2</span>
+                            <span class="step-title">Choose Wi-Fi Connection</span>
+                        </div>
+                        <div class="step-body">
+                            <div class="option-box">
+                                <div class="option-title">🔹 Option A: Quick Start (Recommended)</div>
+                                <div>Turn on your phone's <b>Personal Hotspot</b>:</div>
+                                <div class="cred-row">
+                                    <span>Network: <code>BMS</code></span>
+                                    <span>Password: <code>bms.local</code></span>
+                                </div>
+                                <div class="option-note">The controller links automatically in ~10 seconds.</div>
+                            </div>
+
+                            <div class="option-box">
+                                <div class="option-title">🔸 Option B: Custom In-Car Wi-Fi / Router</div>
+                                <div>If you use an in-car modem or custom hotspot:</div>
+                                <div style="margin-top: 4px; line-height: 1.4;">
+                                    1. Connect phone Wi-Fi to <code>BMS_Setup</code> (pwd: <code>bms.local</code>).<br>
+                                    2. Open <code>http://192.168.4.1</code> in your browser.<br>
+                                    3. Enter your custom Wi-Fi name & password and tap Save.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="guide-step" style="margin-bottom: 4px;">
+                        <div class="step-header">
+                            <span class="step-num">3</span>
+                            <span class="step-title">Link & Launch Dashboard</span>
+                        </div>
+                        <div class="step-body">
+                            Tap <b>«📡 Auto-Sync via BMS_Setup»</b> above to detect the controller, then tap <b>«🚀 Open Dashboard»</b> to view real-time battery temperatures & fan controls.
+                        </div>
+                    </div>
                 </div>
-                <div class="help-step">
-                    <b>3. Manual IP Entry:</b><br>
-                    In your phone's hotspot or router settings (<i>Connected Devices</i>), find the IP address of the controller and enter it manually.
+
+                <!-- Troubleshooting Panel -->
+                <div id="panel-trouble" class="guide-panel" style="display: none;">
+                    <div class="trouble-item">
+                        <div class="trouble-q">🔴 Dashboard not opening or device offline?</div>
+                        <div class="trouble-a">
+                            • Ensure the vehicle is powered on (<b>READY</b> or <b>ON</b> mode).<br>
+                            • Verify your phone's Personal Hotspot is active with name <code>BMS</code> and password <code>bms.local</code>.<br>
+                            • On iPhone, enable <i>«Maximize Compatibility»</i> in Personal Hotspot settings.
+                        </div>
+                    </div>
+
+                    <div class="trouble-item">
+                        <div class="trouble-q">🟡 IP address changed?</div>
+                        <div class="trouble-a">
+                            • Connect phone Wi-Fi to <code>BMS_Setup</code> (password: <code>bms.local</code>) and tap <i>«Auto-Sync via BMS_Setup»</i>.<br>
+                            • Or check <i>Settings ➔ Personal Hotspot ➔ Connected Devices</i> on your phone to find the new IP address and enter it manually.
+                        </div>
+                    </div>
+
+                    <div class="trouble-item" style="margin-bottom: 4px;">
+                        <div class="trouble-q">⚙️ Reconfigure or reset Wi-Fi?</div>
+                        <div class="trouble-a">
+                            Turn off your phone hotspot for 15 seconds. The controller will launch its own <code>BMS_Setup</code> hotspot so you can access <code>192.168.4.1</code> and reconfigure it.
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -468,6 +659,25 @@
             } else {
                 content.style.display = 'block';
                 arrow.innerText = '▲';
+            }
+        }
+
+        function switchGuideTab(tab) {
+            const btnSetup = document.getElementById('tab-btn-setup');
+            const btnTrouble = document.getElementById('tab-btn-trouble');
+            const panelSetup = document.getElementById('panel-setup');
+            const panelTrouble = document.getElementById('panel-trouble');
+
+            if (tab === 'setup') {
+                btnSetup.className = 'guide-tab active';
+                btnTrouble.className = 'guide-tab';
+                panelSetup.style.display = 'block';
+                panelTrouble.style.display = 'none';
+            } else {
+                btnSetup.className = 'guide-tab';
+                btnTrouble.className = 'guide-tab active';
+                panelSetup.style.display = 'none';
+                panelTrouble.style.display = 'block';
             }
         }
 

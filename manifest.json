@@ -1,6 +1,6 @@
 {
   "name": "BMS Controller",
-  "short_name": "BMS",
+  "short_name": "BMS Controller",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
