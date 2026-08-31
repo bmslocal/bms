@@ -70,8 +70,8 @@
                                 const updateTime = new Date(doc.updateTime);
                                 const diffSec = (now - updateTime) / 1000;
                                 
-                                // Only show devices that have reported in the last 30 seconds
-                                if (diffSec < 30) {
+                                // Only show devices that have reported in the last 90 seconds
+                                if (diffSec < 90) {
                                     const fields = doc.fields || {};
                                     validBoards.push({
                                         mac: fields.mac ? fields.mac.stringValue : "Unknown",
