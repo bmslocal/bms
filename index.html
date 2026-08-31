@@ -293,13 +293,13 @@
             <h1 class="app-title">BMS Controller</h1>
             <div id="status-badge" class="status-badge">
                 <span class="status-dot"></span>
-                <span id="status-text">📌 Saved Address</span>
+                <span id="status-text">Controller Linked</span>
             </div>
         </div>
 
         <!-- Main Card -->
         <div class="card" id="main-card">
-            <div class="ip-label">Device Network Address</div>
+            <div class="ip-label">Controller IP Address</div>
             <div id="display-ip" class="ip-value">--</div>
 
             <button id="btn-open" class="btn-primary" onclick="openDashboard()">
@@ -309,12 +309,12 @@
 
             <button id="btn-sync-board" class="btn-sync" onclick="syncWithBoard()">
                 <span>📡</span>
-                <span>Find Board (via BMS_Setup Wi-Fi)</span>
+                <span>Auto-Sync via BMS_Setup</span>
             </button>
 
             <button class="btn-secondary" onclick="toggleEditIp()">
                 <span>✏️</span>
-                <span>Edit IP Manually</span>
+                <span>Set IP Manually</span>
             </button>
 
             <!-- Edit IP row -->
@@ -327,21 +327,24 @@
         <!-- Help Section -->
         <div class="help-card">
             <div class="help-toggle" onclick="toggleHelp()">
-                <span>❓ What to do if dashboard doesn't open?</span>
+                <span>❓ Device not connecting? Help & Setup</span>
                 <span id="help-arrow">▼</span>
             </div>
             <div id="help-content" class="help-content">
                 <div class="help-step">
-                    <b>1. Check Phone Hotspot:</b><br>
-                    Make sure your personal hotspot named <b>BMS</b> (password: <code>bms.local</code>) is turned ON and car ignition is ON.
+                    <b>1. Check Personal Hotspot:</b><br>
+                    Make sure your phone's Personal Hotspot named <b>BMS</b> (password: <code>bms.local</code>) is turned ON and car ignition is ON.
                 </div>
                 <div class="help-step">
-                    <b>2. Auto-Sync via Board Wi-Fi:</b><br>
-                    If the IP address changed — connect your phone's Wi-Fi to <b>BMS_Setup</b> (no password) and click <i>«📡 Find Board»</i>. The board will automatically sync its new address with Radar.
+                    <b>2. Auto-Sync via Device Wi-Fi:</b><br>
+                    If the IP address changed:<br>
+                    • Connect your phone's Wi-Fi to network <b>BMS_Setup</b> (password: <code>bms.local</code>).<br>
+                    • Tap <i>«📡 Auto-Sync via BMS_Setup»</i> button above.<br>
+                    The controller will link the new IP address and switch back to mobile network automatically.
                 </div>
                 <div class="help-step">
                     <b>3. Manual IP Entry:</b><br>
-                    In your phone's settings (<i>Personal Hotspot ➔ Connected Devices</i>), find the IP address of the board and enter it manually.
+                    In your phone's settings (<i>Personal Hotspot ➔ Connected Devices</i>), find the IP address of the controller and enter it manually.
                 </div>
             </div>
         </div>
@@ -401,7 +404,7 @@
                 window.history.replaceState({}, document.title, window.location.pathname);
             }
 
-            showToast(`✅ Device address saved: ${currentIp}`);
+            showToast(`✅ Controller linked: ${currentIp}`);
         }
 
         function updateUI() {
@@ -414,25 +417,25 @@
                 if (displayEl) displayEl.innerText = currentIp;
                 if (manualIpInput) manualIpInput.value = currentIp;
                 statusBadge.className = 'status-badge';
-                statusText.innerText = '📌 Saved Address';
+                statusText.innerText = '● Controller Linked';
             } else {
                 if (displayEl) displayEl.innerText = '--';
                 if (manualIpInput) manualIpInput.value = '';
                 statusBadge.className = 'status-badge warning';
-                statusText.innerText = '⚠️ Not configured';
+                statusText.innerText = '⚠️ Setup Required';
             }
         }
 
         function openDashboard() {
             if (!currentIp || currentIp === '--') {
-                alert('Device IP is not set. Tap "Find Board" or enter the IP manually.');
+                alert('Controller IP is not set. Tap "Auto-Sync via BMS_Setup" or set IP manually.');
                 return;
             }
             window.location.href = 'http://' + currentIp;
         }
 
         function syncWithBoard() {
-            showToast('📡 Connecting to board via BMS_Setup (192.168.4.1)...');
+            showToast('📡 Connecting to controller via BMS_Setup (192.168.4.1)...');
             setTimeout(() => {
                 window.location.href = 'http://192.168.4.1/sync';
             }, 600);
@@ -450,7 +453,7 @@
                 localStorage.setItem('bms_saved_ip', currentIp);
                 updateUI();
                 toggleEditIp();
-                showToast(`✅ Saved address: ${currentIp}`);
+                showToast(`✅ Controller linked: ${currentIp}`);
             } else {
                 alert('Invalid IP address format (example: 10.48.33.187)');
             }
