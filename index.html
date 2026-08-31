@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>BMS Controller</title>
@@ -277,15 +277,15 @@
 
         <!-- App Install Prompt for Android -->
         <div id="install-banner-android" class="install-card">
-            <div class="install-title">📲 Установить приложение</div>
-            <div class="install-desc">Добавьте BMS Controller на рабочий стол для быстрого запуска в одно касание.</div>
-            <button id="btn-install-app" class="btn-install">Установить</button>
+            <div class="install-title">📲 Install Application</div>
+            <div class="install-desc">Add BMS Controller to your home screen for quick one-tap access.</div>
+            <button id="btn-install-app" class="btn-install">Install</button>
         </div>
 
         <!-- iOS install guide banner -->
         <div id="install-banner-ios" class="install-card" style="border-color: #71717a; box-shadow: none;">
-            <div class="install-title">📲 Установка на iPhone</div>
-            <div class="install-desc">Нажмите кнопку <b>«Поделиться» ⎋</b> внизу Safari, затем выберите <b>«На экран «Домой» ➕</b>.</div>
+            <div class="install-title">📲 Install on iPhone</div>
+            <div class="install-desc">Tap the <b>Share button ⎋</b> in Safari, then select <b>«Add to Home Screen» ➕</b>.</div>
         </div>
 
         <!-- Header -->
@@ -293,55 +293,55 @@
             <h1 class="app-title">BMS Controller</h1>
             <div id="status-badge" class="status-badge">
                 <span class="status-dot"></span>
-                <span id="status-text">📌 Сохраненный адрес</span>
+                <span id="status-text">📌 Saved Address</span>
             </div>
         </div>
 
         <!-- Main Card -->
         <div class="card" id="main-card">
-            <div class="ip-label">Адрес устройства в сети</div>
+            <div class="ip-label">Device Network Address</div>
             <div id="display-ip" class="ip-value">--</div>
 
             <button id="btn-open" class="btn-primary" onclick="openDashboard()">
                 <span>🚀</span>
-                <span>Открыть дашборд</span>
+                <span>Open Dashboard</span>
             </button>
 
             <button id="btn-sync-board" class="btn-sync" onclick="syncWithBoard()">
                 <span>📡</span>
-                <span>Найти плату (через Wi-Fi BMS)</span>
+                <span>Find Board (via BMS_Setup Wi-Fi)</span>
             </button>
 
             <button class="btn-secondary" onclick="toggleEditIp()">
                 <span>✏️</span>
-                <span>Изменить IP вручную</span>
+                <span>Edit IP Manually</span>
             </button>
 
             <!-- Edit IP row -->
             <div id="edit-row" class="edit-row">
                 <input type="text" id="manual-ip" class="input-ip" placeholder="10.48.33.187">
-                <button class="btn-save-ip" onclick="saveManualIp()">OK</button>
+                <button class="btn-save-ip" onclick="saveManualIp()">Save</button>
             </div>
         </div>
 
         <!-- Help Section -->
         <div class="help-card">
             <div class="help-toggle" onclick="toggleHelp()">
-                <span>❓ Что делать, если не открывается?</span>
+                <span>❓ What to do if dashboard doesn't open?</span>
                 <span id="help-arrow">▼</span>
             </div>
             <div id="help-content" class="help-content">
                 <div class="help-step">
-                    <b>1. Проверьте раздачу Wi-Fi:</b><br>
-                    Убедитесь, что на телефоне включена точка доступа и автомобиль заведен.
+                    <b>1. Check Phone Hotspot:</b><br>
+                    Make sure your personal hotspot named <b>BMS</b> (password: <code>bms.local</code>) is turned ON and car ignition is ON.
                 </div>
                 <div class="help-step">
-                    <b>2. Быстрый авто-поиск платы:</b><br>
-                    Если IP изменился — переключите Wi-Fi телефона на сеть <b>BMS</b> (пароль: <code>bms.local</code>) и нажмите кнопку <i>«📡 Найти плату»</i>. Плата моментально передаст свой новый адрес в Радар.
+                    <b>2. Auto-Sync via Board Wi-Fi:</b><br>
+                    If the IP address changed — connect your phone's Wi-Fi to <b>BMS_Setup</b> (no password) and click <i>«📡 Find Board»</i>. The board will automatically sync its new address with Radar.
                 </div>
                 <div class="help-step">
-                    <b>3. Ручной ввод:</b><br>
-                    В настройках телефона (<i>Точка доступа ➔ Подключенные устройства</i>) найдите IP платы и введите его вручную.
+                    <b>3. Manual IP Entry:</b><br>
+                    In your phone's settings (<i>Personal Hotspot ➔ Connected Devices</i>), find the IP address of the board and enter it manually.
                 </div>
             </div>
         </div>
@@ -401,7 +401,7 @@
                 window.history.replaceState({}, document.title, window.location.pathname);
             }
 
-            showToast(`✅ Новый адрес платы сохранен: ${currentIp}`);
+            showToast(`✅ Device address saved: ${currentIp}`);
         }
 
         function updateUI() {
@@ -414,25 +414,25 @@
                 if (displayEl) displayEl.innerText = currentIp;
                 if (manualIpInput) manualIpInput.value = currentIp;
                 statusBadge.className = 'status-badge';
-                statusText.innerText = '📌 Сохраненный адрес';
+                statusText.innerText = '📌 Saved Address';
             } else {
                 if (displayEl) displayEl.innerText = '--';
                 if (manualIpInput) manualIpInput.value = '';
                 statusBadge.className = 'status-badge warning';
-                statusText.innerText = '⚠️ Адрес не настроен';
+                statusText.innerText = '⚠️ Not configured';
             }
         }
 
         function openDashboard() {
             if (!currentIp || currentIp === '--') {
-                alert('Адрес платы не задан. Нажмите «Найти плату» или укажите IP вручную.');
+                alert('Device IP is not set. Tap "Find Board" or enter the IP manually.');
                 return;
             }
             window.location.href = 'http://' + currentIp;
         }
 
         function syncWithBoard() {
-            showToast('📡 Подключение к плате через сеть BMS (192.168.4.1)...');
+            showToast('📡 Connecting to board via BMS_Setup (192.168.4.1)...');
             setTimeout(() => {
                 window.location.href = 'http://192.168.4.1/sync';
             }, 600);
@@ -450,9 +450,9 @@
                 localStorage.setItem('bms_saved_ip', currentIp);
                 updateUI();
                 toggleEditIp();
-                showToast(`✅ Сохранен адрес: ${currentIp}`);
+                showToast(`✅ Saved address: ${currentIp}`);
             } else {
-                alert('Некорректный формат IP-адреса (например: 10.48.33.187)');
+                alert('Invalid IP address format (example: 10.48.33.187)');
             }
         }
 
