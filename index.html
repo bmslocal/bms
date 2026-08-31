@@ -684,9 +684,11 @@
             }
         };
 
+        // Global URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+
         // Automatic Language Detection (Korean -> Chinese -> English default)
         function detectLanguage() {
-            const urlParams = new URLSearchParams(window.location.search);
             const urlLang = (urlParams.get('lang') || '').toLowerCase();
             if (urlLang === 'ko' || urlLang === 'zh' || urlLang === 'en') {
                 return urlLang;
