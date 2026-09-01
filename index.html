@@ -521,16 +521,11 @@
             <!-- Android APK section -->
             <div id="apk-banner-android" class="apk-card">
                 <div class="apk-badge" style="margin-bottom: 10px;">🚗 Android App (APK)</div>
-                <div class="apk-title" id="t-apk-title">BMS Companion Native App</div>
-                <div class="apk-desc" id="t-apk-desc">Offline monitoring, floating HUD widget over Navigation & Maps apps.</div>
-                <div class="apk-features">
-                    <div class="apk-feat-item"><span>🚀</span> <span id="t-apk-feat1">100% Offline with zero-config auto discovery</span></div>
-                    <div class="apk-feat-item"><span>🏎️</span> <span id="t-apk-feat2">Floating HUD widget over Navigation & Maps apps</span></div>
-                    <div class="apk-feat-item"><span>🔊</span> <span id="t-apk-feat3">Sound alerts on battery overheat (>40°C)</span></div>
-                </div>
+                <div class="apk-title" id="t-apk-title">BMS Companion (Android)</div>
+                <div class="apk-desc" id="t-apk-desc">Native Android app with floating widget for background operation.</div>
                 <a href="./BMS_Controller.apk" download="BMS_Controller.apk" class="btn-apk" id="btn-download-apk" onclick="onApkDownload()">
                     <span>⬇️</span>
-                    <span id="t-btn-download-apk">Download BMS Companion (APK)</span>
+                    <span id="t-btn-download-apk">Download</span>
                 </a>
             </div>
 
@@ -667,12 +662,9 @@
                 guideTitle: "📖 Setup & Help Guide",
                 tabSetup: "🚀 First-Time Setup",
                 tabTrouble: "❓ Help & FAQ",
-                apkTitle: "BMS Companion Native App",
-                apkDesc: "Offline battery monitoring, floating HUD widget over Navigation & Maps apps.",
-                apkFeat1: "100% Offline with zero-config auto discovery",
-                apkFeat2: "Floating HUD widget over Navigation & Maps apps",
-                apkFeat3: "Sound alerts on battery overheat (>40°C)",
-                btnDownloadApk: "Download BMS Companion (APK)",
+                apkTitle: "BMS Companion (Android)",
+                apkDesc: "Native Android app with floating widget for background operation.",
+                btnDownloadApk: "Download",
                 installTitleAndroid: "📲 Install Web App",
                 installDescAndroid: "Add BMS Radar to your home screen for quick one-tap access.",
                 btnInstall: "Install",
@@ -717,12 +709,9 @@
                 guideTitle: "📖 设置与帮助指南",
                 tabSetup: "🚀 首次使用指南",
                 tabTrouble: "❓ 常见问题与帮助",
-                apkTitle: "BMS Companion 安卓原生应用",
-                apkDesc: "离线电池监控、悬浮窗 HUD 仪表盘（支持各类导航与地图应用）与高温预警警报。",
-                apkFeat1: "100% 离线零配置自动搜寻 ESP32 控制器",
-                apkFeat2: "悬浮窗 HUD 支持各类导航与地图应用",
-                apkFeat3: "电池过热 (>40°C) 声音与震动报警",
-                btnDownloadApk: "下载 BMS Companion (APK 安装包)",
+                apkTitle: "BMS Companion (Android)",
+                apkDesc: "支持悬浮窗的安卓原生应用程序。",
+                btnDownloadApk: "下载",
                 installTitleAndroid: "📲 安装网页应用",
                 installDescAndroid: "将 BMS Radar 添加到主屏幕，享受一键快速访问。",
                 btnInstall: "立即安装",
@@ -767,12 +756,9 @@
                 guideTitle: "📖 연결 및 도움말 가이드",
                 tabSetup: "🚀 최초 설정 가이드",
                 tabTrouble: "❓ 자주 묻는 질문 (FAQ)",
-                apkTitle: "BMS Companion 안드로이드 전용 앱",
-                apkDesc: "오프라인 배터리 모니터링, 네비게이션 및 지도 앱 위 플로팅 HUD 위젯 지원.",
-                apkFeat1: "100% 오프라인 & Zero-Config 컨트롤러 자동 감지",
-                apkFeat2: "네비게이션 및 지도 앱 위 플로팅 HUD 위젯",
-                apkFeat3: "배터리 과열 (>40°C) 사운드 및 진동 알람",
-                btnDownloadApk: "BMS Companion 다운로드 (APK)",
+                apkTitle: "BMS Companion (Android)",
+                apkDesc: "플로팅 위젯을 지원하는 안드로이드 전용 앱입니다.",
+                btnDownloadApk: "다운로드",
                 installTitleAndroid: "📲 웹 앱 설치",
                 installDescAndroid: "원터치 빠른 실행을 위해 홈 화면에 BMS Radar를 추가하세요.",
                 btnInstall: "설치하기",
@@ -817,12 +803,9 @@
                 guideTitle: "📖 Инструкция и помощь",
                 tabSetup: "🚀 Первое подключение",
                 tabTrouble: "❓ Вопросы и ответы",
-                apkTitle: "BMS Companion (Android Приложение)",
-                apkDesc: "Автономный мониторинг, плавающий HUD поверх карт и навигаторов.",
-                apkFeat1: "100% Офлайн без настроек (Zero-Config)",
-                apkFeat2: "Плавающий HUD поверх любых навигаторов и карт",
-                apkFeat3: "Звуковое оповещение о перегреве ВББ (>40°C)",
-                btnDownloadApk: "Скачать BMS Companion (APK)",
+                apkTitle: "BMS Companion (Android)",
+                apkDesc: "Нативное Android приложение с поддержкой плавающего виджета.",
+                btnDownloadApk: "Скачать",
                 installTitleAndroid: "📲 Установить Веб-приложение",
                 installDescAndroid: "Добавьте BMS Radar на главный экран для быстрого доступа.",
                 btnInstall: "Установить",
@@ -895,9 +878,6 @@
 
             if (document.getElementById('t-apk-title')) document.getElementById('t-apk-title').innerText = t.apkTitle;
             if (document.getElementById('t-apk-desc')) document.getElementById('t-apk-desc').innerText = t.apkDesc;
-            if (document.getElementById('t-apk-feat1')) document.getElementById('t-apk-feat1').innerText = t.apkFeat1;
-            if (document.getElementById('t-apk-feat2')) document.getElementById('t-apk-feat2').innerText = t.apkFeat2;
-            if (document.getElementById('t-apk-feat3')) document.getElementById('t-apk-feat3').innerText = t.apkFeat3;
             if (document.getElementById('t-btn-download-apk')) document.getElementById('t-btn-download-apk').innerText = t.btnDownloadApk;
 
             if (document.getElementById('t-install-title-android')) document.getElementById('t-install-title-android').innerText = t.installTitleAndroid;
