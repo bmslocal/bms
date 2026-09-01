@@ -1010,7 +1010,11 @@
         function openDashboard() {
             const t = I18N[currentLang] || I18N.en;
             if (!currentIp || currentIp === '--') {
-                alert(t.alertNoIp);
+                if (typeof isIOS !== 'undefined' && isIOS) {
+                    window.location.href = `http://bms.local/?lang=${currentLang}`;
+                } else {
+                    alert(t.alertNoIp);
+                }
                 return;
             }
             window.location.href = `http://${currentIp}/?lang=${currentLang}`;
