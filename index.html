@@ -882,6 +882,7 @@
             const languages = navigator.languages || [navigator.language || 'en'];
             for (let lang of languages) {
                 const l = (lang || '').toLowerCase();
+                if (l.startsWith('en')) return 'en';
                 if (l.startsWith('ru')) return 'ru';
                 if (l.startsWith('ko')) return 'ko';
                 if (l.startsWith('zh')) return 'zh';
