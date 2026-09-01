@@ -1,6 +1,6 @@
 {
-  "name": "BMS Controller",
-  "short_name": "BMS Controller",
+  "name": "BMS Radar",
+  "short_name": "BMS Radar",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
