@@ -102,6 +102,81 @@
             background: #1d4ed8;
         }
 
+        /* Android APK Download Banner */
+        .apk-card {
+            background: #18181b;
+            border: 1px solid #0284c7;
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 20px;
+            display: none;
+            text-align: left;
+            box-shadow: 0 4px 16px rgba(2, 132, 199, 0.2);
+        }
+        .apk-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 6px;
+            padding: 3px 8px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        .apk-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #f4f4f5;
+            margin-bottom: 6px;
+        }
+        .apk-desc {
+            font-size: 12.5px;
+            color: #a1a1aa;
+            line-height: 1.45;
+            margin-bottom: 10px;
+        }
+        .apk-features {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-bottom: 14px;
+            font-size: 12px;
+            color: #cbd5e1;
+        }
+        .apk-feat-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-apk {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #0284c7, #2563eb);
+            color: #ffffff;
+            text-decoration: none;
+            border: none;
+            border-radius: 10px;
+            padding: 13px 16px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+            transition: 0.2s;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+        }
+        .btn-apk:active {
+            transform: scale(0.98);
+            background: #1d4ed8;
+        }
+
         /* Main IP Card */
         .card {
             background: #18181b;
@@ -398,7 +473,23 @@
         <!-- Toast Notify -->
         <div id="toast" class="notify-toast"></div>
 
-        <!-- App Install Prompt for Android -->
+        <!-- Native Android Companion APK Banner (Direct Download) -->
+        <div id="apk-banner-android" class="apk-card">
+            <div class="apk-badge">🚗 Android App (APK)</div>
+            <div class="apk-title" id="t-apk-title">BMS Companion Native App</div>
+            <div class="apk-desc" id="t-apk-desc">Offline monitoring, floating HUD over navigators & overheat audio alarms.</div>
+            <div class="apk-features">
+                <div class="apk-feat-item"><span>🚀</span> <span id="t-apk-feat1">100% Offline with zero-config auto discovery</span></div>
+                <div class="apk-feat-item"><span>🏎️</span> <span id="t-apk-feat2">Floating HUD widget over Yandex, 2GIS & Google Maps</span></div>
+                <div class="apk-feat-item"><span>🔊</span> <span id="t-apk-feat3">Sound alerts on battery overheat (>40°C)</span></div>
+            </div>
+            <a href="./BMS_Companion.apk" download="BMS_Companion.apk" class="btn-apk" id="btn-download-apk">
+                <span>⬇️</span>
+                <span id="t-btn-download-apk">Download BMS Companion (APK)</span>
+            </a>
+        </div>
+
+        <!-- App Install Prompt for Android (PWA) -->
         <div id="install-banner-android" class="install-card">
             <div class="install-title" id="t-install-title-android">📲 Install Application</div>
             <div class="install-desc" id="t-install-desc-android">Add BMS Controller to your home screen for quick one-tap access.</div>
@@ -565,7 +656,13 @@
                 guideTitle: "📖 Setup & Help Guide",
                 tabSetup: "🚀 First-Time Setup",
                 tabTrouble: "❓ Help & FAQ",
-                installTitleAndroid: "📲 Install Application",
+                apkTitle: "BMS Companion Native App",
+                apkDesc: "Offline battery monitoring, floating HUD widget over navigators & overheat audio alarms.",
+                apkFeat1: "100% Offline with zero-config auto discovery",
+                apkFeat2: "Floating HUD widget over Yandex, 2GIS & Google Maps",
+                apkFeat3: "Sound alerts on battery overheat (>40°C)",
+                btnDownloadApk: "Download BMS Companion (APK)",
+                installTitleAndroid: "📲 Install Web App",
                 installDescAndroid: "Add BMS Controller to your home screen for quick one-tap access.",
                 btnInstall: "Install",
                 installTitleIos: "📲 Install on iPhone",
@@ -608,7 +705,13 @@
                 guideTitle: "📖 设置与帮助指南",
                 tabSetup: "🚀 首次使用指南",
                 tabTrouble: "❓ 常见问题与帮助",
-                installTitleAndroid: "📲 安装应用程序",
+                apkTitle: "BMS Companion 安卓原生应用",
+                apkDesc: "离线电池监控、悬浮窗 HUD 仪表盘（覆盖导航应用）与高温预警警报。",
+                apkFeat1: "100% 离线零配置自动搜寻 ESP32 控制器",
+                apkFeat2: "悬浮窗 HUD 支持高德地图/百度地图/谷歌导航",
+                apkFeat3: "电池过热 (>40°C) 声音与震动报警",
+                btnDownloadApk: "下载 BMS Companion (APK 安装包)",
+                installTitleAndroid: "📲 安装网页应用",
                 installDescAndroid: "将 BMS 控制器添加到主屏幕，享受一键快速访问。",
                 btnInstall: "立即安装",
                 installTitleIos: "📲 在 iPhone 上添加",
@@ -651,7 +754,13 @@
                 guideTitle: "📖 연결 및 도움말 가이드",
                 tabSetup: "🚀 최초 설정 가이드",
                 tabTrouble: "❓ 자주 묻는 질문 (FAQ)",
-                installTitleAndroid: "📲 앱 설치",
+                apkTitle: "BMS Companion 안드로이드 전용 앱",
+                apkDesc: "오프라인 배터리 모니터링, 네비게이션 위 플로팅 HUD 위젯 및 과열 경고음 지원.",
+                apkFeat1: "100% 오프라인 & Zero-Config 컨트롤러 자동 감지",
+                apkFeat2: "T맵/카카오내비/네이버 지도 위 플로팅 HUD 위젯",
+                apkFeat3: "배터리 과열 (>40°C) 사운드 및 진동 알람",
+                btnDownloadApk: "BMS Companion 다운로드 (APK)",
+                installTitleAndroid: "📲 웹 앱 설치",
                 installDescAndroid: "원터치 빠른 실행을 위해 홈 화면에 BMS 컨트롤러를 추가하세요.",
                 btnInstall: "설치하기",
                 installTitleIos: "📲 iPhone에 추가하기",
@@ -718,6 +827,13 @@
             document.getElementById('tab-btn-setup').innerText = t.tabSetup;
             document.getElementById('tab-btn-trouble').innerText = t.tabTrouble;
 
+            if (document.getElementById('t-apk-title')) document.getElementById('t-apk-title').innerText = t.apkTitle;
+            if (document.getElementById('t-apk-desc')) document.getElementById('t-apk-desc').innerText = t.apkDesc;
+            if (document.getElementById('t-apk-feat1')) document.getElementById('t-apk-feat1').innerText = t.apkFeat1;
+            if (document.getElementById('t-apk-feat2')) document.getElementById('t-apk-feat2').innerText = t.apkFeat2;
+            if (document.getElementById('t-apk-feat3')) document.getElementById('t-apk-feat3').innerText = t.apkFeat3;
+            if (document.getElementById('t-btn-download-apk')) document.getElementById('t-btn-download-apk').innerText = t.btnDownloadApk;
+
             if (document.getElementById('t-install-title-android')) document.getElementById('t-install-title-android').innerText = t.installTitleAndroid;
             if (document.getElementById('t-install-desc-android')) document.getElementById('t-install-desc-android').innerText = t.installDescAndroid;
             if (document.getElementById('btn-install-app')) document.getElementById('btn-install-app').innerText = t.btnInstall;
@@ -755,13 +871,32 @@
             });
         }
 
+        // Device Detection (Android vs iOS vs Desktop)
+        const isAndroid = /Android/i.test(navigator.userAgent);
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
+
+        // Show Android APK Card
+        if (isAndroid) {
+            const apkBanner = document.getElementById('apk-banner-android');
+            if (apkBanner) apkBanner.style.display = 'block';
+        }
+
+        // Show iOS PWA Guide if not standalone
+        if (isIOS && !isStandalone) {
+            const iosBanner = document.getElementById('install-banner-ios');
+            if (iosBanner) iosBanner.style.display = 'block';
+        }
+
         // PWA Install Prompt handling
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            const banner = document.getElementById('install-banner-android');
-            if (banner) banner.style.display = 'block';
+            if (!isAndroid) {
+                const banner = document.getElementById('install-banner-android');
+                if (banner) banner.style.display = 'block';
+            }
         });
 
         const btnInstall = document.getElementById('btn-install-app');
@@ -774,14 +909,6 @@
                     document.getElementById('install-banner-android').style.display = 'none';
                 }
             });
-        }
-
-        // iOS detection
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-        const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
-        if (isIOS && !isStandalone) {
-            const iosBanner = document.getElementById('install-banner-ios');
-            if (iosBanner) iosBanner.style.display = 'block';
         }
 
         // IP State Management
