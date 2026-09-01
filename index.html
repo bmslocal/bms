@@ -514,35 +514,6 @@
             </div>
         </div>
 
-        <!-- Permanent Apps & Integrations Card -->
-        <div class="card" id="apps-card" style="display: none; padding: 18px 16px; margin-bottom: 24px;">
-            <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: #a1a1aa; margin-bottom: 14px; font-weight: 600;" id="t-apps-header">Apps & Integrations</div>
-            
-            <!-- Android APK section -->
-            <div id="apk-banner-android" class="apk-card">
-                <div class="apk-badge" style="margin-bottom: 10px;">🚗 Android App (APK)</div>
-                <div class="apk-title" id="t-apk-title">BMS Companion (Android)</div>
-                <div class="apk-desc" id="t-apk-desc">Native Android app with floating widget for background operation.</div>
-                <a href="./BMS_Controller.apk" download="BMS_Controller.apk" class="btn-apk" id="btn-download-apk" onclick="onApkDownload()">
-                    <span>⬇️</span>
-                    <span id="t-btn-download-apk">Download</span>
-                </a>
-            </div>
-
-            <!-- Web App Install section -->
-            <div id="install-banner-android" class="install-card">
-                <div class="install-title" id="t-install-title-android">📲 Install Application</div>
-                <div class="install-desc" id="t-install-desc-android">Add BMS Radar to your home screen for quick one-tap access.</div>
-                <button id="btn-install-app" class="btn-install" style="background: #e4e4e7; color: #18181b; width: 100%;">Install</button>
-            </div>
-
-            <!-- iOS install guide banner -->
-            <div id="install-banner-ios" class="install-card" style="border-color: #52525b; background: transparent; padding: 0;">
-                <div class="install-title" id="t-install-title-ios" style="color: #e4e4e7; margin-bottom: 6px;">📲 Install on iPhone</div>
-                <div class="install-desc" id="t-install-desc-ios" style="margin-bottom: 0;">Tap the <b>Share button ⎋</b> in Safari, then select <b>«Add to Home Screen» ➕</b>.</div>
-            </div>
-        </div>
-
         <!-- Setup & Help Guide -->
         <div class="help-card" id="guide-card">
             <div class="help-toggle" onclick="toggleHelp()">
@@ -641,9 +612,41 @@
                             Turn off your phone hotspot for 15 seconds. The controller will launch its own <code>BMS_Setup</code> hotspot so you can access <code>192.168.4.1</code> and reconfigure it.
                         </div>
                     </div>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- Permanent Apps & Integrations Card -->
+<!-- Permanent Apps & Integrations Card -->
+        <div class="card" id="apps-card" style="display: none; padding: 18px 16px; margin-bottom: 24px;">
+            <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: #a1a1aa; margin-bottom: 14px; font-weight: 600;" id="t-apps-header">Apps & Integrations</div>
+            
+            <!-- Android APK section -->
+            <div id="apk-banner-android" class="apk-card">
+                <div class="apk-badge" style="margin-bottom: 10px;">🚗 Android App (APK)</div>
+                <div class="apk-title" id="t-apk-title">BMS Companion (Android)</div>
+                <div class="apk-desc" id="t-apk-desc">Native Android app with floating widget for background operation.</div>
+                <a href="./BMS_Controller.apk" download="BMS_Controller.apk" class="btn-apk" id="btn-download-apk" onclick="onApkDownload()">
+                    <span>⬇️</span>
+                    <span id="t-btn-download-apk">Download</span>
+                </a>
+            </div>
+
+            <!-- Web App Install section -->
+            <div id="install-banner-android" class="install-card">
+                <div class="install-title" id="t-install-title-android">📲 Install Application</div>
+                <div class="install-desc" id="t-install-desc-android">Add BMS Radar to your home screen for quick one-tap access.</div>
+                <button id="btn-install-app" class="btn-install" style="background: #e4e4e7; color: #18181b; width: 100%;">Install</button>
+            </div>
+
+            <!-- iOS install guide banner -->
+            <div id="install-banner-ios" class="install-card" style="border-color: #52525b; background: transparent; padding: 0;">
+                <div class="install-title" id="t-install-title-ios" style="color: #e4e4e7; margin-bottom: 6px;">📲 Install on iPhone</div>
+                <div class="install-desc" id="t-install-desc-ios" style="margin-bottom: 0;">Tap the <b>Share button ⎋</b> in Safari, then select <b>«Add to Home Screen» ➕</b>.</div>
+            </div>
+        </div>
+
     </div>
 
     <script>
