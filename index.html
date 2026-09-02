@@ -1170,27 +1170,15 @@
                 btn.style.opacity = '0.85';
             }
 
-            // Check reachability with a short timeout before full navigation
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 2500);
-
-            fetch(`http://${targetIp}/`, { signal: controller.signal, mode: 'no-cors' })
-                .then(() => {
-                    clearTimeout(timeoutId);
-                    window.location.href = `http://${targetIp}/?lang=${currentLang}`;
-                })
-                .catch(() => {
-                    clearTimeout(timeoutId);
-                    // If directly unreachable, show informative error box and keep fallback open action
+            setTimeout(() => {
+                window.location.href = `http://${targetIp}/?lang=${currentLang}`;
+                setTimeout(() => {
                     if (btn) {
                         btn.innerHTML = `<span id="open-btn-icon">🚀</span> <span id="t-btn-open">${t.btnOpen}</span>`;
                         btn.style.opacity = '1';
                     }
-                    if (errBox) {
-                        errBox.innerHTML = t.dashUnreachable;
-                        errBox.style.display = 'block';
-                    }
-                });
+                }, 2000);
+            }, 100);
         }
 
         function syncWithBoard() {
@@ -1200,26 +1188,17 @@
                 btnSync.innerHTML = `<span>⏳</span> <span>${t.btnConnecting || 'Connecting...'}</span>`;
                 btnSync.style.opacity = '0.85';
             }
+            showToast(t.toastConnecting || "Connecting...");
 
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 2000);
-
-            fetch(`http://192.168.4.1/`, { signal: controller.signal, mode: 'no-cors' })
-                .then(() => {
-                    clearTimeout(timeoutId);
-                    showToast(t.toastConnecting);
-                    setTimeout(() => {
-                        window.location.href = `http://192.168.4.1/sync?lang=${currentLang}`;
-                    }, 300);
-                })
-                .catch(() => {
-                    clearTimeout(timeoutId);
+            setTimeout(() => {
+                window.location.href = `http://192.168.4.1/sync?lang=${currentLang}`;
+                setTimeout(() => {
                     if (btnSync) {
                         btnSync.innerHTML = `<span id="sync-btn-icon">📡</span> <span id="t-btn-sync">${t.btnSync || 'Auto-Sync via BMS_Setup'}</span>`;
                         btnSync.style.opacity = '1';
                     }
-                    showToast(t.errNoSetupNetwork || "⚠️ Please connect to BMS_Setup Wi-Fi first");
-                });
+                }, 2000);
+            }, 300);
         }
 
         function toggleEditIp() {
