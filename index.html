@@ -979,9 +979,8 @@
             });
         }
 
-        // Multi-probe & IP State Management
+        // IP State Management
         let currentIp = localStorage.getItem('bms_saved_ip') || '';
-        let isApModeActive = false;
 
         // Check URL Query Parameter (?ip=10.48.33.xxx)
         const queryIp = urlParams.get('ip');
@@ -1000,75 +999,27 @@
             showToast(`${t.toastLinked}${currentIp}`);
         }
 
-        async function verifyBmsDevice(host, timeoutMs = 600) {
-            if (!host || host === '--') return false;
-            try {
-                const ctrl = new AbortController();
-                const tid = setTimeout(() => ctrl.abort(), timeoutMs);
-                const res = await fetch(`http://${host}/api/data?_t=${Date.now()}`, {
-                    signal: ctrl.signal,
-                    cache: 'no-store'
-                });
-                clearTimeout(tid);
-                if (!res.ok) return false;
-                const data = await res.json();
-                if (data && (typeof data.version !== 'undefined' || typeof data.max !== 'undefined' || typeof data.platform !== 'undefined' || typeof data.valid !== 'undefined')) {
-                    return true;
-                }
-                return false;
-            } catch (e) {
-                return false;
-            }
-        }
-
-        async function quickProbe(host, timeoutMs = 600) {
-            return await verifyBmsDevice(host, timeoutMs);
-        }
-
-        async function probeNetwork() {
-            // Check candidates in background with BMS signature check
-            const apOnline = await verifyBmsDevice('192.168.4.1', 500);
-            let savedIpOnline = false;
-            if (currentIp && currentIp !== '--' && currentIp !== '192.168.4.1') {
-                savedIpOnline = await verifyBmsDevice(currentIp, 500);
-            }
-
-            if (apOnline !== isApModeActive) {
-                isApModeActive = apOnline;
-                updateUI(savedIpOnline);
-            } else if (savedIpOnline) {
-                updateUI(savedIpOnline);
-            }
-        }
-
-        function updateUI(savedIpOnline) {
+        function updateUI() {
             const t = I18N[currentLang] || I18N.en;
             const displayEl = document.getElementById('display-ip');
             const manualIpInput = document.getElementById('manual-ip');
             const statusBadge = document.getElementById('status-badge');
             const statusText = document.getElementById('status-text');
 
-            if (isApModeActive) {
-                if (displayEl) {
-                    displayEl.innerText = (currentIp && currentIp !== '--') ? `${currentIp} (AP: 192.168.4.1)` : '192.168.4.1';
-                }
-                if (manualIpInput && currentIp) manualIpInput.value = currentIp;
-                statusBadge.className = 'status-badge';
-                statusText.innerText = t.statusAp || "● BMS_Setup AP (Direct)";
-            } else if (currentIp && currentIp !== '--') {
+            if (currentIp && currentIp !== '--') {
                 if (displayEl) displayEl.innerText = currentIp;
                 if (manualIpInput) manualIpInput.value = currentIp;
-                statusBadge.className = 'status-badge';
-                statusText.innerText = t.statusLinked;
+                if (statusBadge) statusBadge.className = 'status-badge';
+                if (statusText) statusText.innerText = t.statusLinked;
             } else {
                 if (displayEl) displayEl.innerText = '--';
                 if (manualIpInput) manualIpInput.value = '';
-                statusBadge.className = 'status-badge warning';
-                statusText.innerText = t.statusSetup;
+                if (statusBadge) statusBadge.className = 'status-badge warning';
+                if (statusText) statusText.innerText = t.statusSetup;
             }
         }
 
-        async function openDashboard() {
+        function openDashboard() {
             const t = I18N[currentLang] || I18N.en;
             const btn = document.getElementById('btn-open');
 
@@ -1077,56 +1028,17 @@
                 btn.style.opacity = '0.85';
             }
 
-            // 1. If currently confirmed AP mode
-            if (isApModeActive) {
-                window.location.href = `http://192.168.4.1/?lang=${currentLang}`;
-                return;
-            }
-
-            // 2. Parallel Fast Probe (600ms) across all candidate endpoints
-            const probeAp = verifyBmsDevice('192.168.4.1', 600);
-            const probeHotspot = (currentIp && currentIp !== '--' && currentIp !== '192.168.4.1')
-                ? verifyBmsDevice(currentIp, 600)
-                : Promise.resolve(false);
-            const probeMdns = (typeof isIOS !== 'undefined' && isIOS)
-                ? verifyBmsDevice('bms.local', 600)
-                : Promise.resolve(false);
-
-            const [apOk, hotspotOk, mdnsOk] = await Promise.all([probeAp, probeHotspot, probeMdns]);
-
-            if (btn) {
-                btn.innerText = t.btnOpen;
-                btn.style.opacity = '1';
-            }
-
-            if (apOk) {
-                isApModeActive = true;
-                updateUI();
-                window.location.href = `http://192.168.4.1/?lang=${currentLang}`;
-                return;
-            }
-
-            if (hotspotOk) {
-                window.location.href = `http://${currentIp}/?lang=${currentLang}`;
-                return;
-            }
-
-            if (mdnsOk) {
-                window.location.href = `http://bms.local/?lang=${currentLang}`;
-                return;
-            }
-
-            // 3. Fallback: if user has saved IP, open it
+            // 1. If saved IP exists, navigate directly to controller dashboard
             if (currentIp && currentIp !== '--') {
                 window.location.href = `http://${currentIp}/?lang=${currentLang}`;
                 return;
             }
 
-            // 4. If no IP and 192.168.4.1 is not our controller, notify user to connect to BMS_Setup
-            alert(t.alertNotBms || "⚠️ You are connected to a home/office Wi-Fi network or controller is offline.\n\nPlease connect your phone Wi-Fi to «BMS_Setup» (password: bmslocal) in settings first.");
+            // 2. Default fallback to direct AP IP (192.168.4.1)
+            window.location.href = `http://192.168.4.1/?lang=${currentLang}`;
         }
 
-        async function syncWithBoard() {
+        function syncWithBoard() {
             const t = I18N[currentLang] || I18N.en;
             const btnSync = document.getElementById('btn-sync');
             if (btnSync) {
@@ -1135,19 +1047,9 @@
             }
             showToast(t.toastConnecting);
 
-            // Verify if 192.168.4.1 is really our BMS controller, not a home router
-            const isBms = await verifyBmsDevice('192.168.4.1', 800);
-            if (btnSync) {
-                btnSync.innerText = t.btnSync;
-                btnSync.style.opacity = '1';
-            }
-
-            if (!isBms) {
-                alert(t.alertNotBms || "⚠️ You are connected to a home/office Wi-Fi network or controller is offline.\n\nPlease connect your phone Wi-Fi to «BMS_Setup» (password: bmslocal) in settings first.");
-                return;
-            }
-
-            window.location.href = `http://192.168.4.1/sync?lang=${currentLang}`;
+            setTimeout(() => {
+                window.location.href = `http://192.168.4.1/sync?lang=${currentLang}`;
+            }, 250);
         }
 
         function toggleEditIp() {
@@ -1207,11 +1109,9 @@
             setTimeout(() => { toast.style.display = 'none'; }, 4000);
         }
 
-        // Init Language, UI and Network Probing
+        // Init Language and UI
         applyLanguage();
         updateUI();
-        probeNetwork();
-        setInterval(probeNetwork, 3000);
     </script>
 </body>
 </html>
