@@ -29,38 +29,40 @@
         }
         .header {
             text-align: center;
-            margin-bottom: 24px;
-            margin-top: 10px;
+            margin-bottom: 20px;
+            margin-top: 6px;
         }
         .app-title {
             font-size: 24px;
             font-weight: 700;
             letter-spacing: -0.5px;
-            margin: 0 0 8px 0;
+            margin: 0;
             color: #ffffff;
         }
-        .status-badge {
-            display: inline-flex;
+
+        /* Autonomous Callout Card */
+        .auto-card {
+            background: rgba(34, 197, 94, 0.08);
+            border: 1px solid rgba(34, 197, 94, 0.25);
+            border-radius: 12px;
+            padding: 12px 14px;
+            margin-bottom: 16px;
+            display: flex;
             align-items: center;
-            gap: 6px;
-            padding: 4px 12px;
-            border-radius: 9999px;
-            font-size: 13px;
-            font-weight: 500;
-            background: rgba(59, 130, 246, 0.12);
-            color: #60a5fa;
-            border: 1px solid rgba(59, 130, 246, 0.25);
+            gap: 10px;
+            text-align: left;
         }
-        .status-badge.warning {
-            background: rgba(234, 179, 8, 0.12);
-            color: #facc15;
-            border-color: rgba(234, 179, 8, 0.25);
+        .auto-icon {
+            font-size: 20px;
+            flex-shrink: 0;
         }
-        .status-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: currentColor;
+        .auto-text {
+            font-size: 12.5px;
+            line-height: 1.45;
+            color: #d1d5db;
+        }
+        .auto-text b {
+            color: #4ade80;
         }
 
         /* Banner install */
@@ -112,12 +114,6 @@
             text-align: left;
         }
         
-        .apk-close-btn:hover, .apk-close-btn:active {
-            background: rgba(239, 68, 68, 0.2);
-            border-color: rgba(239, 68, 68, 0.4);
-            color: #f87171;
-            transform: scale(1.05);
-        }
         .apk-badge {
             display: inline-flex;
             align-items: center;
@@ -148,7 +144,7 @@
         .apk-features {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 6px;
             margin-bottom: 14px;
             font-size: 12px;
             color: #cbd5e1;
@@ -481,10 +477,6 @@
         <!-- Header -->
         <div class="header">
             <h1 class="app-title" id="t-app-title">BMS Radar</h1>
-            <div id="status-badge" class="status-badge">
-                <span class="status-dot"></span>
-                <span id="status-text">Controller Linked</span>
-            </div>
         </div>
 
         <!-- Main Card -->
@@ -514,6 +506,14 @@
             </div>
         </div>
 
+        <!-- Autonomous Callout Card -->
+        <div class="auto-card" id="auto-card">
+            <span class="auto-icon">🛡️</span>
+            <div class="auto-text" id="t-auto-text">
+                <b>Контроллер охлаждения работает автономно.</b> Телефон нужен только для просмотра телеметрии.
+            </div>
+        </div>
+
         <!-- Setup & Help Guide -->
         <div class="help-card" id="guide-card">
             <div class="help-toggle" onclick="toggleHelp()">
@@ -535,7 +535,7 @@
                             <span class="step-title" id="t-step1-title">Plug into Car & Power ON</span>
                         </div>
                         <div class="step-body" id="t-step1-body">
-                            Insert the controller into your vehicle's <b>OBD2 port</b> (under the steering wheel) and power on the car (<b>READY</b> or <b>ON</b> mode).
+                            Insert the controller into your vehicle's <b>OBD2 port</b> (under the steering wheel) and power on the car (<b>READY</b> mode).
                         </div>
                     </div>
 
@@ -546,7 +546,7 @@
                         </div>
                         <div class="step-body">
                             <div class="option-box">
-                                <div class="option-title" id="t-opt-a-title">🔹 Option A: Quick Start (Recommended)</div>
+                                <div class="option-title" id="t-opt-a-title">🔹 Option A: Personal Hotspot (Recommended)</div>
                                 <div id="t-opt-a-desc">Turn on your phone's <b>Personal Hotspot</b>:</div>
                                 <div class="cred-row">
                                     <span id="t-opt-a-net">Network: <code>BMS</code></span>
@@ -556,14 +556,13 @@
                             </div>
 
                             <div class="option-box">
-                                <div class="option-title" id="t-opt-b-title">🔸 Option B: Custom In-Car Wi-Fi / Router</div>
-                                <div id="t-opt-b-desc">If you use an in-car modem or custom hotspot:</div>
-                                <div style="margin-top: 6px; line-height: 1.5;" id="t-opt-b-steps">
-                                    1. Connect phone Wi-Fi to <code>BMS_Setup</code> (password: <code>bmslocal</code>).<br>
-                                    2. <b>Important:</b> Turn <b>OFF «Auto-reconnect»</b> in Wi-Fi settings. If prompted <i>«Internet not available»</i>, select <b>«Always connect» / «Stay connected»</b>.<br>
-                                    3. Open <code>http://192.168.4.1</code> in your browser.<br>
-                                    4. Enter your custom Wi-Fi name & password and tap <b>Save & Connect</b>.
+                                <div class="option-title" id="t-opt-b-title">🔸 Option B: Direct Controller Wi-Fi</div>
+                                <div id="t-opt-b-desc">Connect phone to controller's Wi-Fi network:</div>
+                                <div class="cred-row">
+                                    <span id="t-opt-b-net">Network: <code>BMS_Setup</code></span>
+                                    <span id="t-opt-b-pwd">Password: <code>bmslocal</code></span>
                                 </div>
+                                <div class="option-note" id="t-opt-b-note">Open <code>http://192.168.4.1</code> to configure custom car Wi-Fi.</div>
                             </div>
                         </div>
                     </div>
@@ -571,10 +570,10 @@
                     <div class="guide-step" style="margin-bottom: 4px;">
                         <div class="step-header">
                             <span class="step-num">3</span>
-                            <span class="step-title" id="t-step3-title">Link & Launch Dashboard</span>
+                            <span class="step-title" id="t-step3-title">Launch Dashboard or Companion App</span>
                         </div>
                         <div class="step-body" id="t-step3-body">
-                            Tap <b>«📡 Auto-Sync via BMS_Setup»</b> above to detect the controller, then tap <b>«🚀 Open Dashboard»</b> to view real-time battery temperatures & fan controls.
+                            Tap <b>«🚀 Open Dashboard»</b> above, or use the <b>BMS Companion</b> Android APK below.
                         </div>
                     </div>
                 </div>
@@ -582,53 +581,62 @@
                 <!-- Troubleshooting Panel -->
                 <div id="panel-trouble" class="guide-panel" style="display: none;">
                     <div class="trouble-item">
-                        <div class="trouble-q" id="t-tr-1-q">🔴 Dashboard not opening or device offline?</div>
+                        <div class="trouble-q" id="t-tr-1-q">🔴 Dashboard not opening or offline?</div>
                         <div class="trouble-a" id="t-tr-1-a">
-                            • Ensure the vehicle is powered on (<b>READY</b> or <b>ON</b> mode).<br>
-                            • Verify your phone's Personal Hotspot is active with name <code>BMS</code> and password <code>bmslocal</code>.<br>
-                            • On iPhone, enable <i>«Maximize Compatibility»</i> in Personal Hotspot settings.
+                            • Ensure vehicle is in <b>READY</b> mode.<br>
+                            • Verify phone hotspot name is <code>BMS</code> and password is <code>bmslocal</code>.<br>
+                            • On iPhone, turn <b>ON</b> <i>«Maximize Compatibility»</i> in Personal Hotspot settings.
                         </div>
                     </div>
 
                     <div class="trouble-item">
-                        <div class="trouble-q" id="t-tr-2-q">📶 Tips when connecting to BMS_Setup:</div>
+                        <div class="trouble-q" id="t-tr-2-q">📶 Tips for BMS_Setup Wi-Fi:</div>
                         <div class="trouble-a" id="t-tr-2-a">
-                            • <b>Disable Auto-reconnect:</b> When entering password <code>bmslocal</code>, turn <b>OFF</b> the <i>«Auto-reconnect»</i> toggle so your phone doesn't stay locked to the setup network.<br>
-                            • <b>No Internet prompt:</b> If your phone warns <i>«Internet may not be available»</i>, choose <b>«Always connect» / «Keep Wi-Fi connection»</b>.
+                            • Turn <b>OFF</b> <i>«Auto-reconnect»</i> for BMS_Setup.<br>
+                            • If prompted <i>«No Internet»</i>, tap <b>«Keep Wi-Fi connection» / «Always connect»</b>.
                         </div>
                     </div>
 
                     <div class="trouble-item">
                         <div class="trouble-q" id="t-tr-3-q">🟡 IP address changed?</div>
                         <div class="trouble-a" id="t-tr-3-a">
-                            • Connect phone Wi-Fi to <code>BMS_Setup</code> (password: <code>bmslocal</code>) and tap <i>«Auto-Sync via BMS_Setup»</i>.<br>
-                            • Or check <i>Settings ➔ Personal Hotspot ➔ Connected Devices</i> on your phone to find the new IP address and enter it manually.
+                            • Connect to <code>BMS_Setup</code> and tap <i>«Auto-Sync via BMS_Setup»</i>.<br>
+                            • Or check phone Hotspot settings for the connected device IP and save it manually.
                         </div>
                     </div>
 
                     <div class="trouble-item" style="margin-bottom: 4px;">
                         <div class="trouble-q" id="t-tr-4-q">⚙️ Reconfigure or reset Wi-Fi?</div>
                         <div class="trouble-a" id="t-tr-4-a">
-                            Turn off your phone hotspot for 15 seconds. The controller will launch its own <code>BMS_Setup</code> hotspot so you can access <code>192.168.4.1</code> and reconfigure it.
+                            Turn off phone hotspot for 15s. The controller will open <code>BMS_Setup</code> hotspot at <code>192.168.4.1</code>.
                         </div>
-                    </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-<!-- Permanent Apps & Integrations Card -->
-<!-- Permanent Apps & Integrations Card -->
-        <div class="card" id="apps-card" style="display: none; padding: 18px 16px; margin-bottom: 24px;">
+        <!-- Permanent Apps & Integrations Card -->
+        <div class="card" id="apps-card" style="display: none; padding: 18px 16px; margin-bottom: 24px; margin-top: 16px;">
             <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: #a1a1aa; margin-bottom: 14px; font-weight: 600;" id="t-apps-header">Apps & Integrations</div>
             
             <!-- Android APK section -->
             <div id="apk-banner-android" class="apk-card">
                 <div class="apk-badge" style="margin-bottom: 10px;">🚗 Android App (APK)</div>
                 <div class="apk-title" id="t-apk-title">BMS Companion (Android)</div>
-                <div class="apk-desc" id="t-apk-desc">Native Android app with floating widget for background operation.</div>
+                <div class="apk-desc" id="t-apk-desc">Native Android companion with live battery HUD widget:</div>
+                <div class="apk-features">
+                    <div class="apk-feat-item">
+                        <span>🏎️</span>
+                        <span id="t-apk-f1">Floating HUD widget over navigation & maps</span>
+                    </div>
+                    <div class="apk-feat-item">
+                        <span>⚡</span>
+                        <span id="t-apk-f2">Auto-connects when phone hotspot is on</span>
+                    </div>
+                </div>
                 <a href="./BMS_Companion.apk" download="BMS_Companion.apk" class="btn-apk" id="btn-download-apk" onclick="onApkDownload()">
                     <span>⬇️</span>
-                    <span id="t-btn-download-apk">Download</span>
+                    <span id="t-btn-download-apk">Download APK</span>
                 </a>
             </div>
 
@@ -652,203 +660,203 @@
         const I18N = {
             en: {
                 appTitle: "BMS Radar",
-                appsHeader: "📱 Apps & Integrations",
-                statusLinked: "● Controller Linked",
-                statusSetup: "⚠️ Setup Required",
+                appsHeader: "Apps & Integrations",
                 ipLabel: "Controller IP Address",
                 btnOpen: "Open Dashboard",
                 btnSync: "Auto-Sync via BMS_Setup",
                 btnManual: "Set IP Manually",
                 btnSaveIp: "Save",
+                autoText: "<b>Autonomous hybrid battery cooling.</b> Phone is only required for viewing live telemetry.",
                 guideTitle: "📖 Setup & Help Guide",
                 tabSetup: "🚀 First-Time Setup",
                 tabTrouble: "❓ Help & FAQ",
                 apkTitle: "BMS Companion (Android)",
-                apkDesc: "Native Android app with floating widget for background operation.",
-                btnDownloadApk: "Download",
-                installTitleAndroid: "📲 Install Web App",
+                apkDesc: "Native Android companion with live battery HUD widget:",
+                apkF1: "Floating HUD widget over navigation & maps",
+                apkF2: "Auto-connects when phone hotspot is on",
+                btnDownloadApk: "Download APK",
+                installTitleAndroid: "📲 Install Application",
                 installDescAndroid: "Add BMS Radar to your home screen for quick one-tap access.",
                 btnInstall: "Install",
                 installTitleIos: "📲 Install on iPhone",
                 installDescIos: "Tap the <b>Share button ⎋</b> in Safari, then select <b>«Add to Home Screen» ➕</b>.",
                 step1Title: "Plug into Car & Power ON",
-                step1Body: "Insert the controller into your vehicle's <b>OBD2 port</b> (under the steering wheel) and power on the car (<b>READY</b> or <b>ON</b> mode).",
+                step1Body: "Insert the controller into your vehicle's <b>OBD2 port</b> (under the steering wheel) and power on the car (<b>READY</b> mode).",
                 step2Title: "Choose Wi-Fi Connection",
-                optATitle: "🔹 Option A: Quick Start (Recommended)",
+                optATitle: "🔹 Option A: Personal Hotspot (Recommended)",
                 optADesc: "Turn on your phone's <b>Personal Hotspot</b>:",
                 optANet: "Network: <code>BMS</code>",
                 optAPwd: "Password: <code>bmslocal</code>",
                 optANote: "The controller links automatically in ~10 seconds.",
-                optBTitle: "🔸 Option B: Custom In-Car Wi-Fi / Router",
-                optBDesc: "If you use an in-car modem or custom hotspot:",
-                optBSteps: "1. Connect phone Wi-Fi to <code>BMS_Setup</code> (password: <code>bmslocal</code>).<br>2. <b>Important:</b> Turn <b>OFF «Auto-reconnect»</b> in Wi-Fi settings. If prompted <i>«Internet not available»</i>, select <b>«Always connect» / «Stay connected»</b>.<br>3. Open <code>http://192.168.4.1</code> in your browser.<br>4. Enter your custom Wi-Fi name & password and tap <b>Save & Connect</b>.",
-                step3Title: "Link & Launch Dashboard",
-                step3Body: "Tap <b>«📡 Auto-Sync via BMS_Setup»</b> above to detect the controller, then tap <b>«🚀 Open Dashboard»</b> to view real-time battery temperatures & fan controls.",
-                tr1Q: "🔴 Dashboard not opening or device offline?",
-                tr1A: "• Ensure the vehicle is powered on (<b>READY</b> or <b>ON</b> mode).<br>• Verify your phone's Personal Hotspot is active with name <code>BMS</code> and password <code>bmslocal</code>.<br>• On iPhone, enable <i>«Maximize Compatibility»</i> in Personal Hotspot settings.",
-                tr2Q: "📶 Tips when connecting to BMS_Setup:",
-                tr2A: "• <b>Disable Auto-reconnect:</b> When entering password <code>bmslocal</code>, turn <b>OFF</b> the <i>«Auto-reconnect»</i> toggle so your phone doesn't stay locked to the setup network.<br>• <b>No Internet prompt:</b> If your phone warns <i>«Internet may not be available»</i>, choose <b>«Always connect» / «Keep Wi-Fi connection»</b>.",
+                optBTitle: "🔸 Option B: Direct Controller Wi-Fi",
+                optBDesc: "Connect phone to controller's Wi-Fi network:",
+                optBNet: "Network: <code>BMS_Setup</code>",
+                optBPwd: "Password: <code>bmslocal</code>",
+                optBNote: "Open <code>http://192.168.4.1</code> to configure custom car Wi-Fi.",
+                step3Title: "Launch Dashboard or Companion App",
+                step3Body: "Tap <b>«🚀 Open Dashboard»</b> above, or use the <b>BMS Companion</b> Android APK below.",
+                tr1Q: "🔴 Dashboard not opening or offline?",
+                tr1A: "• Ensure vehicle is in <b>READY</b> mode.<br>• Verify phone hotspot name is <code>BMS</code> and password is <code>bmslocal</code>.<br>• On iPhone, turn <b>ON</b> <i>«Maximize Compatibility»</i> in Personal Hotspot settings.",
+                tr2Q: "📶 Tips for BMS_Setup Wi-Fi:",
+                tr2A: "• Turn <b>OFF</b> <i>«Auto-reconnect»</i> for BMS_Setup.<br>• If prompted <i>«No Internet»</i>, tap <b>«Keep Wi-Fi connection» / «Always connect»</b>.",
                 tr3Q: "🟡 IP address changed?",
-                tr3A: "• Connect phone Wi-Fi to <code>BMS_Setup</code> (password: <code>bmslocal</code>) and tap <i>«Auto-Sync via BMS_Setup»</i>.<br>• Or check <i>Settings ➔ Personal Hotspot ➔ Connected Devices</i> on your phone to find the new IP address and enter it manually.",
+                tr3A: "• Connect to <code>BMS_Setup</code> and tap <i>«Auto-Sync via BMS_Setup»</i>.<br>• Or check phone Hotspot settings for the connected device IP and save it manually.",
                 tr4Q: "⚙️ Reconfigure or reset Wi-Fi?",
-                tr4A: "Turn off your phone hotspot for 15 seconds. The controller will launch its own <code>BMS_Setup</code> hotspot so you can access <code>192.168.4.1</code> and reconfigure it.",
-                statusAp: "● BMS_Setup AP (Direct)",
+                tr4A: "Turn off phone hotspot for 15s. The controller will open <code>BMS_Setup</code> hotspot at <code>192.168.4.1</code>.",
                 toastLinked: "✅ Controller linked: ",
                 toastConnecting: "📡 Connecting to controller via BMS_Setup (192.168.4.1)...",
                 btnConnecting: "Connecting...",
-                alertNoIp: "Controller IP is not set. Tap 'Auto-Sync via BMS_Setup' or set IP manually.",
-                alertInvalidIp: "Invalid IP address format (example: 10.48.33.187)",
-                alertNotBms: "⚠️ You are connected to a home/office Wi-Fi network or controller is offline.\n\nPlease connect your phone Wi-Fi to «BMS_Setup» (password: bmslocal) in settings first."
+                alertInvalidIp: "Invalid IP address format (example: 10.48.33.187)"
             },
             zh: {
                 appTitle: "BMS Radar",
-                appsHeader: "📱 Apps & Integrations",
-                statusLinked: "● 控制器已连接",
-                statusSetup: "⚠️ 需要设置",
-                statusAp: "● BMS_Setup 热点 (直接连接)",
+                appsHeader: "应用程序与集成",
                 ipLabel: "控制器 IP 地址",
                 btnOpen: "打开仪表板",
                 btnSync: "通过 BMS_Setup 自动同步",
                 btnManual: "手动设置 IP",
                 btnSaveIp: "保存",
+                autoText: "<b>混合动力电池全自动智能冷却。</b> 仅在查看实时遥测数据时需要手机。",
                 guideTitle: "📖 设置与帮助指南",
                 tabSetup: "🚀 首次使用指南",
                 tabTrouble: "❓ 常见问题与帮助",
                 apkTitle: "BMS Companion (Android)",
-                apkDesc: "支持悬浮窗的安卓原生应用程序。",
-                btnDownloadApk: "下载",
-                installTitleAndroid: "📲 安装网页应用",
+                apkDesc: "支持悬浮窗实时监控的安卓原生应用：",
+                apkF1: "支持在地图导航及任意应用上方悬浮显示",
+                apkF2: "开启手机热点即可秒级极速自动直连",
+                btnDownloadApk: "下载 APK",
+                installTitleAndroid: "📲 安装应用程序",
                 installDescAndroid: "将 BMS Radar 添加到主屏幕，享受一键快速访问。",
                 btnInstall: "立即安装",
                 installTitleIos: "📲 在 iPhone 上添加",
                 installDescIos: "在 Safari 浏览器中点击底部<b>分享按钮 ⎋</b>，然后选择<b>“添加到主屏幕” ➕</b>。",
                 step1Title: "插入车辆并通电",
-                step1Body: "将控制器插入车辆方向盘下方的 <b>OBD2 接口</b>，并将车辆启动至 <b>READY</b> 或 <b>ON</b> 模式。",
+                step1Body: "将控制器插入车辆方向盘下方的 <b>OBD2 接口</b>，并将车辆启动至 <b>READY</b> 模式。",
                 step2Title: "选择 Wi-Fi 连接方式",
-                optATitle: "🔹 选项 A：快速连接（推荐）",
+                optATitle: "🔹 选项 A：手机个人热点（推荐）",
                 optADesc: "打开手机的<b>个人热点</b>：",
                 optANet: "热点名称：<code>BMS</code>",
                 optAPwd: "热点密码：<code>bmslocal</code>",
                 optANote: "控制器将在约 10 秒内自动连接至手机热点。",
-                optBTitle: "🔸 选项 B：车机 Wi-Fi / 车载随身 Wi-Fi",
-                optBDesc: "如果您使用车机热点或车载路由器：",
-                optBSteps: "1. 手机连接 Wi-Fi <code>BMS_Setup</code>（密码：<code>bmslocal</code>）。<br>2. <b>重要提示：</b>在 Wi-Fi 设置中<b>关闭“自动重新连接”</b>。若手机提示<i>“无互联网访问”</i>，请选择<b>“始终连接”/“保持连接”</b>。<br>3. 在手机浏览器中打开 <code>http://192.168.4.1</code>。<br>4. 输入车机 Wi-Fi 名称和密码，点击<b>保存并连接</b>。",
-                step3Title: "识别并打开仪表板",
-                step3Body: "点击上方<b>«📡 通过 BMS_Setup 自动同步»</b>识别控制器，然后点击<b>«🚀 打开仪表板»</b>即可查看实时电池温度与风扇档位。",
+                optBTitle: "🔸 选项 B：直连控制器 Wi-Fi",
+                optBDesc: "手机连接至控制器自带热点：",
+                optBNet: "网络名称：<code>BMS_Setup</code>",
+                optBPwd: "网络密码：<code>bmslocal</code>",
+                optBNote: "打开 <code>http://192.168.4.1</code> 可配置车载自定义 Wi-Fi。",
+                step3Title: "打开仪表板或配套应用",
+                step3Body: "点击上方<b>«🚀 打开仪表板»</b>，或下载并使用下方的 <b>BMS Companion</b> 安卓应用。",
                 tr1Q: "🔴 无法打开仪表板或设备离线？",
-                tr1A: "• 确保车辆处于通电状态（<b>READY</b> 或 <b>ON</b> 模式）。<br>• 检查手机个人热点名称是否为 <code>BMS</code>，密码为 <code>bmslocal</code>。<br>• iPhone 用户请务必在个人热点设置中开启<i>“最大兼容性”</i>。",
+                tr1A: "• 确保车辆处于通电状态（<b>READY</b> 模式）。<br>• 检查手机个人热点名称是否为 <code>BMS</code>，密码为 <code>bmslocal</code>。<br>• iPhone 用户请务必在个人热点设置中开启<i>“最大兼容性”</i>。",
                 tr2Q: "📶 连接 BMS_Setup 时的注意事项：",
-                tr2A: "• <b>关闭自动重连：</b>输入密码 <code>bmslocal</code> 时，请<b>关闭</b><i>“自动重连”</i>开关，以免手机长时间锁定在该无网络热点上。<br>• <b>提示无网络：</b>若系统提示<i>“此网络无互联网连接”</i>，请勾选<b>“始终连接”/“保持连接”</b>。",
+                tr2A: "• <b>关闭自动重连：</b>输入密码 <code>bmslocal</code> 时，请<b>关闭</b><i>“自动重连”</i>开关。<br>• <b>提示无网络：</b>若系统提示<i>“无互联网连接”</i>，请勾选<b>“始终连接”/“保持连接”</b>。",
                 tr3Q: "🟡 IP 地址发生变化？",
-                tr3A: "• 手机连接 Wi-Fi <code>BMS_Setup</code>（密码：<code>bmslocal</code>）并点击上方<i>“通过 BMS_Setup 自动同步”</i>。<br>• 或在手机的<i>设置 ➔ 个人热点 ➔ 已连接设备</i>中查看分配的 IP 地址并手动输入。",
+                tr3A: "• 手机连接 <code>BMS_Setup</code> 并点击<i>“通过 BMS_Setup 自动同步”</i>。<br>• 或在手机的<i>设置 ➔ 个人热点 ➔ 已连接设备</i>中查看分配的 IP 并手动输入。",
                 tr4Q: "⚙️ 重新配置或重置 Wi-Fi？",
-                tr4A: "关闭手机热点 15 秒，控制器将自动开启自带的 <code>BMS_Setup</code> 热点，您可以访问 <code>192.168.4.1</code> 重新配置网络。",
+                tr4A: "关闭手机热点 15 秒，控制器将自动开启 <code>BMS_Setup</code> 热点，访问 <code>192.168.4.1</code> 即可重新配置。",
                 toastLinked: "✅ 控制器已连接：",
                 toastConnecting: "📡 正在通过 BMS_Setup (192.168.4.1) 连接控制器...",
                 btnConnecting: "正在连接...",
-                alertNoIp: "尚未设置控制器 IP。请点击“通过 BMS_Setup 自动同步”或手动输入 IP。",
-                alertInvalidIp: "IP 地址格式无效（示例：10.48.33.187）",
-                alertNotBms: "⚠️ 您当前连接的是家庭/办公 Wi-Fi 或未找到控制器。\n\n请先在手机 Wi-Fi 设置中连接 «BMS_Setup» 热点（密码：bmslocal）。"
+                alertInvalidIp: "IP 地址格式无效（示例：10.48.33.187）"
             },
             ko: {
                 appTitle: "BMS Radar",
-                appsHeader: "📱 Apps & Integrations",
-                statusLinked: "● 컨트롤러 연결됨",
-                statusSetup: "⚠️ 설정 필요",
-                statusAp: "● BMS_Setup AP (직접 연결됨)",
+                appsHeader: "앱 및 통합",
                 ipLabel: "컨트롤러 IP 주소",
                 btnOpen: "대시보드 열기",
                 btnSync: "BMS_Setup을 통한 자동 동기화",
                 btnManual: "수동으로 IP 입력",
                 btnSaveIp: "저장",
+                autoText: "<b>하이브리드 배터리 완전 자동 자율 냉각.</b> 스마트폰은 실시간 데이터 확인용으로만 필요합니다.",
                 guideTitle: "📖 연결 및 도움말 가이드",
                 tabSetup: "🚀 최초 설정 가이드",
                 tabTrouble: "❓ 자주 묻는 질문 (FAQ)",
                 apkTitle: "BMS Companion (Android)",
-                apkDesc: "플로팅 위젯을 지원하는 안드로이드 전용 앱입니다.",
-                btnDownloadApk: "다운로드",
-                installTitleAndroid: "📲 웹 앱 설치",
+                apkDesc: "실시간 배터리 HUD 위젯을 지원하는 안드로이드 전용 앱:",
+                apkF1: "네비게이션 및 지도 앱 위에 플로팅 HUD 위젯 표시",
+                apkF2: "스마트폰 핫스팟 켜짐 시 자동 즉시 연결",
+                btnDownloadApk: "APK 다운로드",
+                installTitleAndroid: "📲 앱 설치하기",
                 installDescAndroid: "원터치 빠른 실행을 위해 홈 화면에 BMS Radar를 추가하세요.",
                 btnInstall: "설치하기",
                 installTitleIos: "📲 iPhone에 추가하기",
                 installDescIos: "Safari 하단의 <b>공유 버튼 ⎋</b>을 탭한 후 <b>«홈 화면에 추가» ➕</b>를 선택하세요.",
                 step1Title: "차량 OBD2에 연결 및 전원 켜기",
-                step1Body: "컨트롤러를 운전대 아래 <b>OBD2 단자</b>에 연결하고 차량 전원을 켜세요 (<b>READY</b> 또는 <b>ON</b> 모드).",
+                step1Body: "컨트롤러를 운전대 아래 <b>OBD2 단자</b>에 연결하고 차량 전원을 켜세요 (<b>READY</b> 모드).",
                 step2Title: "Wi-Fi 연결 방식 선택",
                 optATitle: "🔹 방법 A: 스마트폰 핫스팟 (권장)",
                 optADesc: "스마트폰의 <b>개인용 핫스팟</b>을 켜세요:",
                 optANet: "네트워크 이름: <code>BMS</code>",
                 optAPwd: "비밀번호: <code>bmslocal</code>",
                 optANote: "약 10초 내에 컨트롤러가 자동으로 연결됩니다.",
-                optBTitle: "🔸 방법 B: 차량용 내장 Wi-Fi / 라우터",
-                optBDesc: "차량용 모뎀이나 공유기 Wi-Fi를 사용하는 경우:",
-                optBSteps: "1. 스마트폰 Wi-Fi를 <code>BMS_Setup</code> (비밀번호: <code>bmslocal</code>)에 연결합니다.<br>2. <b>주의:</b> Wi-Fi 설정에서 <b>«자동 다시 연결» 끄기</b>. <i>«인터넷에 연결되어 있지 않음»</i> 알림 시 <b>«항상 연결» / «연결 유지»</b>를 선택하세요.<br>3. 브라우저에서 <code>http://192.168.4.1</code> 접속.<br>4. 차량 Wi-Fi 이름과 비밀번호를 입력하고 <b>저장 및 연결</b>을 누르세요.",
-                step3Title: "인식 및 대시보드 열기",
-                step3Body: "상단의 <b>«📡 BMS_Setup을 통한 자동 동기화»</b>를 눌러 컨트롤러를 인식한 후, <b>«🚀 대시보드 열기»</b>를 누르면 실시간 배터리 온도와 팬 단수를 확인할 수 있습니다.",
+                optBTitle: "🔸 방법 B: 컨트롤러 Wi-Fi 직접 연결",
+                optBDesc: "컨트롤러의 자체 Wi-Fi 네트워크에 연결합니다:",
+                optBNet: "네트워크 이름: <code>BMS_Setup</code>",
+                optBPwd: "비밀번호: <code>bmslocal</code>",
+                optBNote: "<code>http://192.168.4.1</code>에 접속하여 차량 Wi-Fi를 설정하세요.",
+                step3Title: "대시보드 또는 컴패니언 앱 실행",
+                step3Body: "상단의 <b>«🚀 대시보드 열기»</b>를 누르거나 아래의 <b>BMS Companion</b> 안드로이드 앱을 사용하세요.",
                 tr1Q: "🔴 대시보드가 열리지 않거나 오프라인인 경우:",
-                tr1A: "• 차량 시동이 켜져 있는지 확인하세요 (<b>READY</b> 또는 <b>ON</b> 모드).<br>• 스마트폰 핫스팟 이름이 <code>BMS</code>, 비밀번호가 <code>bmslocal</code>인지 확인하세요.<br>• iPhone의 경우 핫스팟 설정에서 <i>«호환성 최대화»</i>를 켜주세요.",
-                tr2Q: "📶 BMS_Setup 연결 시 주의사항:",
-                tr2A: "• <b>자동 다시 연결 끄기:</b> 비밀번호 <code>bmslocal</code> 입력 시 <i>«자동 다시 연결»</i>을 꺼두어야 스마트폰이 인터넷 없는 핫스팟에 계속 묶이지 않습니다.<br>• <b>인터넷 없음 경고:</b> <i>«인터넷에 연결되지 않음»</i> 팝업이 뜨면 <b>«항상 연결» / «Wi-Fi 연결 유지»</b>를 선택하세요.",
+                tr1A: "• 차량 시동이 켜져 있는지 확인하세요 (<b>READY</b> 모드).<br>• 스마트폰 핫스팟 이름이 <code>BMS</code>, 비밀번호가 <code>bmslocal</code>인지 확인하세요.<br>• iPhone의 경우 핫스팟 설정에서 <i>«호환성 최대화»</i>를 켜주세요.",
+                tr2Q: "📶 BMS_Setup Wi-Fi 연결 주의사항:",
+                tr2A: "• BMS_Setup의 <i>«자동 다시 연결»</i>을 끄세요.<br>• <i>«인터넷 없음»</i> 팝업 시 <b>«항상 연결» / «Wi-Fi 연결 유지»</b>를 선택하세요.",
                 tr3Q: "🟡 IP 주소가 변경된 경우:",
-                tr3A: "• 스마트폰을 <code>BMS_Setup</code> (비밀번호: <code>bmslocal</code>)에 연결하고 <i>«BMS_Setup을 통한 자동 동기화»</i>를 누르세요.<br>• 또는 스마트폰의 <i>설정 ➔ 개인용 핫스팟 ➔ 연결된 기기</i>에서 할당된 IP를 확인하여 수동으로 입력하세요.",
+                tr3A: "• <code>BMS_Setup</code>에 연결하고 <i>«BMS_Setup을 통한 자동 동기화»</i>를 누르세요.<br>• 또는 핫스팟 설정에서 연결된 기기의 IP를 확인하여 수동 입력하세요.",
                 tr4Q: "⚙️ Wi-Fi 재설정 또는 재구성:",
-                tr4A: "스마트폰 핫스팟을 15초간 끄면 컨트롤러가 자체 <code>BMS_Setup</code> 핫스팟을 켭니다. <code>192.168.4.1</code>에 접속하여 네트워크를 다시 설정할 수 있습니다.",
+                tr4A: "스마트폰 핫스팟을 15초간 끄면 컨트롤러가 <code>192.168.4.1</code>의 <code>BMS_Setup</code> 핫스팟을 다시 엽니다.",
                 toastLinked: "✅ 컨트롤러 연결됨: ",
                 toastConnecting: "📡 BMS_Setup (192.168.4.1)을 통해 컨트롤러에 연결 중...",
                 btnConnecting: "연결 중...",
-                alertNoIp: "컨트롤러 IP가 설정되지 않았습니다. 'BMS_Setup을 통한 자동 동기화'를 누르거나 IP를 수동으로 입력하세요.",
-                alertInvalidIp: "올바르지 않은 IP 주소 형식입니다 (예: 10.48.33.187)",
-                alertNotBms: "⚠️ 홈/사무실 Wi-Fi에 연결되어 있거나 컨트롤러를 찾을 수 없습니다.\n\n스마트폰 Wi-Fi 설정에서 먼저 «BMS_Setup» (비밀번호: bmslocal)에 연결하세요."
+                alertInvalidIp: "올바르지 않은 IP 주소 형식입니다 (예: 10.48.33.187)"
             },
             ru: {
                 appTitle: "BMS Radar",
-                appsHeader: "📱 Apps & Integrations",
-                statusLinked: "● Контроллер подключен",
-                statusSetup: "⚠️ Требуется настройка",
-                statusAp: "● Точка BMS_Setup (Прямой доступ)",
+                appsHeader: "Приложения и интеграции",
                 ipLabel: "IP адрес контроллера",
                 btnOpen: "Открыть дашборд",
                 btnSync: "Авто-синхронизация с платой",
                 btnManual: "Ввести IP вручную",
                 btnSaveIp: "Сохранить",
+                autoText: "<b>Контроллер охлаждения работает автономно.</b> Телефон нужен только для просмотра телеметрии.",
                 guideTitle: "📖 Инструкция и помощь",
                 tabSetup: "🚀 Первое подключение",
                 tabTrouble: "❓ Вопросы и ответы",
                 apkTitle: "BMS Companion (Android)",
-                apkDesc: "Нативное Android приложение с поддержкой плавающего виджета.",
-                btnDownloadApk: "Скачать",
-                installTitleAndroid: "📲 Установить Веб-приложение",
+                apkDesc: "Нативное Android приложение с плавающим HUD виджетом:",
+                apkF1: "Плавающий виджет температуры и кулера поверх навигатора",
+                apkF2: "Мгновенный авто-коннект при включении точки доступа",
+                btnDownloadApk: "Скачать APK",
+                installTitleAndroid: "📲 Установить приложение",
                 installDescAndroid: "Добавьте BMS Radar на главный экран для быстрого доступа.",
                 btnInstall: "Установить",
                 installTitleIos: "📲 Установка на iPhone",
                 installDescIos: "Нажмите кнопку <b>Поделиться ⎋</b> в Safari и выберите <b>«На экран Домой» ➕</b>.",
                 step1Title: "Подключение к авто и запуск",
-                step1Body: "Вставьте контроллер в <b>OBD2 разъем</b> автомобиля и включите зажигание (режим <b>READY</b> или <b>ON</b>).",
+                step1Body: "Вставьте контроллер в <b>OBD2 разъем</b> автомобиля и включите зажигание (режим <b>READY</b>).",
                 step2Title: "Выбор режима Wi-Fi",
                 optATitle: "🔹 Вариант А: Раздача с телефона (Рекомендуется)",
                 optADesc: "Включите <b>Точку доступа</b> на телефоне:",
                 optANet: "Имя сети: <code>BMS</code>",
                 optAPwd: "Пароль: <code>bmslocal</code>",
                 optANote: "Контроллер подключится автоматически за 10 секунд.",
-                optBTitle: "🔸 Вариант Б: Автомобильный Wi-Fi / Роутер",
-                optBDesc: "Если вы используете встроенный модем или роутер:",
-                optBSteps: "1. Подключитесь к Wi-Fi <code>BMS_Setup</code> (пароль: <code>bmslocal</code>).<br>2. <b>Важно:</b> Выключите <b>«Автоподключение»</b>. Если появится окно <i>«Нет интернета»</i>, выберите <b>«Всегда подключаться» / «Сохранять связь»</b>.<br>3. Откройте в браузере <code>http://192.168.4.1</code>.<br>4. Введите имя вашей сети и пароль, нажмите <b>Сохранить и подключить</b>.",
-                step3Title: "Синхронизация и запуск",
-                step3Body: "Нажмите <b>«📡 Авто-синхронизация»</b> выше для определения IP, затем нажмите <b>«🚀 Открыть дашборд»</b>.",
-                tr1Q: "🔴 Дашборд не открывается или устройство не в сети?",
-                tr1A: "• Убедитесь, что зажигание включено (режим <b>READY</b>).<br>• Проверьте, что точка доступа на телефоне называется <code>BMS</code> с паролем <code>bmslocal</code>.<br>• На iPhone включите <i>«Максимальная совместимость»</i> в настройках режима модема.",
-                tr2Q: "📶 Подсказки при подключении к BMS_Setup:",
-                tr2A: "• <b>Отключите автоподключение:</b> При вводе пароля <code>bmslocal</code> выключите тумблер <i>«Автоподключение»</i>.<br>• <b>Окно без интернета:</b> Выберите <i>«Оставаться подключенным»</i>.",
+                optBTitle: "🔸 Вариант Б: Прямая сеть контроллера",
+                optBDesc: "Подключите телефон к Wi-Fi сети контроллера:",
+                optBNet: "Имя сети: <code>BMS_Setup</code>",
+                optBPwd: "Пароль: <code>bmslocal</code>",
+                optBNote: "Откройте <code>http://192.168.4.1</code> для настройки автомобильного роутера.",
+                step3Title: "Запуск дашборда или Companion App",
+                step3Body: "Нажмите <b>«🚀 Открыть дашборд»</b> выше или используйте приложение <b>BMS Companion</b> ниже.",
+                tr1Q: "🔴 Дашборд не открывается или не в сети?",
+                tr1A: "• Убедитесь, что зажигание включено (режим <b>READY</b>).<br>• Проверьте, что точка доступа называется <code>BMS</code>, а пароль <code>bmslocal</code>.<br>• На iPhone включите <i>«Максимальная совместимость»</i> в настройках модема.",
+                tr2Q: "📶 Подсказки для сети BMS_Setup:",
+                tr2A: "• Выключите <i>«Автоподключение»</i> для BMS_Setup.<br>• При появлении окна <i>«Нет интернета»</i> выберите <i>«Оставаться подключенным»</i>.",
                 tr3Q: "🟡 Сменился IP адрес?",
-                tr3A: "• Подключите телефон к сети <code>BMS_Setup</code> (пароль: <code>bmslocal</code>) и нажмите <i>«Авто-синхронизация»</i>.<br>• Или посмотрите в настройках точки доступа телефона IP подключенного устройства и введите его вручную.",
+                tr3A: "• Подключитесь к <code>BMS_Setup</code> и нажмите <i>«Авто-синхронизация»</i>.<br>• Или посмотрите IP в настройках точки доступа телефона и введите вручную.",
                 tr4Q: "⚙️ Сбросить или перенастроить Wi-Fi?",
-                tr4A: "Выключите раздачу с телефона на 15 секунд. Контроллер поднимет сеть <code>BMS_Setup</code>, и вы сможете зайти на <code>192.168.4.1</code>.",
+                tr4A: "Выключите раздачу с телефона на 15 секунд. Контроллер поднимет сеть <code>BMS_Setup</code> на <code>192.168.4.1</code>.",
                 toastLinked: "✅ Контроллер привязан: ",
                 toastConnecting: "📡 Подключение к плате через BMS_Setup (192.168.4.1)...",
                 btnConnecting: "Подключение...",
-                alertNoIp: "IP адрес контроллера не задан. Нажмите 'Авто-синхронизация' или введите IP вручную.",
-                alertInvalidIp: "Неверный формат IP адреса (пример: 10.48.33.187)",
-                alertNotBms: "⚠️ Вы подключены к домашней/офисной сети Wi-Fi или контроллер не найден.\n\nСначала подключитесь к Wi-Fi сети «BMS_Setup» (пароль: bmslocal) в настройках телефона."
+                alertInvalidIp: "Неверный формат IP адреса (пример: 10.48.33.187)"
             }
         };
 
@@ -880,6 +888,7 @@
             // Text elements
             document.getElementById('t-app-title').innerText = t.appTitle;
             if (document.getElementById('t-apps-header')) document.getElementById('t-apps-header').innerText = t.appsHeader;
+            if (document.getElementById('t-auto-text')) document.getElementById('t-auto-text').innerHTML = t.autoText;
             document.getElementById('t-ip-label').innerText = t.ipLabel;
             document.getElementById('t-btn-open').innerText = t.btnOpen;
             document.getElementById('t-btn-sync').innerText = t.btnSync;
@@ -891,6 +900,8 @@
 
             if (document.getElementById('t-apk-title')) document.getElementById('t-apk-title').innerText = t.apkTitle;
             if (document.getElementById('t-apk-desc')) document.getElementById('t-apk-desc').innerText = t.apkDesc;
+            if (document.getElementById('t-apk-f1')) document.getElementById('t-apk-f1').innerText = t.apkF1;
+            if (document.getElementById('t-apk-f2')) document.getElementById('t-apk-f2').innerText = t.apkF2;
             if (document.getElementById('t-btn-download-apk')) document.getElementById('t-btn-download-apk').innerText = t.btnDownloadApk;
 
             if (document.getElementById('t-install-title-android')) document.getElementById('t-install-title-android').innerText = t.installTitleAndroid;
@@ -909,7 +920,9 @@
             document.getElementById('t-opt-a-note').innerText = t.optANote;
             document.getElementById('t-opt-b-title').innerText = t.optBTitle;
             document.getElementById('t-opt-b-desc').innerText = t.optBDesc;
-            document.getElementById('t-opt-b-steps').innerHTML = t.optBSteps;
+            if (document.getElementById('t-opt-b-net')) document.getElementById('t-opt-b-net').innerHTML = t.optBNet;
+            if (document.getElementById('t-opt-b-pwd')) document.getElementById('t-opt-b-pwd').innerHTML = t.optBPwd;
+            if (document.getElementById('t-opt-b-note')) document.getElementById('t-opt-b-note').innerText = t.optBNote;
             document.getElementById('t-step3-title').innerText = t.step3Title;
             document.getElementById('t-step3-body').innerHTML = t.step3Body;
 
@@ -1000,22 +1013,15 @@
         }
 
         function updateUI() {
-            const t = I18N[currentLang] || I18N.en;
             const displayEl = document.getElementById('display-ip');
             const manualIpInput = document.getElementById('manual-ip');
-            const statusBadge = document.getElementById('status-badge');
-            const statusText = document.getElementById('status-text');
 
             if (currentIp && currentIp !== '--') {
                 if (displayEl) displayEl.innerText = currentIp;
                 if (manualIpInput) manualIpInput.value = currentIp;
-                if (statusBadge) statusBadge.className = 'status-badge';
-                if (statusText) statusText.innerText = t.statusLinked;
             } else {
                 if (displayEl) displayEl.innerText = '--';
                 if (manualIpInput) manualIpInput.value = '';
-                if (statusBadge) statusBadge.className = 'status-badge warning';
-                if (statusText) statusText.innerText = t.statusSetup;
             }
         }
 
