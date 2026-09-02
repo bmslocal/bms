@@ -583,8 +583,8 @@
             <div id="help-content" class="help-content">
                 <!-- Tabs -->
                 <div class="guide-tabs">
-                    <button id="tab-btn-setup" class="guide-tab active" onclick="switchGuideTab('setup')">🚀 First-Time Setup</button>
-                    <button id="tab-btn-trouble" class="guide-tab" onclick="switchGuideTab('trouble')">❓ Help & FAQ</button>
+                    <button type="button" id="tab-btn-setup" class="guide-tab active" onclick="switchGuideTab('setup')">🚀 First-Time Setup</button>
+                    <button type="button" id="tab-btn-trouble" class="guide-tab" onclick="switchGuideTab('trouble')">❓ Help & FAQ</button>
                 </div>
 
                 <!-- First-Time Setup Panel -->
@@ -613,7 +613,7 @@
                                     <span id="t-opt-a-pwd">Password: <code>bmslocal</code></span>
                                 </div>
                                 <div class="option-note" id="t-opt-a-note">Links in ~10s. Find the IP in your Hotspot settings, or use Option B to auto-capture it.</div>
-                                <div class="option-note" style='color: #f59e0b; margin-top: 4px;" id="t-opt-a-warn">⚠️ <b>Important:</b> Only supports <b>2.4GHz Wi-Fi</b>. On iPhone, turn ON <i>«Maximize Compatibility»</i>.</div>
+                                <div class="option-note" style="color: #f59e0b; margin-top: 4px;" id="t-opt-a-warn">⚠️ <b>Important:</b> Only supports <b>2.4GHz Wi-Fi</b>. On iPhone, turn ON <i>«Maximize Compatibility»</i>.</div>
                             </div>
 
                             <div class="option-box">
@@ -685,8 +685,8 @@
         </div>
 
         <!-- Android APK section -->
-        <div id="apk-banner-android" class="apk-card" style='margin-top: 16px; margin-bottom: 24px;'>
-            <div class="apk-badge" style='margin-bottom: 10px;'>🚗 Android App (APK)</div>
+        <div id="apk-banner-android" class="apk-card" style="margin-top: 16px; margin-bottom: 24px;">
+            <div class="apk-badge" id="t-apps-header" style="margin-bottom: 10px;">🚗 Apps & Integrations</div>
             <div class="apk-title" id="t-apk-title">BMS Companion (Android)</div>
             <div class="apk-desc" id="t-apk-desc">Native Android companion with live battery HUD widget:</div>
             <div class="apk-features">
@@ -695,23 +695,23 @@
                     <span id="t-apk-f2">Auto-connects when phone hotspot is on</span>
                 </div>
             </div>
-            <a href='./BMS_Companion.apk" download="BMS_Companion.apk" class="btn-apk" id="btn-download-apk" onclick="onApkDownload()">
+            <a href="./BMS_Companion.apk" download="BMS_Companion.apk" class="btn-apk" id="btn-download-apk" onclick="onApkDownload()">
                 <span>⬇️</span>
                 <span id="t-btn-download-apk">Download APK</span>
             </a>
         </div>
 
-        <!-- Web App Install section -->
-        <div id="install-banner-android" class="install-card" style='margin-top: 16px; margin-bottom: 24px;'>
+        <!-- Web App Install section (only shown in browser when not installed) -->
+        <div id="install-banner-android" class="install-card" style="display: none; margin-top: 16px; margin-bottom: 24px;">
             <div class="install-title" id="t-install-title-android">📲 Install Application</div>
             <div class="install-desc" id="t-install-desc-android">Add BMS Radar to your home screen for quick one-tap access.</div>
-            <button id="btn-install-app" class="btn-install" style='background: #e4e4e7; color: #18181b; width: 100%;'>Install</button>
+            <button type="button" id="btn-install-app" class="btn-install" style="background: #e4e4e7; color: #18181b; width: 100%;">Install</button>
         </div>
 
         <!-- iOS install guide banner -->
-        <div id="install-banner-ios" class="install-card" style='margin-top: 16px; margin-bottom: 24px; border-color: #52525b; background: transparent; padding: 14px 16px;'>
-            <div class="install-title" id="t-install-title-ios" style='color: #e4e4e7; margin-bottom: 6px;'>📲 Install on iPhone</div>
-            <div class="install-desc" id="t-install-desc-ios" style='margin-bottom: 0;'>Tap the <b>Share button ⎋</b> in Safari, then select <b>«Add to Home Screen» ➕</b>.</div>
+        <div id="install-banner-ios" class="install-card" style="display: none; margin-top: 16px; margin-bottom: 24px; border-color: #52525b; background: transparent; padding: 14px 16px;">
+            <div class="install-title" id="t-install-title-ios" style="color: #e4e4e7; margin-bottom: 6px;">📲 Install on iPhone</div>
+            <div class="install-desc" id="t-install-desc-ios" style="margin-bottom: 0;">Tap the <b>Share button ⎋</b> in Safari, then select <b>«Add to Home Screen» ➕</b>.</div>
         </div>
 
     </div>
@@ -1014,13 +1014,13 @@
             if (document.getElementById('t-opt-a-desc')) document.getElementById('t-opt-a-desc').innerHTML = t.optADesc;
             if (document.getElementById('t-opt-a-net')) document.getElementById('t-opt-a-net').innerHTML = t.optANet;
             if (document.getElementById('t-opt-a-pwd')) document.getElementById('t-opt-a-pwd').innerHTML = t.optAPwd;
-            if (document.getElementById('t-opt-a-note')) document.getElementById('t-opt-a-note').innerText = t.optANote;
+            if (document.getElementById('t-opt-a-note')) document.getElementById('t-opt-a-note').innerHTML = t.optANote;
             if (document.getElementById('t-opt-a-warn')) document.getElementById('t-opt-a-warn').innerHTML = t.optAWarn;
             if (document.getElementById('t-opt-b-title')) document.getElementById('t-opt-b-title').innerText = t.optBTitle;
             if (document.getElementById('t-opt-b-desc')) document.getElementById('t-opt-b-desc').innerText = t.optBDesc;
             if (document.getElementById('t-opt-b-net')) document.getElementById('t-opt-b-net').innerHTML = t.optBNet;
             if (document.getElementById('t-opt-b-pwd')) document.getElementById('t-opt-b-pwd').innerHTML = t.optBPwd;
-            if (document.getElementById('t-opt-b-note')) document.getElementById('t-opt-b-note').innerText = t.optBNote;
+            if (document.getElementById('t-opt-b-note')) document.getElementById('t-opt-b-note').innerHTML = t.optBNote;
             if (document.getElementById('t-step3-title')) document.getElementById('t-step3-title').innerText = t.step3Title;
             if (document.getElementById('t-step3-body')) document.getElementById('t-step3-body').innerHTML = t.step3Body;
 
@@ -1046,14 +1046,17 @@
         // Device Detection (Android vs iOS vs Desktop)
         const isAndroid = /Android/i.test(navigator.userAgent);
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-        const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
+        const isStandalone = Boolean(
+            (window.navigator && window.navigator.standalone) || 
+            (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches)
+        );
 
         // Dismissal handlers for APK Card
         function onApkDownload() {
             // Tracking or UI updates can happen here
         }
 
-        if (isAndroid) {
+        if (isAndroid || !isIOS) {
             const apkBanner = document.getElementById('apk-banner-android');
             if (apkBanner) apkBanner.style.display = 'block';
         }
@@ -1067,9 +1070,10 @@
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            // Show the PWA install banner for Android since we have a prompt
-            const banner = document.getElementById('install-banner-android');
-            if (banner) banner.style.display = 'block';
+            if (!isStandalone) {
+                const banner = document.getElementById('install-banner-android');
+                if (banner) banner.style.display = 'block';
+            }
         });
 
         const btnInstall = document.getElementById('btn-install-app');
@@ -1079,7 +1083,8 @@
                     deferredPrompt.prompt();
                     const { outcome } = await deferredPrompt.userChoice;
                     deferredPrompt = null;
-                    document.getElementById('install-banner-android').style.display = 'none';
+                    const banner = document.getElementById('install-banner-android');
+                    if (banner) banner.style.display = 'none';
                 }
             });
         }
@@ -1115,24 +1120,11 @@
                 if (displayEl) displayEl.innerText = '--';
                 if (manualIpInput) manualIpInput.value = '';
             }
-
-            
         }
 
-        let errBoxTimeout;
         function openDashboard() {
-            const t = I18N[currentLang] || I18N.en;
-            const errBox = document.getElementById('dash-error-box');
-            if (errBox) {
-                errBox.innerHTML = t.dashUnreachable;
-                errBox.style.display = 'block';
-                if (errBoxTimeout) clearTimeout(errBoxTimeout);
-                errBoxTimeout = setTimeout(() => { errBox.style.display = 'none'; }, 10000);
-            }
             const targetIp = (currentIp && currentIp !== '--') ? currentIp : '192.168.4.1';
-            setTimeout(() => {
-                window.location.href = 'http://' + targetIp + '/';
-            }, 300);
+            window.location.href = 'http://' + targetIp + '/';
         }
 
         function syncWithBoard() {
@@ -1140,17 +1132,20 @@
             showToast(t.toastConnecting);
             setTimeout(() => {
                 window.location.href = 'http://192.168.4.1/sync?lang=' + currentLang;
-            }, 1200);
+            }, 600);
         }
 
         function toggleEditIp() {
             const row = document.getElementById('edit-row');
-            row.style.display = (row.style.display === 'flex') ? 'none' : 'flex';
+            if (row) {
+                row.style.display = (row.style.display === 'flex') ? 'none' : 'flex';
+            }
         }
 
         function saveManualIp() {
             const t = I18N[currentLang] || I18N.en;
-            const val = document.getElementById('manual-ip').value.trim();
+            const input = document.getElementById('manual-ip');
+            const val = input ? input.value.trim() : '';
             if (/^(\d{1,3}\.){3}\d{1,3}$/.test(val)) {
                 currentIp = val;
                 localStorage.setItem('bms_saved_ip', currentIp);
@@ -1165,6 +1160,7 @@
         function toggleHelp() {
             const content = document.getElementById('help-content');
             const arrow = document.getElementById('help-arrow');
+            if (!content || !arrow) return;
             if (content.style.display === 'block') {
                 content.style.display = 'none';
                 arrow.innerText = '▼';
@@ -1180,14 +1176,16 @@
             const panelSetup = document.getElementById('panel-setup');
             const panelTrouble = document.getElementById('panel-trouble');
 
+            if (!btnSetup || !btnTrouble || !panelSetup || !panelTrouble) return;
+
             if (tab === 'setup') {
-                btnSetup.className = 'guide-tab active';
-                btnTrouble.className = 'guide-tab';
+                btnSetup.classList.add('active');
+                btnTrouble.classList.remove('active');
                 panelSetup.style.display = 'block';
                 panelTrouble.style.display = 'none';
             } else {
-                btnSetup.className = 'guide-tab';
-                btnTrouble.className = 'guide-tab active';
+                btnSetup.classList.remove('active');
+                btnTrouble.classList.add('active');
                 panelSetup.style.display = 'none';
                 panelTrouble.style.display = 'block';
             }
@@ -1196,10 +1194,11 @@
         let toastTimeout;
         function showToast(msg) {
             const toast = document.getElementById('toast');
+            if (!toast) return;
             toast.innerHTML = msg;
             toast.style.display = 'block';
             if (toastTimeout) clearTimeout(toastTimeout);
-            toastTimeout = setTimeout(() => { toast.style.display = 'none'; }, 7000);
+            toastTimeout = setTimeout(() => { toast.style.display = 'none'; }, 6000);
         }
 
         // Init Language and UI
