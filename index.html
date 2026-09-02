@@ -570,7 +570,7 @@
         <div class="auto-card" id="auto-card">
             <span class="auto-icon">🛡️</span>
             <div class="auto-text" id="t-auto-text">
-                <b>Контроллер охлаждения работает автономно.</b> Телефон нужен только для просмотра телеметрии.
+                <b>Autonomous hybrid battery cooling.</b> Phone is only required for viewing live telemetry.
             </div>
         </div>
 
@@ -612,7 +612,7 @@
                                     <span id="t-opt-a-net">Network: <code>BMS</code></span>
                                     <span id="t-opt-a-pwd">Password: <code>bmslocal</code></span>
                                 </div>
-                                <div class="option-note" id="t-opt-a-note">Links in ~10s. Find the IP in your Hotspot settings, or use Option B to auto-capture it.</div>
+                                <div class="option-note" id="t-opt-a-note">Links in ~10s. Find IP in Hotspot settings, or try <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> (iPhone/PC). If unreachable, use Option B (Auto-Sync) above.</div>
                                 <div class="option-note" style="color: #f59e0b; margin-top: 4px;" id="t-opt-a-warn">⚠️ <b>Important:</b> Only supports <b>2.4GHz Wi-Fi</b>. On iPhone, turn ON <i>«Maximize Compatibility»</i>.</div>
                             </div>
 
@@ -623,7 +623,7 @@
                                     <span id="t-opt-b-net">Network: <code>BMS_Setup</code></span>
                                     <span id="t-opt-b-pwd">Password: <code>bmslocal</code></span>
                                 </div>
-                                <div class="option-note" id="t-opt-b-note">Open <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> to access device settings, or tap Auto-Sync above.</div>
+                                <div class="option-note" id="t-opt-b-note">Open <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> or <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> to access device settings, or tap Auto-Sync above.</div>
                             </div>
                         </div>
                     </div>
@@ -677,7 +677,7 @@
                     <div class="trouble-item" style='margin-bottom: 4px;'>
                         <div class="trouble-q" id="t-tr-4-q">⚙️ Reconfigure or reset Wi-Fi?</div>
                         <div class="trouble-a" id="t-tr-4-a">
-                            Turn off phone hotspot for 15s. The controller will open <code>BMS_Setup</code> hotspot at <code>192.168.4.1</code>.
+                            Turn off phone hotspot for 15s. Connect to <code>BMS_Setup</code> Wi-Fi and open <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> or <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> to reconfigure.
                         </div>
                     </div>
                 </div>
@@ -750,7 +750,7 @@
                 optADesc: "Rename your phone's <b>Personal Hotspot</b> to:",
                 optANet: "Network: <code>BMS</code>",
                 optAPwd: "Password: <code>bmslocal</code>",
-                optANote: "Links in ~10s. Find IP in Hotspot settings, or open <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> directly in browser.",
+                optANote: "Links in ~10s. Find IP in Hotspot settings, or try <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> (iPhone/PC). If unreachable, use Option B (Auto-Sync) above.",
                 optAWarn: "⚠️ <b>Important:</b> Only supports <b>2.4GHz Wi-Fi</b>. On iPhone, turn ON <i>«Maximize Compatibility»</i>.",
                 optBTitle: "🔸 Option B: Direct Controller Wi-Fi (Setup Mode)",
                 optBDesc: "Connect phone to controller's Wi-Fi network:",
@@ -768,7 +768,7 @@
                 trAndroidQ: "🤖 Android Hotspot 2.4GHz Settings:",
                 trAndroidA: "In your Android phone settings ➔ <i>Portable Hotspot / Tethering</i> ➔ <i>Set up hotspot</i>, make sure <b>AP Band</b> is set to <b>2.4 GHz Band</b> (not 5.0 GHz preferred).",
                 tr4Q: "⚙️ Reconfigure or reset Wi-Fi?",
-                tr4A: "Turn off phone hotspot for 15s. The controller will open <code>BMS_Setup</code> hotspot at <code>192.168.4.1</code>.",
+                tr4A: "Turn off phone hotspot for 15s. Connect to <code>BMS_Setup</code> Wi-Fi and open <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> or <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> to reconfigure.",
                 toastLinked: "✅ Controller linked: ",
                 toastConnecting: "📡 Connecting (192.168.4.1)...<br><small style=\"color:#cbd5e1;\">Ensure your Wi-Fi is connected to BMS_Setup!</small>",
                 btnConnecting: "Connecting...",
@@ -809,7 +809,7 @@
                 optADesc: "请将手机的<b>个人热点</b>重命名为：",
                 optANet: "热点名称：<code>BMS</code>",
                 optAPwd: "热点密码：<code>bmslocal</code>",
-                optANote: "约 10 秒内连接。在热点设置中查找 IP，或在浏览器中直接打开 <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a>",
+                optANote: "约 10 秒内连接。在热点设置中查找 IP，或尝试打开 <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a>（适用于 iPhone/电脑）。若无法访问，请使用上方选项 B（自动同步）。",
                 optAWarn: "⚠️ <b>特别注意：</b> 仅支持 <b>2.4GHz Wi-Fi</b>。iPhone 用户请开启<i>“最大兼容性”</i>。",
                 optBTitle: "🔸 选项 B：直连控制器 Wi-Fi（配置模式）",
                 optBDesc: "手机连接至控制器自带热点：",
@@ -827,7 +827,7 @@
                 trAndroidQ: "🤖 Android 手机 2.4GHz 热点设置方法：",
                 trAndroidA: "在手机 <i>设置 ➔ 个人热点 / 网络共享 ➔ 热点设置</i> 中，将 <b>AP 频段</b> 切换为 <b>2.4 GHz 频段</b>（不要选 5 GHz）。",
                 tr4Q: "⚙️ 重新配置或重置 Wi-Fi？",
-                tr4A: "关闭手机热点 15 秒，控制器将自动开启 <code>BMS_Setup</code> 热点，访问 <code>192.168.4.1</code> 即可重新配置。",
+                tr4A: "关闭手机热点 15 秒。连接 <code>BMS_Setup</code> Wi-Fi 并打开 <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> 或 <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> 即可重新配置。",
                 toastLinked: "✅ 控制器已连接：",
                 toastConnecting: "📡 正在连接 (192.168.4.1)...<br><small style=\"color:#cbd5e1;\">请确保手机已连接到 BMS_Setup 热点！</small>",
                 btnConnecting: "正在连接...",
@@ -868,7 +868,7 @@
                 optADesc: "스마트폰의 <b>개인용 핫스팟</b> 이름을 다음으로 변경하세요:",
                 optANet: "네트워크 이름: <code>BMS</code>",
                 optAPwd: "비밀번호: <code>bmslocal</code>",
-                optANote: "약 10초 내 연결. 핫스팟 설정에서 IP를 찾거나 브라우저에서 <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> 을 여세요.",
+                optANote: "약 10초 내 연결. 핫스팟 설정에서 IP를 찾거나 <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> 접속을 시도하세요 (iPhone/PC 권장). 연결되지 않으면 상단의 방법 B(자동 동기화)를 사용하세요.",
                 optAWarn: "⚠️ <b>중요 알림:</b> <b>2.4GHz Wi-Fi</b>만 지원합니다. iPhone은 <i>«호환성 최대화»</i>를 켜주세요.",
                 optBTitle: "🔸 방법 B: 컨트롤러 Wi-Fi 직접 연결 (설정 모드)",
                 optBDesc: "컨트롤러의 자체 Wi-Fi 네트워크에 연결합니다:",
@@ -886,7 +886,7 @@
                 trAndroidQ: "🤖 Android 핫스팟 2.4GHz 설정 방법:",
                 trAndroidA: "스마트폰 <i>설정 ➔ 테더링 및 핫스팟 ➔ 핫스팟 설정</i>에서 <b>AP 밴드</b>를 <b>2.4 GHz 대역</b>으로 선택하세요.",
                 tr4Q: "⚙️ Wi-Fi 재설정 또는 재구성:",
-                tr4A: "스마트폰 핫스팟을 15초간 끄면 컨트롤러가 <code>192.168.4.1</code>의 <code>BMS_Setup</code> 핫스팟을 다시 엽니다.",
+                tr4A: "스마트폰 핫스팟을 15초간 끕니다. <code>BMS_Setup</code> Wi-Fi에 연결한 후 <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> 또는 <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> 에 접속하여 재설정하세요.",
                 toastLinked: "✅ 컨트롤러 연결됨: ",
                 toastConnecting: "📡 연결 중 (192.168.4.1)...<br><small style=\"color:#cbd5e1;\">스마트폰이 BMS_Setup Wi-Fi에 연결되어 있는지 확인하세요!</small>",
                 btnConnecting: "연결 중...",
@@ -927,7 +927,7 @@
                 optADesc: "<b>Переименуйте Точку доступа</b> на телефоне в:",
                 optANet: "Имя сети: <code>BMS</code>",
                 optAPwd: "Пароль: <code>bmslocal</code>",
-                optANote: "Подключится за ~10 сек. Откройте <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> в браузере, либо найдите IP в настройках точки доступа.",
+                optANote: "Подключится за ~10 сек. Найдите IP в настройках точки доступа или попробуйте открыть <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> (для iPhone/ПК). Если не открывается — используйте Вариант Б (Авто-синхронизацию).",
                 optAWarn: "⚠️ <b>Важно:</b> Поддерживается только <b>2.4GHz Wi-Fi</b>. На iPhone включите <i>«Максимальная совместимость»</i>.",
                 optBTitle: "🔸 Вариант Б: Прямая сеть контроллера (Настройка)",
                 optBDesc: "Подключите телефон к Wi-Fi сети контроллера:",
@@ -945,7 +945,7 @@
                 trAndroidQ: "🤖 Настройка 2.4GHz на телефонах Android:",
                 trAndroidA: "В меню <i>Настройки ➔ Точка доступа Wi-Fi ➔ Настройка точки доступа</i> переключите пункт <b>Диапазон частот (AP Band)</b> на <b>2.4 ГГц</b> (вместо 5 ГГц).",
                 tr4Q: "⚙️ Сбросить или перенастроить Wi-Fi?",
-                tr4A: "Выключите раздачу с телефона на 15 секунд. Контроллер поднимет сеть <code>BMS_Setup</code> на <code>192.168.4.1</code>.",
+                tr4A: "Выключите раздачу с телефона на 15 сек. Подключитесь к Wi-Fi <code>BMS_Setup</code> и откройте <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> или <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> для настройки.",
                 toastLinked: "✅ Контроллер привязан: ",
                 toastConnecting: "📡 Подключение (192.168.4.1)...<br><small style=\"color:#cbd5e1;\">Убедитесь, что вы подключены к Wi-Fi сети BMS_Setup!</small>",
                 btnConnecting: "Подключение...",
@@ -1036,6 +1036,19 @@
             if (document.getElementById('t-tr-4-a')) document.getElementById('t-tr-4-a').innerHTML = t.tr4A;
         }
 
+        let toastTimeout = null;
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            if (!toast) return;
+            toast.innerHTML = msg;
+            toast.style.display = 'block';
+            if (toastTimeout) clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => { toast.style.display = 'none'; }, 6000);
+        }
+
+        // Apply language as soon as defined
+        applyLanguage();
+
         // PWA Service Worker Registration
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -1092,23 +1105,6 @@
         // IP State Management
         let currentIp = localStorage.getItem('bms_saved_ip') || '';
 
-        // Check URL Query Parameter (?ip=10.48.33.xxx)
-        const queryIp = urlParams.get('ip');
-
-        if (queryIp && /^(\d{1,3}\.){3}\d{1,3}$/.test(queryIp)) {
-            currentIp = queryIp;
-            localStorage.setItem('bms_saved_ip', currentIp);
-            localStorage.setItem('bms_last_saved', new Date().toISOString());
-
-            // Clean URL bar
-            if (window.history.replaceState) {
-                window.history.replaceState({}, document.title, window.location.pathname);
-            }
-
-            const t = I18N[currentLang] || I18N.en;
-            showToast(`${t.toastLinked}${currentIp}`);
-        }
-
         function updateUI() {
             const displayEl = document.getElementById('display-ip');
             const manualIpInput = document.getElementById('manual-ip');
@@ -1120,6 +1116,29 @@
                 if (displayEl) displayEl.innerText = '--';
                 if (manualIpInput) manualIpInput.value = '';
             }
+        }
+
+        // Apply saved IP immediately to DOM
+        updateUI();
+
+        // Check URL Query Parameter (?ip=10.48.33.xxx)
+        const queryIp = urlParams.get('ip');
+
+        if (queryIp && /^(\d{1,3}\.){3}\d{1,3}$/.test(queryIp)) {
+            currentIp = queryIp;
+            localStorage.setItem('bms_saved_ip', currentIp);
+            localStorage.setItem('bms_last_saved', new Date().toISOString());
+
+            // Immediately update UI so the IP displays with zero delay
+            updateUI();
+
+            // Clean URL bar
+            if (window.history.replaceState) {
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+
+            const t = I18N[currentLang] || I18N.en;
+            showToast(`${t.toastLinked}${currentIp}`);
         }
 
         function openDashboard() {
@@ -1191,18 +1210,7 @@
             }
         }
 
-        let toastTimeout;
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            if (!toast) return;
-            toast.innerHTML = msg;
-            toast.style.display = 'block';
-            if (toastTimeout) clearTimeout(toastTimeout);
-            toastTimeout = setTimeout(() => { toast.style.display = 'none'; }, 6000);
-        }
-
-        // Init Language and UI
-        applyLanguage();
+        // Final UI refresh
         updateUI();
     </script>
 </body>
