@@ -455,6 +455,59 @@
             cursor: pointer;
         }
 
+        .ip-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            transition: 0.3s;
+        }
+        .ip-status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+        }
+        .status-online {
+            background: rgba(34, 197, 94, 0.15);
+            color: #4ade80;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+        .status-online .ip-status-dot {
+            background: #22c55e;
+            box-shadow: 0 0 8px #22c55e;
+        }
+        .status-offline {
+            background: rgba(113, 113, 122, 0.15);
+            color: #a1a1aa;
+            border: 1px solid rgba(113, 113, 122, 0.3);
+        }
+        .status-offline .ip-status-dot {
+            background: #71717a;
+        }
+        .sync-hint {
+            font-size: 11.5px;
+            color: #71717a;
+            margin-top: 6px;
+            margin-bottom: 4px;
+            line-height: 1.35;
+        }
+        .dash-error-box {
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid rgba(239, 68, 68, 0.35);
+            color: #fca5a5;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            margin-top: 10px;
+            text-align: left;
+            display: none;
+            line-height: 1.45;
+        }
+
         .notify-toast {
             background: rgba(34, 197, 94, 0.15);
             border: 1px solid #22c55e;
@@ -483,16 +536,24 @@
         <div class="card" id="main-card">
             <div class="ip-label" id="t-ip-label">Controller IP Address</div>
             <div id="display-ip" class="ip-value">--</div>
+            <div>
+                <div id="ip-status-badge" class="ip-status-badge status-offline">
+                    <span class="ip-status-dot"></span>
+                    <span id="t-ip-status">Offline / Not Checked</span>
+                </div>
+            </div>
 
             <button id="btn-open" class="btn-primary" onclick="openDashboard()">
-                <span>🚀</span>
+                <span id="open-btn-icon">🚀</span>
                 <span id="t-btn-open">Open Dashboard</span>
             </button>
+            <div id="dash-error-box" class="dash-error-box"></div>
 
             <button id="btn-sync-board" class="btn-sync" onclick="syncWithBoard()">
-                <span>📡</span>
+                <span id="sync-btn-icon">📡</span>
                 <span id="t-btn-sync">Auto-Sync via BMS_Setup</span>
             </button>
+            <div class="sync-hint" id="t-sync-hint">Connect phone Wi-Fi to BMS_Setup first, then tap to automatically discover controller IP.</div>
 
             <button class="btn-secondary" onclick="toggleEditIp()">
                 <span>✏️</span>
@@ -547,22 +608,23 @@
                         <div class="step-body">
                             <div class="option-box">
                                 <div class="option-title" id="t-opt-a-title">🔹 Option A: Personal Hotspot (Recommended)</div>
-                                <div id="t-opt-a-desc">Turn on your phone's <b>Personal Hotspot</b>:</div>
+                                <div id="t-opt-a-desc">Rename your phone's <b>Personal Hotspot</b> to:</div>
                                 <div class="cred-row">
                                     <span id="t-opt-a-net">Network: <code>BMS</code></span>
                                     <span id="t-opt-a-pwd">Password: <code>bmslocal</code></span>
                                 </div>
                                 <div class="option-note" id="t-opt-a-note">The controller links automatically in ~10 seconds.</div>
+                                <div class="option-note" style="color: #f59e0b; margin-top: 4px;" id="t-opt-a-warn">⚠️ <b>Important:</b> ESP32-C3 only supports <b>2.4GHz Wi-Fi</b> (not 5GHz). On iPhone, turn ON <i>«Maximize Compatibility»</i>; on Android, set AP Band to <i>2.4 GHz</i>.</div>
                             </div>
 
                             <div class="option-box">
-                                <div class="option-title" id="t-opt-b-title">🔸 Option B: Direct Controller Wi-Fi</div>
+                                <div class="option-title" id="t-opt-b-title">🔸 Option B: Direct Controller Wi-Fi (Setup Mode)</div>
                                 <div id="t-opt-b-desc">Connect phone to controller's Wi-Fi network:</div>
                                 <div class="cred-row">
                                     <span id="t-opt-b-net">Network: <code>BMS_Setup</code></span>
                                     <span id="t-opt-b-pwd">Password: <code>bmslocal</code></span>
                                 </div>
-                                <div class="option-note" id="t-opt-b-note">Open <code>http://192.168.4.1</code> to configure custom car Wi-Fi.</div>
+                                <div class="option-note" id="t-opt-b-note">Open <code>http://192.168.4.1</code> to connect the controller to your car's built-in Wi-Fi (Client/STA mode).</div>
                             </div>
                         </div>
                     </div>
@@ -584,8 +646,10 @@
                         <div class="trouble-q" id="t-tr-1-q">🔴 Dashboard not opening or offline?</div>
                         <div class="trouble-a" id="t-tr-1-a">
                             • Ensure vehicle is in <b>READY</b> mode.<br>
-                            • Verify phone hotspot name is <code>BMS</code> and password is <code>bmslocal</code>.<br>
-                            • On iPhone, turn <b>ON</b> <i>«Maximize Compatibility»</i> in Personal Hotspot settings.
+                            • Verify phone hotspot name is exactly <code>BMS</code> and password is <code>bmslocal</code>.<br>
+                            • <b>2.4GHz Wi-Fi Warning:</b> The controller hardware only supports 2.4GHz Wi-Fi. It will not connect to 5GHz-only hotspots.<br>
+                            • On iPhone, turn <b>ON</b> <i>«Maximize Compatibility»</i> in Personal Hotspot settings.<br>
+                            • On Android, set Hotspot AP Band to <b>2.4 GHz</b>.
                         </div>
                     </div>
 
@@ -600,8 +664,15 @@
                     <div class="trouble-item">
                         <div class="trouble-q" id="t-tr-3-q">🟡 IP address changed?</div>
                         <div class="trouble-a" id="t-tr-3-a">
-                            • Connect to <code>BMS_Setup</code> and tap <i>«Auto-Sync via BMS_Setup»</i>.<br>
+                            • Connect phone Wi-Fi to <code>BMS_Setup</code> and tap <i>«Auto-Sync via BMS_Setup»</i>.<br>
                             • Or check phone Hotspot settings for the connected device IP and save it manually.
+                        </div>
+                    </div>
+
+                    <div class="trouble-item">
+                        <div class="trouble-q" id="t-tr-android-q">🤖 Android Hotspot 2.4GHz Settings:</div>
+                        <div class="trouble-a" id="t-tr-android-a">
+                            In your Android phone settings ➔ <i>Portable Hotspot / Tethering</i> ➔ <i>Set up hotspot</i>, make sure <b>AP Band</b> is set to <b>2.4 GHz Band</b> (not 5.0 GHz preferred).
                         </div>
                     </div>
 
@@ -653,8 +724,12 @@
                 appTitle: "BMS Radar",
                 appsHeader: "Apps & Integrations",
                 ipLabel: "Controller IP Address",
+                ipStatusOnline: "Online (Telemetry Active)",
+                ipStatusOffline: "Offline / Standby",
+                ipStatusChecking: "Checking status...",
                 btnOpen: "Open Dashboard",
                 btnSync: "Auto-Sync via BMS_Setup",
+                syncHint: "Connect phone Wi-Fi to BMS_Setup first, then tap to automatically discover controller IP.",
                 btnManual: "Set IP Manually",
                 btnSaveIp: "Save",
                 autoText: "<b>Autonomous hybrid battery cooling.</b> Phone is only required for viewing live telemetry.",
@@ -674,35 +749,44 @@
                 step1Body: "Insert the controller into your vehicle's <b>OBD2 port</b> (under the steering wheel) and power on the car (<b>READY</b> mode).",
                 step2Title: "Choose Wi-Fi Connection",
                 optATitle: "🔹 Option A: Personal Hotspot (Recommended)",
-                optADesc: "Turn on your phone's <b>Personal Hotspot</b>:",
+                optADesc: "Rename your phone's <b>Personal Hotspot</b> to:",
                 optANet: "Network: <code>BMS</code>",
                 optAPwd: "Password: <code>bmslocal</code>",
                 optANote: "The controller links automatically in ~10 seconds.",
-                optBTitle: "🔸 Option B: Direct Controller Wi-Fi",
+                optAWarn: "⚠️ <b>Important:</b> ESP32-C3 only supports <b>2.4GHz Wi-Fi</b> (not 5GHz). On iPhone, turn ON <i>«Maximize Compatibility»</i>; on Android, set AP Band to <i>2.4 GHz</i>.",
+                optBTitle: "🔸 Option B: Direct Controller Wi-Fi (Setup Mode)",
                 optBDesc: "Connect phone to controller's Wi-Fi network:",
                 optBNet: "Network: <code>BMS_Setup</code>",
                 optBPwd: "Password: <code>bmslocal</code>",
-                optBNote: "Open <code>http://192.168.4.1</code> to configure custom car Wi-Fi.",
+                optBNote: "Open <code>http://192.168.4.1</code> to connect the controller to your car's built-in Wi-Fi (Client/STA mode).",
                 step3Title: "Launch Dashboard or Companion App",
                 step3Body: "Tap <b>«🚀 Open Dashboard»</b> above, or use the <b>BMS Companion</b> Android APK below.",
                 tr1Q: "🔴 Dashboard not opening or offline?",
-                tr1A: "• Ensure vehicle is in <b>READY</b> mode.<br>• Verify phone hotspot name is <code>BMS</code> and password is <code>bmslocal</code>.<br>• On iPhone, turn <b>ON</b> <i>«Maximize Compatibility»</i> in Personal Hotspot settings.",
+                tr1A: "• Ensure vehicle is in <b>READY</b> mode.<br>• Verify phone hotspot name is exactly <code>BMS</code> and password is <code>bmslocal</code>.<br>• <b>2.4GHz Wi-Fi Warning:</b> The controller hardware only supports 2.4GHz Wi-Fi. It will not connect to 5GHz-only hotspots.<br>• On iPhone, turn <b>ON</b> <i>«Maximize Compatibility»</i> in Personal Hotspot settings.<br>• On Android, set Hotspot AP Band to <b>2.4 GHz</b>.",
                 tr2Q: "📶 Tips for BMS_Setup Wi-Fi:",
                 tr2A: "• Turn <b>OFF</b> <i>«Auto-reconnect»</i> for BMS_Setup.<br>• If prompted <i>«No Internet»</i>, tap <b>«Keep Wi-Fi connection» / «Always connect»</b>.",
                 tr3Q: "🟡 IP address changed?",
-                tr3A: "• Connect to <code>BMS_Setup</code> and tap <i>«Auto-Sync via BMS_Setup»</i>.<br>• Or check phone Hotspot settings for the connected device IP and save it manually.",
+                tr3A: "• Connect phone Wi-Fi to <code>BMS_Setup</code> and tap <i>«Auto-Sync via BMS_Setup»</i>.<br>• Or check phone Hotspot settings for the connected device IP and save it manually.",
+                trAndroidQ: "🤖 Android Hotspot 2.4GHz Settings:",
+                trAndroidA: "In your Android phone settings ➔ <i>Portable Hotspot / Tethering</i> ➔ <i>Set up hotspot</i>, make sure <b>AP Band</b> is set to <b>2.4 GHz Band</b> (not 5.0 GHz preferred).",
                 tr4Q: "⚙️ Reconfigure or reset Wi-Fi?",
                 tr4A: "Turn off phone hotspot for 15s. The controller will open <code>BMS_Setup</code> hotspot at <code>192.168.4.1</code>.",
                 toastLinked: "✅ Controller linked: ",
                 toastConnecting: "📡 Connecting to controller via BMS_Setup (192.168.4.1)...",
                 btnConnecting: "Connecting...",
-                alertInvalidIp: "Invalid IP address format (example: 10.48.33.187)"
+                alertInvalidIp: "Invalid IP address format (example: 10.48.33.187)",
+                dashUnreachable: "⚠️ <b>Cannot connect to controller.</b><br>• Ensure phone Hotspot <code>BMS</code> / <code>bmslocal</code> (2.4GHz) is ON.<br>• Ensure vehicle ignition is in <b>READY</b> mode.<br>• Connect to <code>BMS_Setup</code> Wi-Fi and tap <b>«Auto-Sync via BMS_Setup»</b>."
             },
             zh: {
                 appTitle: "BMS Radar",
+                appsHeader: "应用与集成",
                 ipLabel: "控制器 IP 地址",
+                ipStatusOnline: "在线 (遥测正常)",
+                ipStatusOffline: "离线 / 待机",
+                ipStatusChecking: "检查状态中...",
                 btnOpen: "打开仪表板",
                 btnSync: "通过 BMS_Setup 自动同步",
+                syncHint: "请先将手机 Wi-Fi 连接至 BMS_Setup，然后点击按钮自动发现并绑定控制器 IP。",
                 btnManual: "手动设置 IP",
                 btnSaveIp: "保存",
                 autoText: "<b>混合动力电池全自动智能冷却。</b> 仅在查看实时遥测数据时需要手机。",
@@ -722,35 +806,44 @@
                 step1Body: "将控制器插入车辆方向盘下方的 <b>OBD2 接口</b>，并将车辆启动至 <b>READY</b> 模式。",
                 step2Title: "选择 Wi-Fi 连接方式",
                 optATitle: "🔹 选项 A：手机个人热点（推荐）",
-                optADesc: "打开手机的<b>个人热点</b>：",
+                optADesc: "请将手机的<b>个人热点</b>重命名为：",
                 optANet: "热点名称：<code>BMS</code>",
                 optAPwd: "热点密码：<code>bmslocal</code>",
                 optANote: "控制器将在约 10 秒内自动连接至手机热点。",
-                optBTitle: "🔸 选项 B：直连控制器 Wi-Fi",
+                optAWarn: "⚠️ <b>特别注意：</b> ESP32-C3 仅支持 <b>2.4GHz Wi-Fi</b>（不支持 5GHz）。iPhone 用户请开启<i>“最大兼容性”</i>，Android 用户请将频段设为 <i>2.4 GHz</i>。",
+                optBTitle: "🔸 选项 B：直连控制器 Wi-Fi（配置模式）",
                 optBDesc: "手机连接至控制器自带热点：",
                 optBNet: "网络名称：<code>BMS_Setup</code>",
                 optBPwd: "网络密码：<code>bmslocal</code>",
-                optBNote: "打开 <code>http://192.168.4.1</code> 可配置车载自定义 Wi-Fi。",
+                optBNote: "打开 <code>http://192.168.4.1</code> 将控制器连接到车载 Wi-Fi（客户端/STA 模式）。",
                 step3Title: "打开仪表板或配套应用",
                 step3Body: "点击上方<b>«🚀 打开仪表板»</b>，或下载并使用下方的 <b>BMS Companion</b> 安卓应用。",
                 tr1Q: "🔴 无法打开仪表板或设备离线？",
-                tr1A: "• 确保车辆处于通电状态（<b>READY</b> 模式）。<br>• 检查手机个人热点名称是否为 <code>BMS</code>，密码为 <code>bmslocal</code>。<br>• iPhone 用户请务必在个人热点设置中开启<i>“最大兼容性”</i>。",
+                tr1A: "• 确保车辆处于通电状态（<b>READY</b> 模式）。<br>• 检查手机个人热点名称是否严格为 <code>BMS</code>，密码为 <code>bmslocal</code>。<br>• <b>2.4GHz 限制：</b> 控制器仅支持 2.4GHz 频段，无法连接 5GHz 热点。<br>• iPhone 用户请务必在个人热点设置中开启<i>“最大兼容性”</i>。<br>• Android 用户请将热点 AP 频段设置为 <b>2.4 GHz</b>。",
                 tr2Q: "📶 连接 BMS_Setup 时的注意事项：",
                 tr2A: "• <b>关闭自动重连：</b>输入密码 <code>bmslocal</code> 时，请<b>关闭</b><i>“自动重连”</i>开关。<br>• <b>提示无网络：</b>若系统提示<i>“无互联网连接”</i>，请勾选<b>“始终连接”/“保持连接”</b>。",
                 tr3Q: "🟡 IP 地址发生变化？",
                 tr3A: "• 手机连接 <code>BMS_Setup</code> 并点击<i>“通过 BMS_Setup 自动同步”</i>。<br>• 或在手机的<i>设置 ➔ 个人热点 ➔ 已连接设备</i>中查看分配的 IP 并手动输入。",
+                trAndroidQ: "🤖 Android 手机 2.4GHz 热点设置方法：",
+                trAndroidA: "在手机 <i>设置 ➔ 个人热点 / 网络共享 ➔ 热点设置</i> 中，将 <b>AP 频段</b> 切换为 <b>2.4 GHz 频段</b>（不要选 5 GHz）。",
                 tr4Q: "⚙️ 重新配置或重置 Wi-Fi？",
                 tr4A: "关闭手机热点 15 秒，控制器将自动开启 <code>BMS_Setup</code> 热点，访问 <code>192.168.4.1</code> 即可重新配置。",
                 toastLinked: "✅ 控制器已连接：",
                 toastConnecting: "📡 正在通过 BMS_Setup (192.168.4.1) 连接控制器...",
                 btnConnecting: "正在连接...",
-                alertInvalidIp: "IP 地址格式无效（示例：10.48.33.187）"
+                alertInvalidIp: "IP 地址格式无效（示例：10.48.33.187）",
+                dashUnreachable: "⚠️ <b>无法连接至控制器。</b><br>• 请确认手机热点 <code>BMS</code> / <code>bmslocal</code> (2.4GHz) 已开启。<br>• 请确认车辆处于 <b>READY</b> 模式。<br>• 或连接 <code>BMS_Setup</code> 热点并点击<b>“通过 BMS_Setup 自动同步”</b>。"
             },
             ko: {
                 appTitle: "BMS Radar",
+                appsHeader: "앱 및 연동",
                 ipLabel: "컨트롤러 IP 주소",
+                ipStatusOnline: "온라인 (원격 제어 활성)",
+                ipStatusOffline: "오프라인 / 대기",
+                ipStatusChecking: "상태 확인 중...",
                 btnOpen: "대시보드 열기",
                 btnSync: "BMS_Setup을 통한 자동 동기화",
+                syncHint: "스마트폰 Wi-Fi를 먼저 BMS_Setup에 연결한 뒤 버튼을 눌러 컨트롤러 IP를 자동 검색 및 등록하세요.",
                 btnManual: "수동으로 IP 입력",
                 btnSaveIp: "저장",
                 autoText: "<b>하이브리드 배터리 완전 자동 자율 냉각.</b> 스마트폰은 실시간 데이터 확인용으로만 필요합니다.",
@@ -770,35 +863,44 @@
                 step1Body: "컨트롤러를 운전대 아래 <b>OBD2 단자</b>에 연결하고 차량 전원을 켜세요 (<b>READY</b> 모드).",
                 step2Title: "Wi-Fi 연결 방식 선택",
                 optATitle: "🔹 방법 A: 스마트폰 핫스팟 (권장)",
-                optADesc: "스마트폰의 <b>개인용 핫스팟</b>을 켜세요:",
+                optADesc: "스마트폰의 <b>개인용 핫스팟</b> 이름을 다음으로 변경하세요:",
                 optANet: "네트워크 이름: <code>BMS</code>",
                 optAPwd: "비밀번호: <code>bmslocal</code>",
                 optANote: "약 10초 내에 컨트롤러가 자동으로 연결됩니다.",
-                optBTitle: "🔸 방법 B: 컨트롤러 Wi-Fi 직접 연결",
+                optAWarn: "⚠️ <b>중요 알림:</b> ESP32-C3 하드웨어는 <b>2.4GHz Wi-Fi</b>만 지원합니다 (5GHz 미지원). iPhone은 <i>«호환성 최대화»</i>를 켜고, Android는 AP 밴드를 <i>2.4 GHz</i>로 설정하세요.",
+                optBTitle: "🔸 방법 B: 컨트롤러 Wi-Fi 직접 연결 (설정 모드)",
                 optBDesc: "컨트롤러의 자체 Wi-Fi 네트워크에 연결합니다:",
                 optBNet: "네트워크 이름: <code>BMS_Setup</code>",
                 optBPwd: "비밀번호: <code>bmslocal</code>",
-                optBNote: "<code>http://192.168.4.1</code>에 접속하여 차량 Wi-Fi를 설정하세요.",
+                optBNote: "<code>http://192.168.4.1</code>에 접속하여 컨트롤러를 차량의 Wi-Fi에 연결하세요 (클라이언트/STA 모드).",
                 step3Title: "대시보드 또는 컴패니언 앱 실행",
                 step3Body: "상단의 <b>«🚀 대시보드 열기»</b>를 누르거나 아래의 <b>BMS Companion</b> 안드로이드 앱을 사용하세요.",
                 tr1Q: "🔴 대시보드가 열리지 않거나 오프라인인 경우:",
-                tr1A: "• 차량 시동이 켜져 있는지 확인하세요 (<b>READY</b> 모드).<br>• 스마트폰 핫스팟 이름이 <code>BMS</code>, 비밀번호가 <code>bmslocal</code>인지 확인하세요.<br>• iPhone의 경우 핫스팟 설정에서 <i>«호환성 최대화»</i>를 켜주세요.",
+                tr1A: "• 차량 시동이 켜져 있는지 확인하세요 (<b>READY</b> 모드).<br>• 스마트폰 핫스팟 이름이 정확히 <code>BMS</code>, 비밀번호가 <code>bmslocal</code>인지 확인하세요.<br>• <b>2.4GHz 제한:</b> 컨트롤러는 2.4GHz만 지원하므로 5GHz 전용 핫스팟에는 연결되지 않습니다.<br>• iPhone의 경우 핫스팟 설정에서 <i>«호환성 최대화»</i>를 켜주세요.<br>• Android의 경우 AP 밴드를 <b>2.4 GHz</b>로 설정하세요.",
                 tr2Q: "📶 BMS_Setup Wi-Fi 연결 주의사항:",
                 tr2A: "• BMS_Setup의 <i>«자동 다시 연결»</i>을 끄세요.<br>• <i>«인터넷 없음»</i> 팝업 시 <b>«항상 연결» / «Wi-Fi 연결 유지»</b>를 선택하세요.",
                 tr3Q: "🟡 IP 주소가 변경된 경우:",
                 tr3A: "• <code>BMS_Setup</code>에 연결하고 <i>«BMS_Setup을 통한 자동 동기화»</i>를 누르세요.<br>• 또는 핫스팟 설정에서 연결된 기기의 IP를 확인하여 수동 입력하세요.",
+                trAndroidQ: "🤖 Android 핫스팟 2.4GHz 설정 방법:",
+                trAndroidA: "스마트폰 <i>설정 ➔ 테더링 및 핫스팟 ➔ 핫스팟 설정</i>에서 <b>AP 밴드</b>를 <b>2.4 GHz 대역</b>으로 선택하세요.",
                 tr4Q: "⚙️ Wi-Fi 재설정 또는 재구성:",
                 tr4A: "스마트폰 핫스팟을 15초간 끄면 컨트롤러가 <code>192.168.4.1</code>의 <code>BMS_Setup</code> 핫스팟을 다시 엽니다.",
                 toastLinked: "✅ 컨트롤러 연결됨: ",
                 toastConnecting: "📡 BMS_Setup (192.168.4.1)을 통해 컨트롤러에 연결 중...",
                 btnConnecting: "연결 중...",
-                alertInvalidIp: "올바르지 않은 IP 주소 형식입니다 (예: 10.48.33.187)"
+                alertInvalidIp: "올바르지 않은 IP 주소 형식입니다 (예: 10.48.33.187)",
+                dashUnreachable: "⚠️ <b>컨트롤러에 연결할 수 없습니다.</b><br>• 스마트폰 핫스팟 <code>BMS</code> / <code>bmslocal</code> (2.4GHz)이 켜져 있는지 확인하세요.<br>• 차량 시동이 <b>READY</b> 상태인지 확인하세요.<br>• 또는 <code>BMS_Setup</code>에 연결 후 <b>«BMS_Setup을 통한 자동 동기화»</b>를 누르세요."
             },
             ru: {
                 appTitle: "BMS Radar",
+                appsHeader: "Приложения и сервисы",
                 ipLabel: "IP адрес контроллера",
+                ipStatusOnline: "В сети (Телеметрия активна)",
+                ipStatusOffline: "Не в сети / Ожидание",
+                ipStatusChecking: "Проверка связи...",
                 btnOpen: "Открыть дашборд",
                 btnSync: "Авто-синхронизация с платой",
+                syncHint: "Сначала подключите телефон к Wi-Fi сети BMS_Setup, затем нажмите кнопку для автоматического поиска и сохранения IP.",
                 btnManual: "Ввести IP вручную",
                 btnSaveIp: "Сохранить",
                 autoText: "<b>Контроллер охлаждения работает автономно.</b> Телефон нужен только для просмотра телеметрии.",
@@ -818,29 +920,33 @@
                 step1Body: "Вставьте контроллер в <b>OBD2 разъем</b> автомобиля и включите зажигание (режим <b>READY</b>).",
                 step2Title: "Выбор режима Wi-Fi",
                 optATitle: "🔹 Вариант А: Раздача с телефона (Рекомендуется)",
-                optADesc: "Включите <b>Точку доступа</b> на телефоне:",
+                optADesc: "<b>Переименуйте Точку доступа</b> на телефоне в:",
                 optANet: "Имя сети: <code>BMS</code>",
                 optAPwd: "Пароль: <code>bmslocal</code>",
                 optANote: "Контроллер подключится автоматически за 10 секунд.",
-                optBTitle: "🔸 Вариант Б: Прямая сеть контроллера",
+                optAWarn: "⚠️ <b>Важно:</b> Чип ESP32-C3 поддерживает только <b>2.4GHz Wi-Fi</b> (5GHz не поддерживается). На iPhone включите <i>«Максимальная совместимость»</i>, на Android выберите диапазон частот <i>2.4 ГГц</i>.",
+                optBTitle: "🔸 Вариант Б: Прямая сеть контроллера (Настройка)",
                 optBDesc: "Подключите телефон к Wi-Fi сети контроллера:",
                 optBNet: "Имя сети: <code>BMS_Setup</code>",
                 optBPwd: "Пароль: <code>bmslocal</code>",
-                optBNote: "Откройте <code>http://192.168.4.1</code> для настройки автомобильного роутера.",
+                optBNote: "Откройте <code>http://192.168.4.1</code> для подключения контроллера к Wi-Fi сети автомобиля (режим Клиента/STA).",
                 step3Title: "Запуск дашборда или Companion App",
                 step3Body: "Нажмите <b>«🚀 Открыть дашборд»</b> выше или используйте приложение <b>BMS Companion</b> ниже.",
                 tr1Q: "🔴 Дашборд не открывается или не в сети?",
-                tr1A: "• Убедитесь, что зажигание включено (режим <b>READY</b>).<br>• Проверьте, что точка доступа называется <code>BMS</code>, а пароль <code>bmslocal</code>.<br>• На iPhone включите <i>«Максимальная совместимость»</i> в настройках модема.",
+                tr1A: "• Убедитесь, что зажигание включено (режим <b>READY</b>).<br>• Проверьте, что точка доступа строго называется <code>BMS</code>, а пароль <code>bmslocal</code>.<br>• <b>Ограничение 2.4GHz:</b> Контроллер работает только на 2.4GHz. Он не сможет подключиться к сети 5GHz.<br>• На iPhone включите <i>«Максимальная совместимость»</i> в настройках модема.<br>• На Android выберите диапазон частот точки доступа <b>2.4 ГГц</b>.",
                 tr2Q: "📶 Подсказки для сети BMS_Setup:",
                 tr2A: "• Выключите <i>«Автоподключение»</i> для BMS_Setup.<br>• При появлении окна <i>«Нет интернета»</i> выберите <i>«Оставаться подключенным»</i>.",
                 tr3Q: "🟡 Сменился IP адрес?",
-                tr3A: "• Подключитесь к <code>BMS_Setup</code> и нажмите <i>«Авто-синхронизация»</i>.<br>• Или посмотрите IP в настройках точки доступа телефона и введите вручную.",
+                tr3A: "• Подключитесь к сети <code>BMS_Setup</code> и нажмите <i>«Авто-синхронизация»</i>.<br>• Или посмотрите IP в настройках точки доступа телефона и введите вручную.",
+                trAndroidQ: "🤖 Настройка 2.4GHz на телефонах Android:",
+                trAndroidA: "В меню <i>Настройки ➔ Точка доступа Wi-Fi ➔ Настройка точки доступа</i> переключите пункт <b>Диапазон частот (AP Band)</b> на <b>2.4 ГГц</b> (вместо 5 ГГц).",
                 tr4Q: "⚙️ Сбросить или перенастроить Wi-Fi?",
                 tr4A: "Выключите раздачу с телефона на 15 секунд. Контроллер поднимет сеть <code>BMS_Setup</code> на <code>192.168.4.1</code>.",
                 toastLinked: "✅ Контроллер привязан: ",
                 toastConnecting: "📡 Подключение к плате через BMS_Setup (192.168.4.1)...",
                 btnConnecting: "Подключение...",
-                alertInvalidIp: "Неверный формат IP адреса (пример: 10.48.33.187)"
+                alertInvalidIp: "Неверный формат IP адреса (пример: 10.48.33.187)",
+                dashUnreachable: "⚠️ <b>Не удается открыть страницу контроллера.</b><br>• Проверьте, что на телефоне включена раздача <code>BMS</code> / <code>bmslocal</code> (2.4GHz).<br>• Убедитесь, что авто в режиме <b>READY</b>.<br>• Или подключитесь к Wi-Fi сети <code>BMS_Setup</code> и нажмите <b>«Авто-синхронизация с платой»</b>."
             }
         };
 
@@ -870,17 +976,18 @@
             const t = I18N[currentLang] || I18N.en;
 
             // Text elements
-            document.getElementById('t-app-title').innerText = t.appTitle;
+            if (document.getElementById('t-app-title')) document.getElementById('t-app-title').innerText = t.appTitle;
             if (document.getElementById('t-apps-header')) document.getElementById('t-apps-header').innerText = t.appsHeader;
             if (document.getElementById('t-auto-text')) document.getElementById('t-auto-text').innerHTML = t.autoText;
-            document.getElementById('t-ip-label').innerText = t.ipLabel;
-            document.getElementById('t-btn-open').innerText = t.btnOpen;
-            document.getElementById('t-btn-sync').innerText = t.btnSync;
-            document.getElementById('t-btn-manual').innerText = t.btnManual;
-            document.getElementById('t-btn-save-ip').innerText = t.btnSaveIp;
-            document.getElementById('t-guide-title').innerText = t.guideTitle;
-            document.getElementById('tab-btn-setup').innerText = t.tabSetup;
-            document.getElementById('tab-btn-trouble').innerText = t.tabTrouble;
+            if (document.getElementById('t-ip-label')) document.getElementById('t-ip-label').innerText = t.ipLabel;
+            if (document.getElementById('t-btn-open')) document.getElementById('t-btn-open').innerText = t.btnOpen;
+            if (document.getElementById('t-btn-sync')) document.getElementById('t-btn-sync').innerText = t.btnSync;
+            if (document.getElementById('t-sync-hint')) document.getElementById('t-sync-hint').innerText = t.syncHint;
+            if (document.getElementById('t-btn-manual')) document.getElementById('t-btn-manual').innerText = t.btnManual;
+            if (document.getElementById('t-btn-save-ip')) document.getElementById('t-btn-save-ip').innerText = t.btnSaveIp;
+            if (document.getElementById('t-guide-title')) document.getElementById('t-guide-title').innerText = t.guideTitle;
+            if (document.getElementById('tab-btn-setup')) document.getElementById('tab-btn-setup').innerText = t.tabSetup;
+            if (document.getElementById('tab-btn-trouble')) document.getElementById('tab-btn-trouble').innerText = t.tabTrouble;
 
             if (document.getElementById('t-apk-title')) document.getElementById('t-apk-title').innerText = t.apkTitle;
             if (document.getElementById('t-apk-desc')) document.getElementById('t-apk-desc').innerText = t.apkDesc;
@@ -893,30 +1000,33 @@
             if (document.getElementById('t-install-title-ios')) document.getElementById('t-install-title-ios').innerText = t.installTitleIos;
             if (document.getElementById('t-install-desc-ios')) document.getElementById('t-install-desc-ios').innerHTML = t.installDescIos;
 
-            document.getElementById('t-step1-title').innerText = t.step1Title;
-            document.getElementById('t-step1-body').innerHTML = t.step1Body;
-            document.getElementById('t-step2-title').innerText = t.step2Title;
-            document.getElementById('t-opt-a-title').innerText = t.optATitle;
-            document.getElementById('t-opt-a-desc').innerHTML = t.optADesc;
-            document.getElementById('t-opt-a-net').innerHTML = t.optANet;
-            document.getElementById('t-opt-a-pwd').innerHTML = t.optAPwd;
-            document.getElementById('t-opt-a-note').innerText = t.optANote;
-            document.getElementById('t-opt-b-title').innerText = t.optBTitle;
-            document.getElementById('t-opt-b-desc').innerText = t.optBDesc;
+            if (document.getElementById('t-step1-title')) document.getElementById('t-step1-title').innerText = t.step1Title;
+            if (document.getElementById('t-step1-body')) document.getElementById('t-step1-body').innerHTML = t.step1Body;
+            if (document.getElementById('t-step2-title')) document.getElementById('t-step2-title').innerText = t.step2Title;
+            if (document.getElementById('t-opt-a-title')) document.getElementById('t-opt-a-title').innerText = t.optATitle;
+            if (document.getElementById('t-opt-a-desc')) document.getElementById('t-opt-a-desc').innerHTML = t.optADesc;
+            if (document.getElementById('t-opt-a-net')) document.getElementById('t-opt-a-net').innerHTML = t.optANet;
+            if (document.getElementById('t-opt-a-pwd')) document.getElementById('t-opt-a-pwd').innerHTML = t.optAPwd;
+            if (document.getElementById('t-opt-a-note')) document.getElementById('t-opt-a-note').innerText = t.optANote;
+            if (document.getElementById('t-opt-a-warn')) document.getElementById('t-opt-a-warn').innerHTML = t.optAWarn;
+            if (document.getElementById('t-opt-b-title')) document.getElementById('t-opt-b-title').innerText = t.optBTitle;
+            if (document.getElementById('t-opt-b-desc')) document.getElementById('t-opt-b-desc').innerText = t.optBDesc;
             if (document.getElementById('t-opt-b-net')) document.getElementById('t-opt-b-net').innerHTML = t.optBNet;
             if (document.getElementById('t-opt-b-pwd')) document.getElementById('t-opt-b-pwd').innerHTML = t.optBPwd;
             if (document.getElementById('t-opt-b-note')) document.getElementById('t-opt-b-note').innerText = t.optBNote;
-            document.getElementById('t-step3-title').innerText = t.step3Title;
-            document.getElementById('t-step3-body').innerHTML = t.step3Body;
+            if (document.getElementById('t-step3-title')) document.getElementById('t-step3-title').innerText = t.step3Title;
+            if (document.getElementById('t-step3-body')) document.getElementById('t-step3-body').innerHTML = t.step3Body;
 
-            document.getElementById('t-tr-1-q').innerText = t.tr1Q;
-            document.getElementById('t-tr-1-a').innerHTML = t.tr1A;
-            document.getElementById('t-tr-2-q').innerText = t.tr2Q;
-            document.getElementById('t-tr-2-a').innerHTML = t.tr2A;
-            document.getElementById('t-tr-3-q').innerText = t.tr3Q;
-            document.getElementById('t-tr-3-a').innerHTML = t.tr3A;
-            document.getElementById('t-tr-4-q').innerText = t.tr4Q;
-            document.getElementById('t-tr-4-a').innerHTML = t.tr4A;
+            if (document.getElementById('t-tr-1-q')) document.getElementById('t-tr-1-q').innerText = t.tr1Q;
+            if (document.getElementById('t-tr-1-a')) document.getElementById('t-tr-1-a').innerHTML = t.tr1A;
+            if (document.getElementById('t-tr-2-q')) document.getElementById('t-tr-2-q').innerText = t.tr2Q;
+            if (document.getElementById('t-tr-2-a')) document.getElementById('t-tr-2-a').innerHTML = t.tr2A;
+            if (document.getElementById('t-tr-3-q')) document.getElementById('t-tr-3-q').innerText = t.tr3Q;
+            if (document.getElementById('t-tr-3-a')) document.getElementById('t-tr-3-a').innerHTML = t.tr3A;
+            if (document.getElementById('t-tr-android-q')) document.getElementById('t-tr-android-q').innerText = t.trAndroidQ;
+            if (document.getElementById('t-tr-android-a')) document.getElementById('t-tr-android-a').innerHTML = t.trAndroidA;
+            if (document.getElementById('t-tr-4-q')) document.getElementById('t-tr-4-q').innerText = t.tr4Q;
+            if (document.getElementById('t-tr-4-a')) document.getElementById('t-tr-4-a').innerHTML = t.tr4A;
         }
 
         // PWA Service Worker Registration
@@ -987,6 +1097,40 @@
             showToast(`${t.toastLinked}${currentIp}`);
         }
 
+        function setStatusBadge(isOnline) {
+            const badge = document.getElementById('ip-status-badge');
+            const statusText = document.getElementById('t-ip-status');
+            const t = I18N[currentLang] || I18N.en;
+            if (!badge || !statusText) return;
+
+            if (isOnline) {
+                badge.className = 'ip-status-badge status-online';
+                statusText.innerText = t.ipStatusOnline;
+            } else {
+                badge.className = 'ip-status-badge status-offline';
+                statusText.innerText = t.ipStatusOffline;
+            }
+        }
+
+        async function checkControllerStatus() {
+            if (!currentIp || currentIp === '--') {
+                setStatusBadge(false);
+                return;
+            }
+
+            // Quick network ping to controller API
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 2000);
+            try {
+                const res = await fetch(`http://${currentIp}/api/data`, { signal: controller.signal, mode: 'no-cors' });
+                clearTimeout(timeoutId);
+                setStatusBadge(true);
+            } catch (err) {
+                clearTimeout(timeoutId);
+                setStatusBadge(false);
+            }
+        }
+
         function updateUI() {
             const displayEl = document.getElementById('display-ip');
             const manualIpInput = document.getElementById('manual-ip');
@@ -998,39 +1142,62 @@
                 if (displayEl) displayEl.innerText = '--';
                 if (manualIpInput) manualIpInput.value = '';
             }
+
+            checkControllerStatus();
         }
 
         function openDashboard() {
             const t = I18N[currentLang] || I18N.en;
             const btn = document.getElementById('btn-open');
+            const errBox = document.getElementById('dash-error-box');
+            if (errBox) errBox.style.display = 'none';
+
+            const targetIp = (currentIp && currentIp !== '--') ? currentIp : '192.168.4.1';
 
             if (btn) {
-                btn.innerText = `⏳ ${t.btnConnecting || 'Connecting...'}`;
+                btn.innerHTML = `<span>⏳</span> <span>${t.btnConnecting || 'Connecting...'}</span>`;
                 btn.style.opacity = '0.85';
             }
 
-            // 1. If saved IP exists, navigate directly to controller dashboard
-            if (currentIp && currentIp !== '--') {
-                window.location.href = `http://${currentIp}/?lang=${currentLang}`;
-                return;
-            }
+            // Check reachability with a short timeout before full navigation
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 2500);
 
-            // 2. Default fallback to direct AP IP (192.168.4.1)
-            window.location.href = `http://192.168.4.1/?lang=${currentLang}`;
+            fetch(`http://${targetIp}/`, { signal: controller.signal, mode: 'no-cors' })
+                .then(() => {
+                    clearTimeout(timeoutId);
+                    window.location.href = `http://${targetIp}/?lang=${currentLang}`;
+                })
+                .catch(() => {
+                    clearTimeout(timeoutId);
+                    // If directly unreachable, show informative error box and keep fallback open action
+                    if (btn) {
+                        btn.innerHTML = `<span id="open-btn-icon">🚀</span> <span id="t-btn-open">${t.btnOpen}</span>`;
+                        btn.style.opacity = '1';
+                    }
+                    if (errBox) {
+                        errBox.innerHTML = t.dashUnreachable;
+                        errBox.style.display = 'block';
+                    }
+                    // Attempt navigation anyway after 1s in case browser handles LAN direct route
+                    setTimeout(() => {
+                        window.location.href = `http://${targetIp}/?lang=${currentLang}`;
+                    }, 1200);
+                });
         }
 
         function syncWithBoard() {
             const t = I18N[currentLang] || I18N.en;
-            const btnSync = document.getElementById('btn-sync');
+            const btnSync = document.getElementById('btn-sync-board');
             if (btnSync) {
-                btnSync.innerText = `⏳ ${t.btnConnecting || 'Connecting...'}`;
+                btnSync.innerHTML = `<span>⏳</span> <span>${t.btnConnecting || 'Connecting...'}</span>`;
                 btnSync.style.opacity = '0.85';
             }
             showToast(t.toastConnecting);
 
             setTimeout(() => {
                 window.location.href = `http://192.168.4.1/sync?lang=${currentLang}`;
-            }, 250);
+            }, 300);
         }
 
         function toggleEditIp() {
