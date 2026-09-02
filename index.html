@@ -615,43 +615,34 @@
             </div>
         </div>
 
-        <!-- Permanent Apps & Integrations Card -->
-        <div class="card" id="apps-card" style="display: none; padding: 18px 16px; margin-bottom: 24px; margin-top: 16px;">
-            <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: #a1a1aa; margin-bottom: 14px; font-weight: 600;" id="t-apps-header">Apps & Integrations</div>
-            
-            <!-- Android APK section -->
-            <div id="apk-banner-android" class="apk-card">
-                <div class="apk-badge" style="margin-bottom: 10px;">🚗 Android App (APK)</div>
-                <div class="apk-title" id="t-apk-title">BMS Companion (Android)</div>
-                <div class="apk-desc" id="t-apk-desc">Native Android companion with live battery HUD widget:</div>
-                <div class="apk-features">
-                    <div class="apk-feat-item">
-                        <span>🏎️</span>
-                        <span id="t-apk-f1">Floating HUD widget over navigation & maps</span>
-                    </div>
-                    <div class="apk-feat-item">
-                        <span>⚡</span>
-                        <span id="t-apk-f2">Auto-connects when phone hotspot is on</span>
-                    </div>
+        <!-- Android APK section -->
+        <div id="apk-banner-android" class="apk-card" style="margin-top: 16px; margin-bottom: 24px;">
+            <div class="apk-badge" style="margin-bottom: 10px;">🚗 Android App (APK)</div>
+            <div class="apk-title" id="t-apk-title">BMS Companion (Android)</div>
+            <div class="apk-desc" id="t-apk-desc">Native Android companion with live battery HUD widget:</div>
+            <div class="apk-features">
+                <div class="apk-feat-item">
+                    <span>⚡</span>
+                    <span id="t-apk-f2">Auto-connects when phone hotspot is on</span>
                 </div>
-                <a href="./BMS_Companion.apk" download="BMS_Companion.apk" class="btn-apk" id="btn-download-apk" onclick="onApkDownload()">
-                    <span>⬇️</span>
-                    <span id="t-btn-download-apk">Download APK</span>
-                </a>
             </div>
+            <a href="./BMS_Companion.apk" download="BMS_Companion.apk" class="btn-apk" id="btn-download-apk" onclick="onApkDownload()">
+                <span>⬇️</span>
+                <span id="t-btn-download-apk">Download APK</span>
+            </a>
+        </div>
 
-            <!-- Web App Install section -->
-            <div id="install-banner-android" class="install-card">
-                <div class="install-title" id="t-install-title-android">📲 Install Application</div>
-                <div class="install-desc" id="t-install-desc-android">Add BMS Radar to your home screen for quick one-tap access.</div>
-                <button id="btn-install-app" class="btn-install" style="background: #e4e4e7; color: #18181b; width: 100%;">Install</button>
-            </div>
+        <!-- Web App Install section -->
+        <div id="install-banner-android" class="install-card" style="margin-top: 16px; margin-bottom: 24px;">
+            <div class="install-title" id="t-install-title-android">📲 Install Application</div>
+            <div class="install-desc" id="t-install-desc-android">Add BMS Radar to your home screen for quick one-tap access.</div>
+            <button id="btn-install-app" class="btn-install" style="background: #e4e4e7; color: #18181b; width: 100%;">Install</button>
+        </div>
 
-            <!-- iOS install guide banner -->
-            <div id="install-banner-ios" class="install-card" style="border-color: #52525b; background: transparent; padding: 0;">
-                <div class="install-title" id="t-install-title-ios" style="color: #e4e4e7; margin-bottom: 6px;">📲 Install on iPhone</div>
-                <div class="install-desc" id="t-install-desc-ios" style="margin-bottom: 0;">Tap the <b>Share button ⎋</b> in Safari, then select <b>«Add to Home Screen» ➕</b>.</div>
-            </div>
+        <!-- iOS install guide banner -->
+        <div id="install-banner-ios" class="install-card" style="margin-top: 16px; margin-bottom: 24px; border-color: #52525b; background: transparent; padding: 14px 16px;">
+            <div class="install-title" id="t-install-title-ios" style="color: #e4e4e7; margin-bottom: 6px;">📲 Install on iPhone</div>
+            <div class="install-desc" id="t-install-desc-ios" style="margin-bottom: 0;">Tap the <b>Share button ⎋</b> in Safari, then select <b>«Add to Home Screen» ➕</b>.</div>
         </div>
 
     </div>
@@ -672,7 +663,6 @@
                 tabTrouble: "❓ Help & FAQ",
                 apkTitle: "BMS Companion (Android)",
                 apkDesc: "Native Android companion with live battery HUD widget:",
-                apkF1: "Floating HUD widget over navigation & maps",
                 apkF2: "Auto-connects when phone hotspot is on",
                 btnDownloadApk: "Download APK",
                 installTitleAndroid: "📲 Install Application",
@@ -710,7 +700,6 @@
             },
             zh: {
                 appTitle: "BMS Radar",
-                appsHeader: "应用程序与集成",
                 ipLabel: "控制器 IP 地址",
                 btnOpen: "打开仪表板",
                 btnSync: "通过 BMS_Setup 自动同步",
@@ -722,7 +711,6 @@
                 tabTrouble: "❓ 常见问题与帮助",
                 apkTitle: "BMS Companion (Android)",
                 apkDesc: "支持悬浮窗实时监控的安卓原生应用：",
-                apkF1: "支持在地图导航及任意应用上方悬浮显示",
                 apkF2: "开启手机热点即可秒级极速自动直连",
                 btnDownloadApk: "下载 APK",
                 installTitleAndroid: "📲 安装应用程序",
@@ -760,7 +748,6 @@
             },
             ko: {
                 appTitle: "BMS Radar",
-                appsHeader: "앱 및 통합",
                 ipLabel: "컨트롤러 IP 주소",
                 btnOpen: "대시보드 열기",
                 btnSync: "BMS_Setup을 통한 자동 동기화",
@@ -772,7 +759,6 @@
                 tabTrouble: "❓ 자주 묻는 질문 (FAQ)",
                 apkTitle: "BMS Companion (Android)",
                 apkDesc: "실시간 배터리 HUD 위젯을 지원하는 안드로이드 전용 앱:",
-                apkF1: "네비게이션 및 지도 앱 위에 플로팅 HUD 위젯 표시",
                 apkF2: "스마트폰 핫스팟 켜짐 시 자동 즉시 연결",
                 btnDownloadApk: "APK 다운로드",
                 installTitleAndroid: "📲 앱 설치하기",
@@ -810,7 +796,6 @@
             },
             ru: {
                 appTitle: "BMS Radar",
-                appsHeader: "Приложения и интеграции",
                 ipLabel: "IP адрес контроллера",
                 btnOpen: "Открыть дашборд",
                 btnSync: "Авто-синхронизация с платой",
@@ -822,7 +807,6 @@
                 tabTrouble: "❓ Вопросы и ответы",
                 apkTitle: "BMS Companion (Android)",
                 apkDesc: "Нативное Android приложение с плавающим HUD виджетом:",
-                apkF1: "Плавающий виджет температуры и кулера поверх навигатора",
                 apkF2: "Мгновенный авто-коннект при включении точки доступа",
                 btnDownloadApk: "Скачать APK",
                 installTitleAndroid: "📲 Установить приложение",
@@ -900,7 +884,6 @@
 
             if (document.getElementById('t-apk-title')) document.getElementById('t-apk-title').innerText = t.apkTitle;
             if (document.getElementById('t-apk-desc')) document.getElementById('t-apk-desc').innerText = t.apkDesc;
-            if (document.getElementById('t-apk-f1')) document.getElementById('t-apk-f1').innerText = t.apkF1;
             if (document.getElementById('t-apk-f2')) document.getElementById('t-apk-f2').innerText = t.apkF2;
             if (document.getElementById('t-btn-download-apk')) document.getElementById('t-btn-download-apk').innerText = t.btnDownloadApk;
 
@@ -953,12 +936,6 @@
             // Tracking or UI updates can happen here
         }
 
-        // Show relevant app sections
-        if (isAndroid || (isIOS && !isStandalone)) {
-            const appsCard = document.getElementById('apps-card');
-            if (appsCard) appsCard.style.display = 'block';
-        }
-
         if (isAndroid) {
             const apkBanner = document.getElementById('apk-banner-android');
             if (apkBanner) apkBanner.style.display = 'block';
@@ -976,8 +953,6 @@
             // Show the PWA install banner for Android since we have a prompt
             const banner = document.getElementById('install-banner-android');
             if (banner) banner.style.display = 'block';
-            const appsCard = document.getElementById('apps-card');
-            if (appsCard) appsCard.style.display = 'block';
         });
 
         const btnInstall = document.getElementById('btn-install-app');
