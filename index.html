@@ -692,6 +692,7 @@
                 tr3A: "• Connect phone Wi-Fi to <code>BMS_Setup</code> (password: <code>bmslocal</code>) and tap <i>«Auto-Sync via BMS_Setup»</i>.<br>• Or check <i>Settings ➔ Personal Hotspot ➔ Connected Devices</i> on your phone to find the new IP address and enter it manually.",
                 tr4Q: "⚙️ Reconfigure or reset Wi-Fi?",
                 tr4A: "Turn off your phone hotspot for 15 seconds. The controller will launch its own <code>BMS_Setup</code> hotspot so you can access <code>192.168.4.1</code> and reconfigure it.",
+                statusAp: "● BMS_Setup AP (Direct)",
                 toastLinked: "✅ Controller linked: ",
                 toastConnecting: "📡 Connecting to controller via BMS_Setup (192.168.4.1)...",
                 alertNoIp: "Controller IP is not set. Tap 'Auto-Sync via BMS_Setup' or set IP manually.",
@@ -702,6 +703,7 @@
                 appsHeader: "📱 Apps & Integrations",
                 statusLinked: "● 控制器已连接",
                 statusSetup: "⚠️ 需要设置",
+                statusAp: "● BMS_Setup 热点 (直接连接)",
                 ipLabel: "控制器 IP 地址",
                 btnOpen: "打开仪表板",
                 btnSync: "通过 BMS_Setup 自动同步",
@@ -749,6 +751,7 @@
                 appsHeader: "📱 Apps & Integrations",
                 statusLinked: "● 컨트롤러 연결됨",
                 statusSetup: "⚠️ 설정 필요",
+                statusAp: "● BMS_Setup AP (직접 연결됨)",
                 ipLabel: "컨트롤러 IP 주소",
                 btnOpen: "대시보드 열기",
                 btnSync: "BMS_Setup을 통한 자동 동기화",
@@ -796,6 +799,7 @@
                 appsHeader: "📱 Apps & Integrations",
                 statusLinked: "● Контроллер подключен",
                 statusSetup: "⚠️ Требуется настройка",
+                statusAp: "● Точка BMS_Setup (Прямой доступ)",
                 ipLabel: "IP адрес контроллера",
                 btnOpen: "Открыть дашборд",
                 btnSync: "Авто-синхронизация с платой",
@@ -967,8 +971,9 @@
             });
         }
 
-        // IP State Management
+        // Multi-probe & IP State Management
         let currentIp = localStorage.getItem('bms_saved_ip') || '';
+        let isApModeActive = false;
 
         // Check URL Query Parameter (?ip=10.48.33.xxx)
         const queryIp = urlParams.get('ip');
@@ -987,6 +992,31 @@
             showToast(`${t.toastLinked}${currentIp}`);
         }
 
+        async function quickProbe(host, timeoutMs = 300) {
+            try {
+                const ctrl = new AbortController();
+                const tid = setTimeout(() => ctrl.abort(), timeoutMs);
+                await fetch(`http://${host}/api/wifi_creds?t=${Date.now()}`, {
+                    mode: 'no-cors',
+                    signal: ctrl.signal,
+                    cache: 'no-store'
+                });
+                clearTimeout(tid);
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        async function probeNetwork() {
+            // Check if 192.168.4.1 (Direct AP mode) is online
+            const apOnline = await quickProbe('192.168.4.1', 400);
+            if (apOnline !== isApModeActive) {
+                isApModeActive = apOnline;
+                updateUI();
+            }
+        }
+
         function updateUI() {
             const t = I18N[currentLang] || I18N.en;
             const displayEl = document.getElementById('display-ip');
@@ -994,7 +1024,14 @@
             const statusBadge = document.getElementById('status-badge');
             const statusText = document.getElementById('status-text');
 
-            if (currentIp && currentIp !== '--') {
+            if (isApModeActive) {
+                if (displayEl) {
+                    displayEl.innerText = (currentIp && currentIp !== '--') ? `${currentIp} (AP: 192.168.4.1)` : '192.168.4.1';
+                }
+                if (manualIpInput && currentIp) manualIpInput.value = currentIp;
+                statusBadge.className = 'status-badge';
+                statusText.innerText = t.statusAp || "● BMS_Setup AP (Direct)";
+            } else if (currentIp && currentIp !== '--') {
                 if (displayEl) displayEl.innerText = currentIp;
                 if (manualIpInput) manualIpInput.value = currentIp;
                 statusBadge.className = 'status-badge';
@@ -1007,17 +1044,37 @@
             }
         }
 
-        function openDashboard() {
+        async function openDashboard() {
             const t = I18N[currentLang] || I18N.en;
-            if (!currentIp || currentIp === '--') {
-                if (typeof isIOS !== 'undefined' && isIOS) {
-                    window.location.href = `http://bms.local/?lang=${currentLang}`;
-                } else {
-                    alert(t.alertNoIp);
-                }
+
+            // 1. If currently connected to BMS_Setup AP (192.168.4.1)
+            if (isApModeActive) {
+                window.location.href = `http://192.168.4.1/?lang=${currentLang}`;
                 return;
             }
-            window.location.href = `http://${currentIp}/?lang=${currentLang}`;
+
+            // 2. Fast check 192.168.4.1 (250ms) in case user just switched Wi-Fi
+            const apOnline = await quickProbe('192.168.4.1', 250);
+            if (apOnline) {
+                isApModeActive = true;
+                window.location.href = `http://192.168.4.1/?lang=${currentLang}`;
+                return;
+            }
+
+            // 3. If saved IP exists, navigate to saved hotspot IP
+            if (currentIp && currentIp !== '--') {
+                window.location.href = `http://${currentIp}/?lang=${currentLang}`;
+                return;
+            }
+
+            // 4. If no saved IP, try direct AP or iOS mDNS fallback
+            if (typeof isIOS !== 'undefined' && isIOS) {
+                window.location.href = `http://bms.local/?lang=${currentLang}`;
+                return;
+            }
+
+            // 5. Default fallback to 192.168.4.1
+            window.location.href = `http://192.168.4.1/?lang=${currentLang}`;
         }
 
         function syncWithBoard() {
@@ -1085,9 +1142,11 @@
             setTimeout(() => { toast.style.display = 'none'; }, 4000);
         }
 
-        // Init Language and UI
+        // Init Language, UI and Network Probing
         applyLanguage();
         updateUI();
+        probeNetwork();
+        setInterval(probeNetwork, 3000);
     </script>
 </body>
 </html>
