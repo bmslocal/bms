@@ -557,12 +557,12 @@
             </button>
 
             <!-- Edit IP row -->
-            <div id="edit-row" class="edit-row" style="flex-direction: column;">
-                <div style="display: flex; width: 100%; gap: 8px;">
+            <div id="edit-row" class="edit-row" style='flex-direction: column;'>
+                <div style='display: flex; width: 100%; gap: 8px;'>
                     <input type="text" id="manual-ip" class="input-ip" placeholder="10.48.33.187">
                     <button class="btn-save-ip" id="t-btn-save-ip" onclick="saveManualIp()">Save</button>
                 </div>
-                <div class="sync-hint" id="t-manual-ip-hint" style="text-align: left; margin-top: 2px;">Find IP in Hotspot settings (e.g. 10.48.33.x)</div>
+                <div class="sync-hint" id="t-manual-ip-hint" style='text-align: left; margin-top: 2px;'>Find IP in Hotspot settings (e.g. 10.48.33.x)</div>
             </div>
         </div>
 
@@ -588,7 +588,7 @@
                 </div>
 
                 <!-- First-Time Setup Panel -->
-                <div id="panel-setup" class="guide-panel" style="display: block;">
+                <div id="panel-setup" class="guide-panel" style='display: block;'>
                     <div class="guide-step">
                         <div class="step-header">
                             <span class="step-num">1</span>
@@ -613,7 +613,7 @@
                                     <span id="t-opt-a-pwd">Password: <code>bmslocal</code></span>
                                 </div>
                                 <div class="option-note" id="t-opt-a-note">Links in ~10s. Find the IP in your Hotspot settings, or use Option B to auto-capture it.</div>
-                                <div class="option-note" style="color: #f59e0b; margin-top: 4px;" id="t-opt-a-warn">⚠️ <b>Important:</b> Only supports <b>2.4GHz Wi-Fi</b>. On iPhone, turn ON <i>«Maximize Compatibility»</i>.</div>
+                                <div class="option-note" style='color: #f59e0b; margin-top: 4px;" id="t-opt-a-warn">⚠️ <b>Important:</b> Only supports <b>2.4GHz Wi-Fi</b>. On iPhone, turn ON <i>«Maximize Compatibility»</i>.</div>
                             </div>
 
                             <div class="option-box">
@@ -623,12 +623,12 @@
                                     <span id="t-opt-b-net">Network: <code>BMS_Setup</code></span>
                                     <span id="t-opt-b-pwd">Password: <code>bmslocal</code></span>
                                 </div>
-                                <div class="option-note" id="t-opt-b-note">Open <a href="http://192.168.4.1" target="_blank" style="color: #4ade80; text-decoration: underline;">http://192.168.4.1</a> to access device settings, or tap Auto-Sync above.</div>
+                                <div class="option-note" id="t-opt-b-note">Open <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> to access device settings, or tap Auto-Sync above.</div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="guide-step" style="margin-bottom: 4px;">
+                    <div class="guide-step" style='margin-bottom: 4px;'>
                         <div class="step-header">
                             <span class="step-num">3</span>
                             <span class="step-title" id="t-step3-title">Launch Dashboard or Companion App</span>
@@ -640,7 +640,7 @@
                 </div>
 
                 <!-- Troubleshooting Panel -->
-                <div id="panel-trouble" class="guide-panel" style="display: none;">
+                <div id="panel-trouble" class="guide-panel" style='display: none;'>
                     <div class="trouble-item">
                         <div class="trouble-q" id="t-tr-1-q">🔴 Dashboard not opening or offline?</div>
                         <div class="trouble-a" id="t-tr-1-a">
@@ -674,7 +674,7 @@
                         </div>
                     </div>
 
-                    <div class="trouble-item" style="margin-bottom: 4px;">
+                    <div class="trouble-item" style='margin-bottom: 4px;'>
                         <div class="trouble-q" id="t-tr-4-q">⚙️ Reconfigure or reset Wi-Fi?</div>
                         <div class="trouble-a" id="t-tr-4-a">
                             Turn off phone hotspot for 15s. The controller will open <code>BMS_Setup</code> hotspot at <code>192.168.4.1</code>.
@@ -685,8 +685,8 @@
         </div>
 
         <!-- Android APK section -->
-        <div id="apk-banner-android" class="apk-card" style="margin-top: 16px; margin-bottom: 24px;">
-            <div class="apk-badge" style="margin-bottom: 10px;">🚗 Android App (APK)</div>
+        <div id="apk-banner-android" class="apk-card" style='margin-top: 16px; margin-bottom: 24px;'>
+            <div class="apk-badge" style='margin-bottom: 10px;'>🚗 Android App (APK)</div>
             <div class="apk-title" id="t-apk-title">BMS Companion (Android)</div>
             <div class="apk-desc" id="t-apk-desc">Native Android companion with live battery HUD widget:</div>
             <div class="apk-features">
@@ -695,23 +695,23 @@
                     <span id="t-apk-f2">Auto-connects when phone hotspot is on</span>
                 </div>
             </div>
-            <a href="./BMS_Companion.apk" download="BMS_Companion.apk" class="btn-apk" id="btn-download-apk" onclick="onApkDownload()">
+            <a href='./BMS_Companion.apk" download="BMS_Companion.apk" class="btn-apk" id="btn-download-apk" onclick="onApkDownload()">
                 <span>⬇️</span>
                 <span id="t-btn-download-apk">Download APK</span>
             </a>
         </div>
 
         <!-- Web App Install section -->
-        <div id="install-banner-android" class="install-card" style="margin-top: 16px; margin-bottom: 24px;">
+        <div id="install-banner-android" class="install-card" style='margin-top: 16px; margin-bottom: 24px;'>
             <div class="install-title" id="t-install-title-android">📲 Install Application</div>
             <div class="install-desc" id="t-install-desc-android">Add BMS Radar to your home screen for quick one-tap access.</div>
-            <button id="btn-install-app" class="btn-install" style="background: #e4e4e7; color: #18181b; width: 100%;">Install</button>
+            <button id="btn-install-app" class="btn-install" style='background: #e4e4e7; color: #18181b; width: 100%;'>Install</button>
         </div>
 
         <!-- iOS install guide banner -->
-        <div id="install-banner-ios" class="install-card" style="margin-top: 16px; margin-bottom: 24px; border-color: #52525b; background: transparent; padding: 14px 16px;">
-            <div class="install-title" id="t-install-title-ios" style="color: #e4e4e7; margin-bottom: 6px;">📲 Install on iPhone</div>
-            <div class="install-desc" id="t-install-desc-ios" style="margin-bottom: 0;">Tap the <b>Share button ⎋</b> in Safari, then select <b>«Add to Home Screen» ➕</b>.</div>
+        <div id="install-banner-ios" class="install-card" style='margin-top: 16px; margin-bottom: 24px; border-color: #52525b; background: transparent; padding: 14px 16px;'>
+            <div class="install-title" id="t-install-title-ios" style='color: #e4e4e7; margin-bottom: 6px;'>📲 Install on iPhone</div>
+            <div class="install-desc" id="t-install-desc-ios" style='margin-bottom: 0;'>Tap the <b>Share button ⎋</b> in Safari, then select <b>«Add to Home Screen» ➕</b>.</div>
         </div>
 
     </div>
@@ -750,13 +750,13 @@
                 optADesc: "Rename your phone's <b>Personal Hotspot</b> to:",
                 optANet: "Network: <code>BMS</code>",
                 optAPwd: "Password: <code>bmslocal</code>",
-                optANote: "Links in ~10s. Find IP in Hotspot settings, or open <a href="http://bms.local" target="_blank" style="color: #4ade80; text-decoration: underline;">http://bms.local</a> directly in browser.",
+                optANote: "Links in ~10s. Find IP in Hotspot settings, or open <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> directly in browser.",
                 optAWarn: "⚠️ <b>Important:</b> Only supports <b>2.4GHz Wi-Fi</b>. On iPhone, turn ON <i>«Maximize Compatibility»</i>.",
                 optBTitle: "🔸 Option B: Direct Controller Wi-Fi (Setup Mode)",
                 optBDesc: "Connect phone to controller's Wi-Fi network:",
                 optBNet: "Network: <code>BMS_Setup</code>",
                 optBPwd: "Password: <code>bmslocal</code>",
-                optBNote: "Open <a href="http://192.168.4.1" target="_blank" style="color: #4ade80; text-decoration: underline;">http://192.168.4.1</a> or <a href="http://bms.local" target="_blank" style="color: #4ade80; text-decoration: underline;">http://bms.local</a> to access device settings, or tap Auto-Sync above.",
+                optBNote: "Open <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> or <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> to access device settings, or tap Auto-Sync above.",
                 step3Title: "Launch Dashboard or Companion App",
                 step3Body: "Tap <b>«🚀 Open Dashboard»</b> above, or use the <b>BMS Companion</b> Android APK below.",
                 tr1Q: "🔴 Dashboard not opening or offline?",
@@ -809,13 +809,13 @@
                 optADesc: "请将手机的<b>个人热点</b>重命名为：",
                 optANet: "热点名称：<code>BMS</code>",
                 optAPwd: "热点密码：<code>bmslocal</code>",
-                optANote: "约 10 秒内连接。在热点设置中查找 IP，或在浏览器中直接打开 <a href="http://bms.local" target="_blank" style="color: #4ade80; text-decoration: underline;">http://bms.local</a>",
+                optANote: "约 10 秒内连接。在热点设置中查找 IP，或在浏览器中直接打开 <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a>",
                 optAWarn: "⚠️ <b>特别注意：</b> 仅支持 <b>2.4GHz Wi-Fi</b>。iPhone 用户请开启<i>“最大兼容性”</i>。",
                 optBTitle: "🔸 选项 B：直连控制器 Wi-Fi（配置模式）",
                 optBDesc: "手机连接至控制器自带热点：",
                 optBNet: "网络名称：<code>BMS_Setup</code>",
                 optBPwd: "网络密码：<code>bmslocal</code>",
-                optBNote: "打开 <a href="http://192.168.4.1" target="_blank" style="color: #4ade80; text-decoration: underline;">http://192.168.4.1</a> 或 <a href="http://bms.local" target="_blank" style="color: #4ade80; text-decoration: underline;">http://bms.local</a> 进入设备设置，或点击上方的自动同步。",
+                optBNote: "打开 <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> 或 <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> 进入设备设置，或点击上方的自动同步。",
                 step3Title: "打开仪表板或配套应用",
                 step3Body: "点击上方<b>«🚀 打开仪表板»</b>，或下载并使用下方的 <b>BMS Companion</b> 安卓应用。",
                 tr1Q: "🔴 无法打开仪表板或设备离线？",
@@ -868,13 +868,13 @@
                 optADesc: "스마트폰의 <b>개인용 핫스팟</b> 이름을 다음으로 변경하세요:",
                 optANet: "네트워크 이름: <code>BMS</code>",
                 optAPwd: "비밀번호: <code>bmslocal</code>",
-                optANote: "약 10초 내 연결. 핫스팟 설정에서 IP를 찾거나 브라우저에서 <a href="http://bms.local" target="_blank" style="color: #4ade80; text-decoration: underline;">http://bms.local</a> 을 여세요.",
+                optANote: "약 10초 내 연결. 핫스팟 설정에서 IP를 찾거나 브라우저에서 <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> 을 여세요.",
                 optAWarn: "⚠️ <b>중요 알림:</b> <b>2.4GHz Wi-Fi</b>만 지원합니다. iPhone은 <i>«호환성 최대화»</i>를 켜주세요.",
                 optBTitle: "🔸 방법 B: 컨트롤러 Wi-Fi 직접 연결 (설정 모드)",
                 optBDesc: "컨트롤러의 자체 Wi-Fi 네트워크에 연결합니다:",
                 optBNet: "네트워크 이름: <code>BMS_Setup</code>",
                 optBPwd: "비밀번호: <code>bmslocal</code>",
-                optBNote: "<a href="http://192.168.4.1" target="_blank" style="color: #4ade80; text-decoration: underline;">http://192.168.4.1</a> 또는 <a href="http://bms.local" target="_blank" style="color: #4ade80; text-decoration: underline;">http://bms.local</a> 에 접속하여 설정하거나 상단의 자동 동기화를 누르세요.",
+                optBNote: "<a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> 또는 <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> 에 접속하여 설정하거나 상단의 자동 동기화를 누르세요.",
                 step3Title: "대시보드 또는 컴패니언 앱 실행",
                 step3Body: "상단의 <b>«🚀 대시보드 열기»</b>를 누르거나 아래의 <b>BMS Companion</b> 안드로이드 앱을 사용하세요.",
                 tr1Q: "🔴 대시보드가 열리지 않거나 오프라인인 경우:",
@@ -927,13 +927,13 @@
                 optADesc: "<b>Переименуйте Точку доступа</b> на телефоне в:",
                 optANet: "Имя сети: <code>BMS</code>",
                 optAPwd: "Пароль: <code>bmslocal</code>",
-                optANote: "Подключится за ~10 сек. Откройте <a href="http://bms.local" target="_blank" style="color: #4ade80; text-decoration: underline;">http://bms.local</a> в браузере, либо найдите IP в настройках точки доступа.",
+                optANote: "Подключится за ~10 сек. Откройте <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> в браузере, либо найдите IP в настройках точки доступа.",
                 optAWarn: "⚠️ <b>Важно:</b> Поддерживается только <b>2.4GHz Wi-Fi</b>. На iPhone включите <i>«Максимальная совместимость»</i>.",
                 optBTitle: "🔸 Вариант Б: Прямая сеть контроллера (Настройка)",
                 optBDesc: "Подключите телефон к Wi-Fi сети контроллера:",
                 optBNet: "Имя сети: <code>BMS_Setup</code>",
                 optBPwd: "Пароль: <code>bmslocal</code>",
-                optBNote: "Откройте <a href="http://192.168.4.1" target="_blank" style="color: #4ade80; text-decoration: underline;">http://192.168.4.1</a> или <a href="http://bms.local" target="_blank" style="color: #4ade80; text-decoration: underline;">http://bms.local</a> для входа в настройки, или нажмите «Авто-синхронизация» выше.",
+                optBNote: "Откройте <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> или <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> для входа в настройки, или нажмите «Авто-синхронизация» выше.",
                 step3Title: "Запуск дашборда или Companion App",
                 step3Body: "Нажмите <b>«🚀 Открыть дашборд»</b> выше или используйте приложение <b>BMS Companion</b> ниже.",
                 tr1Q: "🔴 Дашборд не открывается или не в сети?",
