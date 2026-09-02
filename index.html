@@ -1119,12 +1119,15 @@
             
         }
 
+        let errBoxTimeout;
         function openDashboard() {
             const t = I18N[currentLang] || I18N.en;
             const errBox = document.getElementById('dash-error-box');
             if (errBox) {
                 errBox.innerHTML = t.dashUnreachable;
                 errBox.style.display = 'block';
+                if (errBoxTimeout) clearTimeout(errBoxTimeout);
+                errBoxTimeout = setTimeout(() => { errBox.style.display = 'none'; }, 10000);
             }
             const targetIp = (currentIp && currentIp !== '--') ? currentIp : '192.168.4.1';
             setTimeout(() => {
@@ -1190,11 +1193,13 @@
             }
         }
 
+        let toastTimeout;
         function showToast(msg) {
             const toast = document.getElementById('toast');
-            toast.innerText = msg;
+            toast.innerHTML = msg;
             toast.style.display = 'block';
-            setTimeout(() => { toast.style.display = 'none'; }, 4000);
+            if (toastTimeout) clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => { toast.style.display = 'none'; }, 7000);
         }
 
         // Init Language and UI
