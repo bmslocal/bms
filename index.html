@@ -561,9 +561,12 @@
             </button>
 
             <!-- Edit IP row -->
-            <div id="edit-row" class="edit-row">
-                <input type="text" id="manual-ip" class="input-ip" placeholder="10.48.33.187">
-                <button class="btn-save-ip" id="t-btn-save-ip" onclick="saveManualIp()">Save</button>
+            <div id="edit-row" class="edit-row" style="flex-direction: column;">
+                <div style="display: flex; width: 100%; gap: 8px;">
+                    <input type="text" id="manual-ip" class="input-ip" placeholder="10.48.33.187">
+                    <button class="btn-save-ip" id="t-btn-save-ip" onclick="saveManualIp()">Save</button>
+                </div>
+                <div class="sync-hint" id="t-manual-ip-hint" style="text-align: left; margin-top: 2px;">Find IP in Hotspot settings (e.g. 10.48.33.x)</div>
             </div>
         </div>
 
@@ -774,7 +777,9 @@
                 toastConnecting: "📡 Connecting to controller via BMS_Setup (192.168.4.1)...",
                 btnConnecting: "Connecting...",
                 alertInvalidIp: "Invalid IP address format (example: 10.48.33.187)",
-                dashUnreachable: "⚠️ <b>Cannot connect to controller.</b><br>• Ensure phone Hotspot <code>BMS</code> / <code>bmslocal</code> (2.4GHz) is ON.<br>• Ensure vehicle ignition is in <b>READY</b> mode.<br>• Connect to <code>BMS_Setup</code> Wi-Fi and tap <b>«Auto-Sync via BMS_Setup»</b>."
+                dashUnreachable: "⚠️ <b>Cannot connect to controller.</b><br>• Ensure phone Hotspot <code>BMS</code> / <code>bmslocal</code> (2.4GHz) is ON.<br>• Ensure vehicle ignition is in <b>READY</b> mode.<br>• Connect to <code>BMS_Setup</code> Wi-Fi and tap <b>«Auto-Sync via BMS_Setup»</b>.",
+                errNoSetupNetwork: "⚠️ Please connect to BMS_Setup Wi-Fi first",
+                manualIpHint: "Find IP in Hotspot settings (e.g. 10.48.33.x)"
             },
             zh: {
                 appTitle: "BMS Radar",
@@ -831,7 +836,9 @@
                 toastConnecting: "📡 正在通过 BMS_Setup (192.168.4.1) 连接控制器...",
                 btnConnecting: "正在连接...",
                 alertInvalidIp: "IP 地址格式无效（示例：10.48.33.187）",
-                dashUnreachable: "⚠️ <b>无法连接至控制器。</b><br>• 请确认手机热点 <code>BMS</code> / <code>bmslocal</code> (2.4GHz) 已开启。<br>• 请确认车辆处于 <b>READY</b> 模式。<br>• 或连接 <code>BMS_Setup</code> 热点并点击<b>“通过 BMS_Setup 自动同步”</b>。"
+                dashUnreachable: "⚠️ <b>无法连接至控制器。</b><br>• 请确认手机热点 <code>BMS</code> / <code>bmslocal</code> (2.4GHz) 已开启。<br>• 请确认车辆处于 <b>READY</b> 模式。<br>• 或连接 <code>BMS_Setup</code> 热点并点击<b>“通过 BMS_Setup 自动同步”</b>。",
+                errNoSetupNetwork: "⚠️ 请先连接到 BMS_Setup Wi-Fi",
+                manualIpHint: "在热点设置中查找 IP (例如：10.48.33.x)"
             },
             ko: {
                 appTitle: "BMS Radar",
@@ -888,7 +895,9 @@
                 toastConnecting: "📡 BMS_Setup (192.168.4.1)을 통해 컨트롤러에 연결 중...",
                 btnConnecting: "연결 중...",
                 alertInvalidIp: "올바르지 않은 IP 주소 형식입니다 (예: 10.48.33.187)",
-                dashUnreachable: "⚠️ <b>컨트롤러에 연결할 수 없습니다.</b><br>• 스마트폰 핫스팟 <code>BMS</code> / <code>bmslocal</code> (2.4GHz)이 켜져 있는지 확인하세요.<br>• 차량 시동이 <b>READY</b> 상태인지 확인하세요.<br>• 또는 <code>BMS_Setup</code>에 연결 후 <b>«BMS_Setup을 통한 자동 동기화»</b>를 누르세요."
+                dashUnreachable: "⚠️ <b>컨트롤러에 연결할 수 없습니다.</b><br>• 스마트폰 핫스팟 <code>BMS</code> / <code>bmslocal</code> (2.4GHz)이 켜져 있는지 확인하세요.<br>• 차량 시동이 <b>READY</b> 상태인지 확인하세요.<br>• 또는 <code>BMS_Setup</code>에 연결 후 <b>«BMS_Setup을 통한 자동 동기화»</b>를 누르세요.",
+                errNoSetupNetwork: "⚠️ 먼저 BMS_Setup Wi-Fi에 연결하세요",
+                manualIpHint: "핫스팟 설정에서 IP 찾기 (예: 10.48.33.x)"
             },
             ru: {
                 appTitle: "BMS Radar",
@@ -945,7 +954,9 @@
                 toastConnecting: "📡 Подключение к плате через BMS_Setup (192.168.4.1)...",
                 btnConnecting: "Подключение...",
                 alertInvalidIp: "Неверный формат IP адреса (пример: 10.48.33.187)",
-                dashUnreachable: "⚠️ <b>Не удается открыть страницу контроллера.</b><br>• Проверьте, что на телефоне включена раздача <code>BMS</code> / <code>bmslocal</code> (2.4GHz).<br>• Убедитесь, что авто в режиме <b>READY</b>.<br>• Или подключитесь к Wi-Fi сети <code>BMS_Setup</code> и нажмите <b>«Авто-синхронизация с платой»</b>."
+                dashUnreachable: "⚠️ <b>Не удается открыть страницу контроллера.</b><br>• Проверьте, что на телефоне включена раздача <code>BMS</code> / <code>bmslocal</code> (2.4GHz).<br>• Убедитесь, что авто в режиме <b>READY</b>.<br>• Или подключитесь к Wi-Fi сети <code>BMS_Setup</code> и нажмите <b>«Авто-синхронизация с платой»</b>.",
+                errNoSetupNetwork: "⚠️ Сначала подключитесь к сети BMS_Setup",
+                manualIpHint: "Найдите IP в настройках точки доступа (например: 10.48.33.x)"
             }
         };
 
@@ -983,6 +994,7 @@
             if (document.getElementById('t-btn-sync')) document.getElementById('t-btn-sync').innerText = t.btnSync;
             if (document.getElementById('t-sync-hint')) document.getElementById('t-sync-hint').innerText = t.syncHint;
             if (document.getElementById('t-btn-manual')) document.getElementById('t-btn-manual').innerText = t.btnManual;
+            if (document.getElementById('t-manual-ip-hint')) document.getElementById('t-manual-ip-hint').innerText = t.manualIpHint;
             if (document.getElementById('t-btn-save-ip')) document.getElementById('t-btn-save-ip').innerText = t.btnSaveIp;
             if (document.getElementById('t-guide-title')) document.getElementById('t-guide-title').innerText = t.guideTitle;
             if (document.getElementById('tab-btn-setup')) document.getElementById('tab-btn-setup').innerText = t.tabSetup;
@@ -1178,10 +1190,6 @@
                         errBox.innerHTML = t.dashUnreachable;
                         errBox.style.display = 'block';
                     }
-                    // Attempt navigation anyway after 1s in case browser handles LAN direct route
-                    setTimeout(() => {
-                        window.location.href = `http://${targetIp}/?lang=${currentLang}`;
-                    }, 1200);
                 });
         }
 
@@ -1192,11 +1200,26 @@
                 btnSync.innerHTML = `<span>⏳</span> <span>${t.btnConnecting || 'Connecting...'}</span>`;
                 btnSync.style.opacity = '0.85';
             }
-            showToast(t.toastConnecting);
 
-            setTimeout(() => {
-                window.location.href = `http://192.168.4.1/sync?lang=${currentLang}`;
-            }, 300);
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 2000);
+
+            fetch(`http://192.168.4.1/`, { signal: controller.signal, mode: 'no-cors' })
+                .then(() => {
+                    clearTimeout(timeoutId);
+                    showToast(t.toastConnecting);
+                    setTimeout(() => {
+                        window.location.href = `http://192.168.4.1/sync?lang=${currentLang}`;
+                    }, 300);
+                })
+                .catch(() => {
+                    clearTimeout(timeoutId);
+                    if (btnSync) {
+                        btnSync.innerHTML = `<span id="sync-btn-icon">📡</span> <span id="t-btn-sync">${t.btnSync || 'Auto-Sync via BMS_Setup'}</span>`;
+                        btnSync.style.opacity = '1';
+                    }
+                    showToast(t.errNoSetupNetwork || "⚠️ Please connect to BMS_Setup Wi-Fi first");
+                });
         }
 
         function toggleEditIp() {
