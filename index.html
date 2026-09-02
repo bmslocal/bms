@@ -695,6 +695,7 @@
                 statusAp: "● BMS_Setup AP (Direct)",
                 toastLinked: "✅ Controller linked: ",
                 toastConnecting: "📡 Connecting to controller via BMS_Setup (192.168.4.1)...",
+                btnConnecting: "Connecting...",
                 alertNoIp: "Controller IP is not set. Tap 'Auto-Sync via BMS_Setup' or set IP manually.",
                 alertInvalidIp: "Invalid IP address format (example: 10.48.33.187)"
             },
@@ -743,6 +744,7 @@
                 tr4A: "关闭手机热点 15 秒，控制器将自动开启自带的 <code>BMS_Setup</code> 热点，您可以访问 <code>192.168.4.1</code> 重新配置网络。",
                 toastLinked: "✅ 控制器已连接：",
                 toastConnecting: "📡 正在通过 BMS_Setup (192.168.4.1) 连接控制器...",
+                btnConnecting: "正在连接...",
                 alertNoIp: "尚未设置控制器 IP。请点击“通过 BMS_Setup 自动同步”或手动输入 IP。",
                 alertInvalidIp: "IP 地址格式无效（示例：10.48.33.187）"
             },
@@ -791,6 +793,7 @@
                 tr4A: "스마트폰 핫스팟을 15초간 끄면 컨트롤러가 자체 <code>BMS_Setup</code> 핫스팟을 켭니다. <code>192.168.4.1</code>에 접속하여 네트워크를 다시 설정할 수 있습니다.",
                 toastLinked: "✅ 컨트롤러 연결됨: ",
                 toastConnecting: "📡 BMS_Setup (192.168.4.1)을 통해 컨트롤러에 연결 중...",
+                btnConnecting: "연결 중...",
                 alertNoIp: "컨트롤러 IP가 설정되지 않았습니다. 'BMS_Setup을 통한 자동 동기화'를 누르거나 IP를 수동으로 입력하세요.",
                 alertInvalidIp: "올바르지 않은 IP 주소 형식입니다 (예: 10.48.33.187)"
             },
@@ -839,6 +842,7 @@
                 tr4A: "Выключите раздачу с телефона на 15 секунд. Контроллер поднимет сеть <code>BMS_Setup</code>, и вы сможете зайти на <code>192.168.4.1</code>.",
                 toastLinked: "✅ Контроллер привязан: ",
                 toastConnecting: "📡 Подключение к плате через BMS_Setup (192.168.4.1)...",
+                btnConnecting: "Подключение...",
                 alertNoIp: "IP адрес контроллера не задан. Нажмите 'Авто-синхронизация' или введите IP вручную.",
                 alertInvalidIp: "Неверный формат IP адреса (пример: 10.48.33.187)"
             }
@@ -992,11 +996,12 @@
             showToast(`${t.toastLinked}${currentIp}`);
         }
 
-        async function quickProbe(host, timeoutMs = 300) {
+        async function quickProbe(host, timeoutMs = 600) {
+            if (!host || host === '--') return false;
             try {
                 const ctrl = new AbortController();
                 const tid = setTimeout(() => ctrl.abort(), timeoutMs);
-                await fetch(`http://${host}/api/wifi_creds?t=${Date.now()}`, {
+                await fetch(`http://${host}/api/data?_t=${Date.now()}`, {
                     mode: 'no-cors',
                     signal: ctrl.signal,
                     cache: 'no-store'
@@ -1009,15 +1014,22 @@
         }
 
         async function probeNetwork() {
-            // Check if 192.168.4.1 (Direct AP mode) is online
-            const apOnline = await quickProbe('192.168.4.1', 400);
+            // Check candidates in background
+            const apOnline = await quickProbe('192.168.4.1', 500);
+            let savedIpOnline = false;
+            if (currentIp && currentIp !== '--' && currentIp !== '192.168.4.1') {
+                savedIpOnline = await quickProbe(currentIp, 500);
+            }
+
             if (apOnline !== isApModeActive) {
                 isApModeActive = apOnline;
-                updateUI();
+                updateUI(savedIpOnline);
+            } else if (savedIpOnline) {
+                updateUI(savedIpOnline);
             }
         }
 
-        function updateUI() {
+        function updateUI(savedIpOnline) {
             const t = I18N[currentLang] || I18N.en;
             const displayEl = document.getElementById('display-ip');
             const manualIpInput = document.getElementById('manual-ip');
@@ -1046,34 +1058,53 @@
 
         async function openDashboard() {
             const t = I18N[currentLang] || I18N.en;
+            const btn = document.getElementById('btn-open');
 
-            // 1. If currently connected to BMS_Setup AP (192.168.4.1)
+            if (btn) {
+                btn.innerText = `⏳ ${t.btnConnecting || 'Connecting...'}`;
+                btn.style.opacity = '0.85';
+            }
+
+            // 1. If currently confirmed AP mode
             if (isApModeActive) {
                 window.location.href = `http://192.168.4.1/?lang=${currentLang}`;
                 return;
             }
 
-            // 2. Fast check 192.168.4.1 (250ms) in case user just switched Wi-Fi
-            const apOnline = await quickProbe('192.168.4.1', 250);
-            if (apOnline) {
+            // 2. Parallel Fast Probe (600ms) across all candidate endpoints
+            const probeAp = quickProbe('192.168.4.1', 600);
+            const probeHotspot = (currentIp && currentIp !== '--' && currentIp !== '192.168.4.1')
+                ? quickProbe(currentIp, 600)
+                : Promise.resolve(false);
+            const probeMdns = (typeof isIOS !== 'undefined' && isIOS)
+                ? quickProbe('bms.local', 600)
+                : Promise.resolve(false);
+
+            const [apOk, hotspotOk, mdnsOk] = await Promise.all([probeAp, probeHotspot, probeMdns]);
+
+            if (apOk) {
                 isApModeActive = true;
+                updateUI();
                 window.location.href = `http://192.168.4.1/?lang=${currentLang}`;
                 return;
             }
 
-            // 3. If saved IP exists, navigate to saved hotspot IP
+            if (hotspotOk) {
+                window.location.href = `http://${currentIp}/?lang=${currentLang}`;
+                return;
+            }
+
+            if (mdnsOk) {
+                window.location.href = `http://bms.local/?lang=${currentLang}`;
+                return;
+            }
+
+            // 3. Fallback: if user has saved IP, open it; otherwise 192.168.4.1
             if (currentIp && currentIp !== '--') {
                 window.location.href = `http://${currentIp}/?lang=${currentLang}`;
                 return;
             }
 
-            // 4. If no saved IP, try direct AP or iOS mDNS fallback
-            if (typeof isIOS !== 'undefined' && isIOS) {
-                window.location.href = `http://bms.local/?lang=${currentLang}`;
-                return;
-            }
-
-            // 5. Default fallback to 192.168.4.1
             window.location.href = `http://192.168.4.1/?lang=${currentLang}`;
         }
 
