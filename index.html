@@ -697,7 +697,8 @@
                 toastConnecting: "📡 Connecting to controller via BMS_Setup (192.168.4.1)...",
                 btnConnecting: "Connecting...",
                 alertNoIp: "Controller IP is not set. Tap 'Auto-Sync via BMS_Setup' or set IP manually.",
-                alertInvalidIp: "Invalid IP address format (example: 10.48.33.187)"
+                alertInvalidIp: "Invalid IP address format (example: 10.48.33.187)",
+                alertNotBms: "⚠️ You are connected to a home/office Wi-Fi network or controller is offline.\n\nPlease connect your phone Wi-Fi to «BMS_Setup» (password: bmslocal) in settings first."
             },
             zh: {
                 appTitle: "BMS Radar",
@@ -746,7 +747,8 @@
                 toastConnecting: "📡 正在通过 BMS_Setup (192.168.4.1) 连接控制器...",
                 btnConnecting: "正在连接...",
                 alertNoIp: "尚未设置控制器 IP。请点击“通过 BMS_Setup 自动同步”或手动输入 IP。",
-                alertInvalidIp: "IP 地址格式无效（示例：10.48.33.187）"
+                alertInvalidIp: "IP 地址格式无效（示例：10.48.33.187）",
+                alertNotBms: "⚠️ 您当前连接的是家庭/办公 Wi-Fi 或未找到控制器。\n\n请先在手机 Wi-Fi 设置中连接 «BMS_Setup» 热点（密码：bmslocal）。"
             },
             ko: {
                 appTitle: "BMS Radar",
@@ -795,7 +797,8 @@
                 toastConnecting: "📡 BMS_Setup (192.168.4.1)을 통해 컨트롤러에 연결 중...",
                 btnConnecting: "연결 중...",
                 alertNoIp: "컨트롤러 IP가 설정되지 않았습니다. 'BMS_Setup을 통한 자동 동기화'를 누르거나 IP를 수동으로 입력하세요.",
-                alertInvalidIp: "올바르지 않은 IP 주소 형식입니다 (예: 10.48.33.187)"
+                alertInvalidIp: "올바르지 않은 IP 주소 형식입니다 (예: 10.48.33.187)",
+                alertNotBms: "⚠️ 홈/사무실 Wi-Fi에 연결되어 있거나 컨트롤러를 찾을 수 없습니다.\n\n스마트폰 Wi-Fi 설정에서 먼저 «BMS_Setup» (비밀번호: bmslocal)에 연결하세요."
             },
             ru: {
                 appTitle: "BMS Radar",
@@ -844,7 +847,8 @@
                 toastConnecting: "📡 Подключение к плате через BMS_Setup (192.168.4.1)...",
                 btnConnecting: "Подключение...",
                 alertNoIp: "IP адрес контроллера не задан. Нажмите 'Авто-синхронизация' или введите IP вручную.",
-                alertInvalidIp: "Неверный формат IP адреса (пример: 10.48.33.187)"
+                alertInvalidIp: "Неверный формат IP адреса (пример: 10.48.33.187)",
+                alertNotBms: "⚠️ Вы подключены к домашней/офисной сети Wi-Fi или контроллер не найден.\n\nСначала подключитесь к Wi-Fi сети «BMS_Setup» (пароль: bmslocal) в настройках телефона."
             }
         };
 
@@ -996,29 +1000,37 @@
             showToast(`${t.toastLinked}${currentIp}`);
         }
 
-        async function quickProbe(host, timeoutMs = 600) {
+        async function verifyBmsDevice(host, timeoutMs = 600) {
             if (!host || host === '--') return false;
             try {
                 const ctrl = new AbortController();
                 const tid = setTimeout(() => ctrl.abort(), timeoutMs);
-                await fetch(`http://${host}/api/data?_t=${Date.now()}`, {
-                    mode: 'no-cors',
+                const res = await fetch(`http://${host}/api/data?_t=${Date.now()}`, {
                     signal: ctrl.signal,
                     cache: 'no-store'
                 });
                 clearTimeout(tid);
-                return true;
+                if (!res.ok) return false;
+                const data = await res.json();
+                if (data && (typeof data.version !== 'undefined' || typeof data.max !== 'undefined' || typeof data.platform !== 'undefined' || typeof data.valid !== 'undefined')) {
+                    return true;
+                }
+                return false;
             } catch (e) {
                 return false;
             }
         }
 
+        async function quickProbe(host, timeoutMs = 600) {
+            return await verifyBmsDevice(host, timeoutMs);
+        }
+
         async function probeNetwork() {
-            // Check candidates in background
-            const apOnline = await quickProbe('192.168.4.1', 500);
+            // Check candidates in background with BMS signature check
+            const apOnline = await verifyBmsDevice('192.168.4.1', 500);
             let savedIpOnline = false;
             if (currentIp && currentIp !== '--' && currentIp !== '192.168.4.1') {
-                savedIpOnline = await quickProbe(currentIp, 500);
+                savedIpOnline = await verifyBmsDevice(currentIp, 500);
             }
 
             if (apOnline !== isApModeActive) {
@@ -1072,15 +1084,20 @@
             }
 
             // 2. Parallel Fast Probe (600ms) across all candidate endpoints
-            const probeAp = quickProbe('192.168.4.1', 600);
+            const probeAp = verifyBmsDevice('192.168.4.1', 600);
             const probeHotspot = (currentIp && currentIp !== '--' && currentIp !== '192.168.4.1')
-                ? quickProbe(currentIp, 600)
+                ? verifyBmsDevice(currentIp, 600)
                 : Promise.resolve(false);
             const probeMdns = (typeof isIOS !== 'undefined' && isIOS)
-                ? quickProbe('bms.local', 600)
+                ? verifyBmsDevice('bms.local', 600)
                 : Promise.resolve(false);
 
             const [apOk, hotspotOk, mdnsOk] = await Promise.all([probeAp, probeHotspot, probeMdns]);
+
+            if (btn) {
+                btn.innerText = t.btnOpen;
+                btn.style.opacity = '1';
+            }
 
             if (apOk) {
                 isApModeActive = true;
@@ -1099,21 +1116,38 @@
                 return;
             }
 
-            // 3. Fallback: if user has saved IP, open it; otherwise 192.168.4.1
+            // 3. Fallback: if user has saved IP, open it
             if (currentIp && currentIp !== '--') {
                 window.location.href = `http://${currentIp}/?lang=${currentLang}`;
                 return;
             }
 
-            window.location.href = `http://192.168.4.1/?lang=${currentLang}`;
+            // 4. If no IP and 192.168.4.1 is not our controller, notify user to connect to BMS_Setup
+            alert(t.alertNotBms || "⚠️ You are connected to a home/office Wi-Fi network or controller is offline.\n\nPlease connect your phone Wi-Fi to «BMS_Setup» (password: bmslocal) in settings first.");
         }
 
-        function syncWithBoard() {
+        async function syncWithBoard() {
             const t = I18N[currentLang] || I18N.en;
+            const btnSync = document.getElementById('btn-sync');
+            if (btnSync) {
+                btnSync.innerText = `⏳ ${t.btnConnecting || 'Connecting...'}`;
+                btnSync.style.opacity = '0.85';
+            }
             showToast(t.toastConnecting);
-            setTimeout(() => {
-                window.location.href = `http://192.168.4.1/sync?lang=${currentLang}`;
-            }, 600);
+
+            // Verify if 192.168.4.1 is really our BMS controller, not a home router
+            const isBms = await verifyBmsDevice('192.168.4.1', 800);
+            if (btnSync) {
+                btnSync.innerText = t.btnSync;
+                btnSync.style.opacity = '1';
+            }
+
+            if (!isBms) {
+                alert(t.alertNotBms || "⚠️ You are connected to a home/office Wi-Fi network or controller is offline.\n\nPlease connect your phone Wi-Fi to «BMS_Setup» (password: bmslocal) in settings first.");
+                return;
+            }
+
+            window.location.href = `http://192.168.4.1/sync?lang=${currentLang}`;
         }
 
         function toggleEditIp() {
