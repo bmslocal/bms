@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bms-radar-v30';
+const CACHE_NAME = 'bms-radar-v31';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
