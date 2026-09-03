@@ -488,12 +488,53 @@
         .status-offline .ip-status-dot {
             background: #71717a;
         }
+        .first-run-tip {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background: rgba(59, 130, 246, 0.12);
+            border: 1px solid rgba(59, 130, 246, 0.35);
+            color: #93c5fd;
+            border-radius: 9px;
+            padding: 8px 12px;
+            font-size: 12px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            text-align: center;
+            line-height: 1.4;
+            transition: all 0.2s ease;
+        }
+        .first-run-tip:hover {
+            background: rgba(59, 130, 246, 0.22);
+            border-color: #60a5fa;
+            color: #ffffff;
+        }
         .sync-hint {
             font-size: 11.5px;
             color: #71717a;
             margin-top: 6px;
             margin-bottom: 4px;
             line-height: 1.35;
+        }
+        .sync-hint-box {
+            background: rgba(39, 39, 42, 0.5);
+            border: 1px solid rgba(63, 63, 70, 0.55);
+            border-radius: 9px;
+            padding: 8px 12px;
+            font-size: 11.5px;
+            color: #a1a1aa;
+            margin-top: 8px;
+            margin-bottom: 6px;
+            line-height: 1.45;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .sync-hint-box:hover {
+            background: rgba(39, 39, 42, 0.85);
+            border-color: #3b82f6;
+            color: #f4f4f5;
         }
         .dash-error-box {
             background: rgba(239, 68, 68, 0.12);
@@ -536,8 +577,10 @@
         <div class="card" id="main-card">
             <div class="ip-label" id="t-ip-label">Controller IP Address</div>
             <div id="display-ip" class="ip-value">--</div>
-            <div>
-                </div>
+            <div id="first-run-tip" class="first-run-tip" onclick="openAndScrollToGuide()">
+                <span>📖</span>
+                <span id="t-first-run-tip">First time setup? Follow the 3 steps in the guide below 👇</span>
+            </div>
 
             <button id="btn-open" class="btn-primary" onclick="openDashboard()">
                 <span id="open-btn-icon">🚀</span>
@@ -549,7 +592,7 @@
                 <span id="sync-btn-icon">📡</span>
                 <span id="t-btn-sync">Auto-Sync via BMS_Setup</span>
             </button>
-            <div class="sync-hint" id="t-sync-hint">Connect phone Wi-Fi to BMS_Setup first, then tap to automatically discover controller IP.</div>
+            <div class="sync-hint-box" id="t-sync-hint" onclick="openAndScrollToGuide()">💡 Before connecting: turn on hotspot <b>BMS</b> (Option A) or connect to Wi-Fi <b>BMS_Setup</b> (Option B).<br><span style="color: #60a5fa; text-decoration: underline;">👉 Open setup guide</span></div>
 
             <button class="btn-secondary" onclick="toggleEditIp()">
                 <span>✏️</span>
@@ -725,9 +768,10 @@
                 ipStatusOnline: "Online (Telemetry Active)",
                 ipStatusOffline: "Offline / Standby",
                 ipStatusChecking: "Checking status...",
+                firstRunTip: "First time setup? Follow the 3 steps in the guide below 👇",
                 btnOpen: "Open Dashboard",
                 btnSync: "Auto-Sync via BMS_Setup",
-                syncHint: "Connect phone Wi-Fi to BMS_Setup first, then tap to automatically discover controller IP.",
+                syncHint: "💡 Before connecting: turn on hotspot <b>BMS</b> (Option A) or connect to Wi-Fi <b>BMS_Setup</b> (Option B).<br><span style='color: #60a5fa; text-decoration: underline;'>👉 Open setup guide</span>",
                 btnManual: "Set IP Manually",
                 btnSaveIp: "Save",
                 autoText: "<b>Autonomous hybrid battery cooling.</b> Phone is only required for viewing live telemetry.",
@@ -771,6 +815,7 @@
                 tr4A: "Turn off phone hotspot for 15s. Connect to <code>BMS_Setup</code> Wi-Fi and open <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> or <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> to reconfigure.",
                 toastLinked: "✅ Controller linked: ",
                 toastConnecting: "📡 Connecting (192.168.4.1)...<br><small style=\"color:#cbd5e1;\">Ensure your Wi-Fi is connected to BMS_Setup!</small>",
+                toastSetupFirst: "Please complete setup following the guide below",
                 btnConnecting: "Connecting...",
                 alertInvalidIp: "Invalid IP address format (example: 10.48.33.187)",
                 dashUnreachable: "⚠️ <b>Cannot connect to controller.</b><br>• Ensure phone Hotspot <code>BMS</code> / <code>bmslocal</code> (2.4GHz) is ON.<br>• Ensure vehicle ignition is in <b>READY</b> mode.<br>• Connect to <code>BMS_Setup</code> Wi-Fi and tap <b>«Auto-Sync via BMS_Setup»</b>.",
@@ -784,9 +829,10 @@
                 ipStatusOnline: "在线 (遥测正常)",
                 ipStatusOffline: "离线 / 待机",
                 ipStatusChecking: "检查状态中...",
+                firstRunTip: "首次使用？请先按照下方指南的 3 个步骤操作 👇",
                 btnOpen: "打开仪表板",
                 btnSync: "通过 BMS_Setup 自动同步",
-                syncHint: "请先将手机 Wi-Fi 连接至 BMS_Setup，然后点击按钮自动发现并绑定控制器 IP。",
+                syncHint: "💡 连接前提示：开启手机热点 <b>BMS</b>（方案 A）或连接 Wi-Fi <b>BMS_Setup</b>（方案 B）。<br><span style='color: #60a5fa; text-decoration: underline;'>👉 查看使用指南</span>",
                 btnManual: "手动设置 IP",
                 btnSaveIp: "保存",
                 autoText: "<b>混合动力电池全自动智能冷却。</b> 仅在查看实时遥测数据时需要手机。",
@@ -830,6 +876,7 @@
                 tr4A: "关闭手机热点 15 秒。连接 <code>BMS_Setup</code> Wi-Fi 并打开 <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> 或 <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> 即可重新配置。",
                 toastLinked: "✅ 控制器已连接：",
                 toastConnecting: "📡 正在连接 (192.168.4.1)...<br><small style=\"color:#cbd5e1;\">请确保手机已连接到 BMS_Setup 热点！</small>",
+                toastSetupFirst: "请先按照下方指南完成连接设置",
                 btnConnecting: "正在连接...",
                 alertInvalidIp: "IP 地址格式无效（示例：10.48.33.187）",
                 dashUnreachable: "⚠️ <b>无法连接至控制器。</b><br>• 请确认手机热点 <code>BMS</code> / <code>bmslocal</code> (2.4GHz) 已开启。<br>• 请确认车辆处于 <b>READY</b> 模式。<br>• 或连接 <code>BMS_Setup</code> 热点并点击<b>“通过 BMS_Setup 自动同步”</b>。",
@@ -843,9 +890,10 @@
                 ipStatusOnline: "온라인 (원격 제어 활성)",
                 ipStatusOffline: "오프라인 / 대기",
                 ipStatusChecking: "상태 확인 중...",
+                firstRunTip: "처음이신가요? 아래 가이드의 3단계를 먼저 따라하세요 👇",
                 btnOpen: "대시보드 열기",
                 btnSync: "BMS_Setup을 통한 자동 동기화",
-                syncHint: "스마트폰 Wi-Fi를 먼저 BMS_Setup에 연결한 뒤 버튼을 눌러 컨트롤러 IP를 자동 검색 및 등록하세요.",
+                syncHint: "💡 연결 전 확인: 핫스팟 <b>BMS</b> 켜기 (옵션 A) 또는 Wi-Fi <b>BMS_Setup</b> 연결 (옵션 B).<br><span style='color: #60a5fa; text-decoration: underline;'>👉 가이드 보기</span>",
                 btnManual: "수동으로 IP 입력",
                 btnSaveIp: "저장",
                 autoText: "<b>하이브리드 배터리 완전 자동 자율 냉각.</b> 스마트폰은 실시간 데이터 확인용으로만 필요합니다.",
@@ -889,6 +937,7 @@
                 tr4A: "스마트폰 핫스팟을 15초간 끕니다. <code>BMS_Setup</code> Wi-Fi에 연결한 후 <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> 또는 <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> 에 접속하여 재설정하세요.",
                 toastLinked: "✅ 컨트롤러 연결됨: ",
                 toastConnecting: "📡 연결 중 (192.168.4.1)...<br><small style=\"color:#cbd5e1;\">스마트폰이 BMS_Setup Wi-Fi에 연결되어 있는지 확인하세요!</small>",
+                toastSetupFirst: "먼저 아래 가이드에 따라 설정을 완료하세요",
                 btnConnecting: "연결 중...",
                 alertInvalidIp: "올바르지 않은 IP 주소 형식입니다 (예: 10.48.33.187)",
                 dashUnreachable: "⚠️ <b>컨트롤러에 연결할 수 없습니다.</b><br>• 스마트폰 핫스팟 <code>BMS</code> / <code>bmslocal</code> (2.4GHz)이 켜져 있는지 확인하세요.<br>• 차량 시동이 <b>READY</b> 상태인지 확인하세요.<br>• 또는 <code>BMS_Setup</code>에 연결 후 <b>«BMS_Setup을 통한 자동 동기화»</b>를 누르세요.",
@@ -902,9 +951,10 @@
                 ipStatusOnline: "В сети (Телеметрия активна)",
                 ipStatusOffline: "Не в сети / Ожидание",
                 ipStatusChecking: "Проверка связи...",
+                firstRunTip: "Первый запуск? Следуйте 3 шагам инструкции ниже 👇",
                 btnOpen: "Открыть дашборд",
                 btnSync: "Авто-синхронизация с платой",
-                syncHint: "Сначала подключите телефон к Wi-Fi сети BMS_Setup, затем нажмите кнопку для автоматического поиска и сохранения IP.",
+                syncHint: "💡 Перед подключением: включите раздачу <b>BMS</b> (Вариант А) или подключитесь к Wi-Fi <b>BMS_Setup</b> (Вариант Б).<br><span style='color: #60a5fa; text-decoration: underline;'>👉 Открыть инструкцию</span>",
                 btnManual: "Ввести IP вручную",
                 btnSaveIp: "Сохранить",
                 autoText: "<b>Контроллер охлаждения работает автономно.</b> Телефон нужен только для просмотра телеметрии.",
@@ -948,6 +998,7 @@
                 tr4A: "Выключите раздачу с телефона на 15 сек. Подключитесь к Wi-Fi <code>BMS_Setup</code> и откройте <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> или <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> для настройки.",
                 toastLinked: "✅ Контроллер привязан: ",
                 toastConnecting: "📡 Подключение (192.168.4.1)...<br><small style=\"color:#cbd5e1;\">Убедитесь, что вы подключены к Wi-Fi сети BMS_Setup!</small>",
+                toastSetupFirst: "Пожалуйста, выполните подключение по инструкции ниже",
                 btnConnecting: "Подключение...",
                 alertInvalidIp: "Неверный формат IP адреса (пример: 10.48.33.187)",
                 dashUnreachable: "⚠️ <b>Не удается открыть страницу контроллера.</b><br>• Проверьте, что на телефоне включена раздача <code>BMS</code> / <code>bmslocal</code> (2.4GHz).<br>• Убедитесь, что авто в режиме <b>READY</b>.<br>• Или подключитесь к Wi-Fi сети <code>BMS_Setup</code> и нажмите <b>«Авто-синхронизация с платой»</b>.",
@@ -986,9 +1037,10 @@
             if (document.getElementById('t-apps-header')) document.getElementById('t-apps-header').innerText = t.appsHeader;
             if (document.getElementById('t-auto-text')) document.getElementById('t-auto-text').innerHTML = t.autoText;
             if (document.getElementById('t-ip-label')) document.getElementById('t-ip-label').innerText = t.ipLabel;
+            if (document.getElementById('t-first-run-tip')) document.getElementById('t-first-run-tip').innerText = t.firstRunTip;
             if (document.getElementById('t-btn-open')) document.getElementById('t-btn-open').innerText = t.btnOpen;
             if (document.getElementById('t-btn-sync')) document.getElementById('t-btn-sync').innerText = t.btnSync;
-            if (document.getElementById('t-sync-hint')) document.getElementById('t-sync-hint').innerText = t.syncHint;
+            if (document.getElementById('t-sync-hint')) document.getElementById('t-sync-hint').innerHTML = t.syncHint;
             if (document.getElementById('t-btn-manual')) document.getElementById('t-btn-manual').innerText = t.btnManual;
             if (document.getElementById('t-manual-ip-hint')) document.getElementById('t-manual-ip-hint').innerText = t.manualIpHint;
             if (document.getElementById('t-btn-save-ip')) document.getElementById('t-btn-save-ip').innerText = t.btnSaveIp;
@@ -1108,18 +1160,31 @@
         function updateUI() {
             const displayEl = document.getElementById('display-ip');
             const manualIpInput = document.getElementById('manual-ip');
+            const firstRunTip = document.getElementById('first-run-tip');
 
             if (currentIp && currentIp !== '--') {
                 if (displayEl) displayEl.innerText = currentIp;
                 if (manualIpInput) manualIpInput.value = currentIp;
+                if (firstRunTip) firstRunTip.style.display = 'none';
             } else {
                 if (displayEl) displayEl.innerText = '--';
                 if (manualIpInput) manualIpInput.value = '';
+                if (firstRunTip) firstRunTip.style.display = 'flex';
             }
         }
 
         // Apply saved IP immediately to DOM
         updateUI();
+
+        // Auto-expand guide for first-time visitors if IP is not set
+        if (!currentIp || currentIp === '--') {
+            const content = document.getElementById('help-content');
+            const arrow = document.getElementById('help-arrow');
+            if (content && arrow) {
+                content.style.display = 'block';
+                arrow.innerText = '▲';
+            }
+        }
 
         // Check URL Query Parameter (?ip=10.48.33.xxx)
         const queryIp = urlParams.get('ip');
@@ -1141,9 +1206,28 @@
             showToast(`${t.toastLinked}${currentIp}`);
         }
 
+        function openAndScrollToGuide() {
+            const content = document.getElementById('help-content');
+            const arrow = document.getElementById('help-arrow');
+            const guideCard = document.getElementById('guide-card');
+            if (content) {
+                content.style.display = 'block';
+                if (arrow) arrow.innerText = '▲';
+            }
+            switchGuideTab('setup');
+            if (guideCard) {
+                guideCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
         function openDashboard() {
-            const targetIp = (currentIp && currentIp !== '--') ? currentIp : '192.168.4.1';
-            window.location.href = 'http://' + targetIp + '/';
+            if (!currentIp || currentIp === '--') {
+                openAndScrollToGuide();
+                const t = I18N[currentLang] || I18N.en;
+                showToast(t.toastSetupFirst);
+                return;
+            }
+            window.location.href = 'http://' + currentIp + '/';
         }
 
         function syncWithBoard() {
