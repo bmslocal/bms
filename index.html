@@ -29,11 +29,11 @@
         }
         .header {
             text-align: center;
-            margin-bottom: 20px;
-            margin-top: 6px;
+            margin-bottom: 12px;
+            margin-top: 4px;
         }
         .app-title {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 700;
             letter-spacing: -0.5px;
             margin: 0;
@@ -46,7 +46,7 @@
             border: 1px solid rgba(34, 197, 94, 0.25);
             border-radius: 12px;
             padding: 12px 14px;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -517,24 +517,19 @@
             margin-bottom: 4px;
             line-height: 1.35;
         }
-        .sync-hint-box {
-            background: rgba(39, 39, 42, 0.5);
-            border: 1px solid rgba(63, 63, 70, 0.55);
-            border-radius: 9px;
-            padding: 8px 12px;
-            font-size: 11.5px;
-            color: #a1a1aa;
-            margin-top: 8px;
-            margin-bottom: 6px;
-            line-height: 1.45;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .sync-hint-box:hover {
-            background: rgba(39, 39, 42, 0.85);
-            border-color: #3b82f6;
-            color: #f4f4f5;
+        .badge-recommended {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.35);
+            border-radius: 6px;
+            padding: 3px 8px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         .dash-error-box {
             background: rgba(239, 68, 68, 0.12);
@@ -568,9 +563,30 @@
         <!-- Toast Notify -->
         <div id="toast" class="notify-toast"></div>
 
+        <!-- Web App Install section (only shown in browser when not installed) -->
+        <div id="install-banner-android" class="install-card" style="display: none; margin-bottom: 14px;">
+            <div class="install-title" id="t-install-title-android">📲 Install Application</div>
+            <div class="install-desc" id="t-install-desc-android">Add BMS Radar to your home screen for quick one-tap access.</div>
+            <button type="button" id="btn-install-app" class="btn-install" style="background: #e4e4e7; color: #18181b; width: 100%;">Install</button>
+        </div>
+
+        <!-- iOS install guide banner -->
+        <div id="install-banner-ios" class="install-card" style="display: none; margin-bottom: 14px; border-color: #52525b; background: transparent; padding: 14px 16px;">
+            <div class="install-title" id="t-install-title-ios" style="color: #e4e4e7; margin-bottom: 6px;">📲 Install on iPhone</div>
+            <div class="install-desc" id="t-install-desc-ios" style="margin-bottom: 0;">Tap the <b>Share button ⎋</b> in Safari, then select <b>«Add to Home Screen» ➕</b>.</div>
+        </div>
+
         <!-- Header -->
         <div class="header">
             <h1 class="app-title" id="t-app-title">BMS Radar</h1>
+        </div>
+
+        <!-- Autonomous Callout Card (Directly below header) -->
+        <div class="auto-card" id="auto-card">
+            <span class="auto-icon">🛡️</span>
+            <div class="auto-text" id="t-auto-text">
+                <b>Autonomous hybrid battery cooling.</b> Phone is only required for viewing live telemetry.
+            </div>
         </div>
 
         <!-- Main Card -->
@@ -579,7 +595,7 @@
             <div id="display-ip" class="ip-value">--</div>
             <div id="first-run-tip" class="first-run-tip" onclick="openAndScrollToGuide()">
                 <span>📖</span>
-                <span id="t-first-run-tip">First time setup? Follow the 3 steps in the guide below 👇</span>
+                <span id="t-first-run-tip">First time setup? Follow the steps in the guide below 👇</span>
             </div>
 
             <button id="btn-open" class="btn-primary" onclick="openDashboard()">
@@ -592,7 +608,6 @@
                 <span id="sync-btn-icon">📡</span>
                 <span id="t-btn-sync">Auto-Sync via BMS_Setup</span>
             </button>
-            <div class="sync-hint-box" id="t-sync-hint" onclick="openAndScrollToGuide()">💡 Before connecting: turn on hotspot <b>BMS</b> (Option A) or connect to Wi-Fi <b>BMS_Setup</b> (Option B).<br><span style="color: #60a5fa; text-decoration: underline;">👉 Open setup guide</span></div>
 
             <button class="btn-secondary" onclick="toggleEditIp()">
                 <span>✏️</span>
@@ -606,14 +621,6 @@
                     <button class="btn-save-ip" id="t-btn-save-ip" onclick="saveManualIp()">Save</button>
                 </div>
                 <div class="sync-hint" id="t-manual-ip-hint" style='text-align: left; margin-top: 2px;'>Find IP in Hotspot settings (e.g. 10.48.33.x)</div>
-            </div>
-        </div>
-
-        <!-- Autonomous Callout Card -->
-        <div class="auto-card" id="auto-card">
-            <span class="auto-icon">🛡️</span>
-            <div class="auto-text" id="t-auto-text">
-                <b>Autonomous hybrid battery cooling.</b> Phone is only required for viewing live telemetry.
             </div>
         </div>
 
@@ -645,38 +652,40 @@
                     <div class="guide-step">
                         <div class="step-header">
                             <span class="step-num">2</span>
-                            <span class="step-title" id="t-step2-title">Choose Wi-Fi Connection</span>
+                            <span class="step-title" id="t-step2-title">Turn ON Phone Hotspot</span>
                         </div>
                         <div class="step-body">
-                            <div class="option-box">
-                                <div class="option-title" id="t-opt-a-title">🔹 Option A: Personal Hotspot (Recommended)</div>
-                                <div id="t-opt-a-desc">Rename your phone's <b>Personal Hotspot</b> to:</div>
-                                <div class="cred-row">
-                                    <span id="t-opt-a-net">Network: <code>BMS</code></span>
-                                    <span id="t-opt-a-pwd">Password: <code>bmslocal</code></span>
-                                </div>
-                                <div class="option-note" id="t-opt-a-note">Links in ~10s. Find IP in Hotspot settings, or try <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> (iPhone/PC). If unreachable, use Option B (Auto-Sync) above.</div>
-                                <div class="option-note" style="color: #f59e0b; margin-top: 4px;" id="t-opt-a-warn">⚠️ <b>Important:</b> Only supports <b>2.4GHz Wi-Fi</b>. On iPhone, turn ON <i>«Maximize Compatibility»</i>.</div>
+                            <div id="t-step2-desc">Enable <b>Personal Hotspot</b> on your phone with the following credentials:</div>
+                            <div class="cred-row">
+                                <span id="t-step2-net">Network: <code>BMS</code></span>
+                                <span id="t-step2-pwd">Password: <code>bmslocal</code></span>
                             </div>
+                            <div class="option-note" style="color: #f59e0b; margin-top: 4px;" id="t-step2-warn">⚠️ <b>Important:</b> Only supports <b>2.4GHz Wi-Fi</b>. On iPhone, turn ON <i>«Maximize Compatibility»</i>.</div>
+                            <div class="option-note" id="t-step2-note">The controller will connect to your phone in ~5–10 seconds.</div>
+                        </div>
+                    </div>
 
-                            <div class="option-box">
-                                <div class="option-title" id="t-opt-b-title">🔸 Option B: Direct Controller Wi-Fi (Setup Mode)</div>
-                                <div id="t-opt-b-desc">Connect phone to controller's Wi-Fi network:</div>
-                                <div class="cred-row">
-                                    <span id="t-opt-b-net">Network: <code>BMS_Setup</code></span>
-                                    <span id="t-opt-b-pwd">Password: <code>bmslocal</code></span>
-                                </div>
-                                <div class="option-note" id="t-opt-b-note">Open <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> or <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> to access device settings, or tap Auto-Sync above.</div>
-                            </div>
+                    <div class="guide-step">
+                        <div class="step-header">
+                            <span class="step-num">3</span>
+                            <span class="step-title" id="t-step3-title">1-Tap IP Discovery (Auto-Sync)</span>
+                        </div>
+                        <div class="step-body">
+                            <div id="t-step3-desc">Connect phone Wi-Fi to controller network <code>BMS_Setup</code> (password: <code>bmslocal</code>), then tap:</div>
+                            <button type="button" class="btn-sync" id="btn-guide-sync" onclick="syncWithBoard()" style="margin-top: 10px; margin-bottom: 8px; padding: 12px 14px; font-size: 13.5px; width: 100%;">
+                                <span id="guide-sync-icon">📡</span>
+                                <span id="t-btn-guide-sync">Auto-Sync with Controller</span>
+                            </button>
+                            <div class="option-note" id="t-step3-note">The controller will send its IP to BMS Radar, disable BMS_Setup, and redirect you back with IP saved.</div>
                         </div>
                     </div>
 
                     <div class="guide-step" style='margin-bottom: 4px;'>
                         <div class="step-header">
-                            <span class="step-num">3</span>
-                            <span class="step-title" id="t-step3-title">Launch Dashboard</span>
+                            <span class="step-num">4</span>
+                            <span class="step-title" id="t-step4-title">Launch Dashboard</span>
                         </div>
-                        <div class="step-body" id="t-step3-body">
+                        <div class="step-body" id="t-step4-body">
                             Tap <b>«🚀 Open Dashboard»</b> above to view live telemetry.
                         </div>
                     </div>
@@ -717,8 +726,15 @@
                         </div>
                     </div>
 
+                    <div class="trouble-item">
+                        <div class="trouble-q" id="t-tr-custom-q">⚙️ How to connect controller to custom/home Wi-Fi?</div>
+                        <div class="trouble-a" id="t-tr-custom-a">
+                            1. Turn off phone hotspot for 15s. The controller will launch its setup Wi-Fi <code>BMS_Setup</code> (password <code>bmslocal</code>).<br>2. Connect phone Wi-Fi to <code>BMS_Setup</code>, open <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> or tap <b>«Auto-Sync»</b> above.<br>3. In the Wi-Fi settings section, enter your network SSID and password, then save. The controller will reconnect to your network automatically!
+                        </div>
+                    </div>
+
                     <div class="trouble-item" style='margin-bottom: 4px;'>
-                        <div class="trouble-q" id="t-tr-4-q">⚙️ Reconfigure or reset Wi-Fi?</div>
+                        <div class="trouble-q" id="t-tr-4-q">🔄 Reset Wi-Fi configuration:</div>
                         <div class="trouble-a" id="t-tr-4-a">
                             Turn off phone hotspot for 15s. Connect to <code>BMS_Setup</code> Wi-Fi and open <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> or <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> to reconfigure.
                         </div>
@@ -727,9 +743,12 @@
             </div>
         </div>
 
-        <!-- Android APK section -->
+        <!-- Android APK section (shown only on Android) -->
         <div id="apk-banner-android" class="apk-card" style="margin-top: 16px; margin-bottom: 24px;">
-            <div class="apk-badge" id="t-apps-header" style="margin-bottom: 10px;">📱 Android App</div>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                <div class="apk-badge" id="t-apps-header">📱 Android App</div>
+                <div class="badge-recommended" id="t-badge-recommended">🔥 RECOMMENDED</div>
+            </div>
             <div class="apk-title" id="t-apk-title">BMS Monitor</div>
             <div class="apk-desc" id="t-apk-desc">Native Android app with live battery HUD widget:</div>
             <div class="apk-features">
@@ -744,19 +763,6 @@
             </a>
         </div>
 
-        <!-- Web App Install section (only shown in browser when not installed) -->
-        <div id="install-banner-android" class="install-card" style="display: none; margin-top: 16px; margin-bottom: 24px;">
-            <div class="install-title" id="t-install-title-android">📲 Install Application</div>
-            <div class="install-desc" id="t-install-desc-android">Add BMS Radar to your home screen for quick one-tap access.</div>
-            <button type="button" id="btn-install-app" class="btn-install" style="background: #e4e4e7; color: #18181b; width: 100%;">Install</button>
-        </div>
-
-        <!-- iOS install guide banner -->
-        <div id="install-banner-ios" class="install-card" style="display: none; margin-top: 16px; margin-bottom: 24px; border-color: #52525b; background: transparent; padding: 14px 16px;">
-            <div class="install-title" id="t-install-title-ios" style="color: #e4e4e7; margin-bottom: 6px;">📲 Install on iPhone</div>
-            <div class="install-desc" id="t-install-desc-ios" style="margin-bottom: 0;">Tap the <b>Share button ⎋</b> in Safari, then select <b>«Add to Home Screen» ➕</b>.</div>
-        </div>
-
     </div>
     <script>
         // Translations Dictionary
@@ -764,14 +770,14 @@
             en: {
                 appTitle: "BMS Radar",
                 appsHeader: "📱 Android App",
+                badgeRecommended: "🔥 RECOMMENDED",
                 ipLabel: "Controller IP Address",
                 ipStatusOnline: "Online (Telemetry Active)",
                 ipStatusOffline: "Offline / Standby",
                 ipStatusChecking: "Checking status...",
-                firstRunTip: "First time setup? Follow the 3 steps in the guide below 👇",
+                firstRunTip: "First time setup? Follow the steps in the guide below 👇",
                 btnOpen: "Open Dashboard",
                 btnSync: "Auto-Sync via BMS_Setup",
-                syncHint: "💡 Before connecting: turn on hotspot <b>BMS</b> (Option A) or connect to Wi-Fi <b>BMS_Setup</b> (Option B).<br><span style='color: #60a5fa; text-decoration: underline;'>👉 Open setup guide</span>",
                 btnManual: "Set IP Manually",
                 btnSaveIp: "Save",
                 autoText: "<b>Autonomous hybrid battery cooling.</b> Phone is only required for viewing live telemetry.",
@@ -789,20 +795,18 @@
                 installDescIos: "Tap the <b>Share button ⎋</b> in Safari, then select <b>«Add to Home Screen» ➕</b>.",
                 step1Title: "Plug into Car & Power ON",
                 step1Body: "Insert the controller into your vehicle's <b>OBD2 port</b> (under the steering wheel) and power on the car (<b>READY</b> mode).",
-                step2Title: "Choose Wi-Fi Connection",
-                optATitle: "🔹 Option A: Personal Hotspot (Recommended)",
-                optADesc: "Rename your phone's <b>Personal Hotspot</b> to:",
-                optANet: "Network: <code>BMS</code>",
-                optAPwd: "Password: <code>bmslocal</code>",
-                optANote: "Links in ~10s. Find IP in Hotspot settings, or try <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> (iPhone/PC). If unreachable, use Option B (Auto-Sync) above.",
-                optAWarn: "⚠️ <b>Important:</b> Only supports <b>2.4GHz Wi-Fi</b>. On iPhone, turn ON <i>«Maximize Compatibility»</i>.",
-                optBTitle: "🔸 Option B: Direct Controller Wi-Fi (Setup Mode)",
-                optBDesc: "Connect phone to controller's Wi-Fi network:",
-                optBNet: "Network: <code>BMS_Setup</code>",
-                optBPwd: "Password: <code>bmslocal</code>",
-                optBNote: "Open <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> or <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> to access device settings, or tap Auto-Sync above.",
-                step3Title: "Launch Dashboard",
-                step3Body: "Tap <b>«🚀 Open Dashboard»</b> above to view live telemetry.",
+                step2Title: "Turn ON Phone Hotspot",
+                step2Desc: "Enable <b>Personal Hotspot</b> on your phone with the following credentials:",
+                step2Net: "Network: <code>BMS</code>",
+                step2Pwd: "Password: <code>bmslocal</code>",
+                step2Warn: "⚠️ <b>Important:</b> Only supports <b>2.4GHz Wi-Fi</b>. On iPhone, turn ON <i>«Maximize Compatibility»</i>.",
+                step2Note: "The controller will connect to your phone in ~5–10 seconds.",
+                step3Title: "1-Tap IP Discovery (Auto-Sync)",
+                step3Desc: "Connect phone Wi-Fi to controller network <code>BMS_Setup</code> (password: <code>bmslocal</code>), then tap:",
+                btnGuideSync: "Auto-Sync with Controller",
+                step3Note: "The controller will send its IP to BMS Radar, disable BMS_Setup, and redirect you back with IP saved.",
+                step4Title: "Launch Dashboard",
+                step4Body: "Tap <b>«🚀 Open Dashboard»</b> above to view live telemetry.",
                 tr1Q: "🔴 Dashboard not opening or offline?",
                 tr1A: "• Ensure vehicle is in <b>READY</b> mode.<br>• Verify hotspot is ON: default network <code>BMS</code> (password <code>bmslocal</code>) or your custom network.<br>• On iPhone, turn <b>ON</b> <i>«Maximize Compatibility»</i> in Personal Hotspot settings.<br>• On Android, set Hotspot AP Band to <b>2.4 GHz</b>.",
                 tr2Q: "📶 Tips for BMS_Setup Wi-Fi:",
@@ -811,7 +815,9 @@
                 tr3A: "• Connect phone Wi-Fi to <code>BMS_Setup</code> and tap <i>«Auto-Sync via BMS_Setup»</i>.<br>• Or check phone Hotspot settings for the connected device IP and save it manually.",
                 trAndroidQ: "🤖 Android Hotspot 2.4GHz Settings:",
                 trAndroidA: "In your Android phone settings ➔ <i>Portable Hotspot / Tethering</i> ➔ <i>Set up hotspot</i>, make sure <b>AP Band</b> is set to <b>2.4 GHz Band</b> (not 5.0 GHz preferred).",
-                tr4Q: "⚙️ Reconfigure or reset Wi-Fi?",
+                trCustomQ: "⚙️ How to connect controller to custom/home Wi-Fi?",
+                trCustomA: "1. Turn off phone hotspot for 15s. The controller will launch its setup Wi-Fi <code>BMS_Setup</code> (password <code>bmslocal</code>).<br>2. Connect phone Wi-Fi to <code>BMS_Setup</code>, open <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> or tap <b>«Auto-Sync»</b> above.<br>3. In the Wi-Fi settings section, enter your network SSID and password, then save. The controller will reconnect to your network automatically!",
+                tr4Q: "🔄 Reset Wi-Fi configuration:",
                 tr4A: "Turn off phone hotspot for 15s. Connect to <code>BMS_Setup</code> Wi-Fi and open <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> or <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> to reconfigure.",
                 toastLinked: "✅ Controller linked: ",
                 toastConnecting: "📡 Connecting (192.168.4.1)...<br><small style=\"color:#cbd5e1;\">Ensure your Wi-Fi is connected to BMS_Setup!</small>",
@@ -825,14 +831,14 @@
             zh: {
                 appTitle: "BMS Radar",
                 appsHeader: "📱 Android 应用",
+                badgeRecommended: "🔥 推荐",
                 ipLabel: "控制器 IP 地址",
                 ipStatusOnline: "在线 (遥测正常)",
                 ipStatusOffline: "离线 / 待机",
                 ipStatusChecking: "检查状态中...",
-                firstRunTip: "首次使用？请先按照下方指南的 3 个步骤操作 👇",
+                firstRunTip: "首次使用？请先按照下方指南操作 👇",
                 btnOpen: "打开仪表板",
                 btnSync: "通过 BMS_Setup 自动同步",
-                syncHint: "💡 连接前提示：开启手机热点 <b>BMS</b>（方案 A）或连接 Wi-Fi <b>BMS_Setup</b>（方案 B）。<br><span style='color: #60a5fa; text-decoration: underline;'>👉 查看使用指南</span>",
                 btnManual: "手动设置 IP",
                 btnSaveIp: "保存",
                 autoText: "<b>混合动力电池全自动智能冷却。</b> 仅在查看实时遥测数据时需要手机。",
@@ -850,20 +856,18 @@
                 installDescIos: "在 Safari 浏览器中点击底部<b>分享按钮 ⎋</b>，然后选择<b>“添加到主屏幕” ➕</b>。",
                 step1Title: "插入车辆并通电",
                 step1Body: "将控制器插入车辆方向盘下方的 <b>OBD2 接口</b>，并将车辆启动至 <b>READY</b> 模式。",
-                step2Title: "选择 Wi-Fi 连接方式",
-                optATitle: "🔹 选项 A：手机个人热点（推荐）",
-                optADesc: "请将手机的<b>个人热点</b>重命名为：",
-                optANet: "热点名称：<code>BMS</code>",
-                optAPwd: "热点密码：<code>bmslocal</code>",
-                optANote: "约 10 秒内连接。在热点设置中查找 IP，或尝试打开 <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a>（适用于 iPhone/电脑）。若无法访问，请使用上方选项 B（自动同步）。",
-                optAWarn: "⚠️ <b>特别注意：</b> 仅支持 <b>2.4GHz Wi-Fi</b>。iPhone 用户请开启<i>“最大兼容性”</i>。",
-                optBTitle: "🔸 选项 B：直连控制器 Wi-Fi（配置模式）",
-                optBDesc: "手机连接至控制器自带热点：",
-                optBNet: "网络名称：<code>BMS_Setup</code>",
-                optBPwd: "网络密码：<code>bmslocal</code>",
-                optBNote: "打开 <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> 或 <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> 进入设备设置，或点击上方的自动同步。",
-                step3Title: "打开仪表板",
-                step3Body: "连接网络后，点击上方<b>«🚀 打开仪表板»</b>即可查看实时遥测数据。",
+                step2Title: "开启手机热点",
+                step2Desc: "请在手机上开启<b>个人热点</b>，参数如下：",
+                step2Net: "热点名称：<code>BMS</code>",
+                step2Pwd: "热点密码：<code>bmslocal</code>",
+                step2Warn: "⚠️ <b>特别注意：</b> 仅支持 <b>2.4GHz Wi-Fi</b>。iPhone 用户请开启<i>“最大兼容性”</i>。",
+                step2Note: "控制器将在 5–10 秒内自动连上手机热点。",
+                step3Title: "一键自动获取 IP（自动同步）",
+                step3Desc: "手机 Wi-Fi 连接到控制器热点 <code>BMS_Setup</code>（密码：<code>bmslocal</code>），然后点击：",
+                btnGuideSync: "与控制器自动同步",
+                step3Note: "控制器将自动将 IP 发送给雷达，关闭临时热点，并带您返回主屏（已保存 IP）。",
+                step4Title: "打开仪表板",
+                step4Body: "点击上方的<b>«🚀 打开仪表板»</b>即可查看实时电池遥测数据。",
                 tr1Q: "🔴 无法打开仪表板或设备离线？",
                 tr1A: "• 确保车辆处于通电状态（<b>READY</b> 模式）。<br>• 检查手机热点是否开启：默认网络 <code>BMS</code>（密码 <code>bmslocal</code>）或您设置的自定义网络。<br>• iPhone 用户请务必在个人热点设置中开启<i>“最大兼容性”</i>。<br>• Android 用户请将热点 AP 频段设置为 <b>2.4 GHz</b>。",
                 tr2Q: "📶 连接 BMS_Setup 时的注意事项：",
@@ -872,7 +876,9 @@
                 tr3A: "• 手机连接 <code>BMS_Setup</code> 并点击<i>“通过 BMS_Setup 自动同步”</i>。<br>• 或在手机的<i>设置 ➔ 个人热点 ➔ 已连接设备</i>中查看分配的 IP 并手动输入。",
                 trAndroidQ: "🤖 Android 手机 2.4GHz 热点设置方法：",
                 trAndroidA: "在手机 <i>设置 ➔ 个人热点 / 网络共享 ➔ 热点设置</i> 中，将 <b>AP 频段</b> 切换为 <b>2.4 GHz 频段</b>（不要选 5 GHz）。",
-                tr4Q: "⚙️ 重新配置或重置 Wi-Fi？",
+                trCustomQ: "⚙️ 如何将控制器连接至您的私人/家用 Wi-Fi 网络？",
+                trCustomA: "1. 关闭手机热点 15 秒，控制器将自动开启配置热点 <code>BMS_Setup</code>（密码 <code>bmslocal</code>）。<br>2. 手机连接 <code>BMS_Setup</code> Wi-Fi，打开 <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> 或点击上方的<b>“自动同步”</b>。<br>3. 在 Wi-Fi 设置栏目中输入您私人 Wi-Fi 的名称与密码并点击保存。控制器将保存在 NVS 内存中，此后将自动连接您的专属网络！",
+                tr4Q: "🔄 重新配置或重置 Wi-Fi？",
                 tr4A: "关闭手机热点 15 秒。连接 <code>BMS_Setup</code> Wi-Fi 并打开 <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> 或 <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> 即可重新配置。",
                 toastLinked: "✅ 控制器已连接：",
                 toastConnecting: "📡 正在连接 (192.168.4.1)...<br><small style=\"color:#cbd5e1;\">请确保手机已连接到 BMS_Setup 热点！</small>",
@@ -886,14 +892,14 @@
             ko: {
                 appTitle: "BMS Radar",
                 appsHeader: "📱 Android 앱",
+                badgeRecommended: "🔥 추천",
                 ipLabel: "컨트롤러 IP 주소",
                 ipStatusOnline: "온라인 (원격 제어 활성)",
                 ipStatusOffline: "오프라인 / 대기",
                 ipStatusChecking: "상태 확인 중...",
-                firstRunTip: "처음이신가요? 아래 가이드의 3단계를 먼저 따라하세요 👇",
+                firstRunTip: "처음이신가요? 아래 가이드에 따라 설정하세요 👇",
                 btnOpen: "대시보드 열기",
                 btnSync: "BMS_Setup을 통한 자동 동기화",
-                syncHint: "💡 연결 전 확인: 핫스팟 <b>BMS</b> 켜기 (옵션 A) 또는 Wi-Fi <b>BMS_Setup</b> 연결 (옵션 B).<br><span style='color: #60a5fa; text-decoration: underline;'>👉 가이드 보기</span>",
                 btnManual: "수동으로 IP 입력",
                 btnSaveIp: "저장",
                 autoText: "<b>하이브리드 배터리 완전 자동 자율 냉각.</b> 스마트폰은 실시간 데이터 확인용으로만 필요합니다.",
@@ -911,20 +917,18 @@
                 installDescIos: "Safari 하단의 <b>공유 버튼 ⎋</b>을 탭한 후 <b>«홈 화면에 추가» ➕</b>를 선택하세요.",
                 step1Title: "차량 OBD2에 연결 및 전원 켜기",
                 step1Body: "컨트롤러를 운전대 아래 <b>OBD2 단자</b>에 연결하고 차량 전원을 켜세요 (<b>READY</b> 모드).",
-                step2Title: "Wi-Fi 연결 방식 선택",
-                optATitle: "🔹 방법 A: 스마트폰 핫스팟 (권장)",
-                optADesc: "스마트폰의 <b>개인용 핫스팟</b> 이름을 다음으로 변경하세요:",
-                optANet: "네트워크 이름: <code>BMS</code>",
-                optAPwd: "비밀번호: <code>bmslocal</code>",
-                optANote: "약 10초 내 연결. 핫스팟 설정에서 IP를 찾거나 <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> 접속을 시도하세요 (iPhone/PC 권장). 연결되지 않으면 상단의 방법 B(자동 동기화)를 사용하세요.",
-                optAWarn: "⚠️ <b>중요 알림:</b> <b>2.4GHz Wi-Fi</b>만 지원합니다. iPhone은 <i>«호환성 최대화»</i>를 켜주세요.",
-                optBTitle: "🔸 방법 B: 컨트롤러 Wi-Fi 직접 연결 (설정 모드)",
-                optBDesc: "컨트롤러의 자체 Wi-Fi 네트워크에 연결합니다:",
-                optBNet: "네트워크 이름: <code>BMS_Setup</code>",
-                optBPwd: "비밀번호: <code>bmslocal</code>",
-                optBNote: "<a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> 또는 <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> 에 접속하여 설정하거나 상단의 자동 동기화를 누르세요.",
-                step3Title: "대시보드 실행",
-                step3Body: "네트워크 연결 후, 상단의 <b>«🚀 대시보드 열기»</b>를 누르면 실시간 데이터를 볼 수 있습니다.",
+                step2Title: "스마트폰 핫스팟 켜기",
+                step2Desc: "스마트폰에서 다음 정보로 <b>개인용 핫스팟</b>을 켜세요:",
+                step2Net: "네트워크 이름: <code>BMS</code>",
+                step2Pwd: "비밀번호: <code>bmslocal</code>",
+                step2Warn: "⚠️ <b>중요 알림:</b> <b>2.4GHz Wi-Fi</b>만 지원합니다. iPhone은 <i>«호환성 최대화»</i>를 켜주세요.",
+                step2Note: "컨트롤러가 5~10초 내에 자동으로 연결됩니다.",
+                step3Title: "1초 자동 IP 찾기 (자동 동기화)",
+                step3Desc: "스마트폰 Wi-Fi를 컨트롤러 네트워크 <code>BMS_Setup</code> (비밀번호: <code>bmslocal</code>)에 연결한 후 아래 버튼을 누르세요:",
+                btnGuideSync: "컨트롤러와 자동 동기화",
+                step3Note: "컨트롤러가 BMS Radar로 IP 주소를 전송하고 BMS_Setup을 끈 후 IP가 저장된 상태로 돌아옵니다.",
+                step4Title: "대시보드 실행",
+                step4Body: "상단의 <b>«🚀 대시보드 열기»</b>를 누르면 실시간 데이터를 볼 수 있습니다.",
                 tr1Q: "🔴 대시보드가 열리지 않거나 오프라인인 경우:",
                 tr1A: "• 차량 시동이 켜져 있는지 확인하세요 (<b>READY</b> 모드).<br>• 스마트폰 핫스팟이 켜져 있는지 확인하세요: 기본 네트워크 <code>BMS</code> (비밀번호 <code>bmslocal</code>) 또는 컨트롤러에 설정한 네트워크.<br>• iPhone의 경우 핫스팟 설정에서 <i>«호환성 최대화»</i>를 켜주세요.<br>• Android의 경우 AP 밴드를 <b>2.4 GHz</b>로 설정하세요.",
                 tr2Q: "📶 BMS_Setup Wi-Fi 연결 주의사항:",
@@ -933,7 +937,9 @@
                 tr3A: "• <code>BMS_Setup</code>에 연결하고 <i>«BMS_Setup을 통한 자동 동기화»</i>를 누르세요.<br>• 또는 핫스팟 설정에서 연결된 기기의 IP를 확인하여 수동 입력하세요.",
                 trAndroidQ: "🤖 Android 핫스팟 2.4GHz 설정 방법:",
                 trAndroidA: "스마트폰 <i>설정 ➔ 테더링 및 핫스팟 ➔ 핫스팟 설정</i>에서 <b>AP 밴드</b>를 <b>2.4 GHz 대역</b>으로 선택하세요.",
-                tr4Q: "⚙️ Wi-Fi 재설정 또는 재구성:",
+                trCustomQ: "⚙️ 컨트롤러를 나만의 개인/가정용 Wi-Fi에 연결하는 방법은?",
+                trCustomA: "1. 스마트폰 핫스팟을 15초간 끕니다. 컨트롤러가 설정용 Wi-Fi <code>BMS_Setup</code> (비밀번호 <code>bmslocal</code>)을 시작합니다.<br>2. <code>BMS_Setup</code> Wi-Fi에 연결한 후 <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> 에 접속하거나 상단의 <b>«자동 동기화»</b>를 누릅니다.<br>3. Wi-Fi 설정 항목에서 사용할 개인 Wi-Fi의 이름과 비밀번호를 입력하고 저장합니다. 컨트롤러가 NVS 메모리에 저장하여 다음부터 자동으로 연결됩니다!",
+                tr4Q: "🔄 Wi-Fi 재설정 또는 재구성:",
                 tr4A: "스마트폰 핫스팟을 15초간 끕니다. <code>BMS_Setup</code> Wi-Fi에 연결한 후 <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> 또는 <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> 에 접속하여 재설정하세요.",
                 toastLinked: "✅ 컨트롤러 연결됨: ",
                 toastConnecting: "📡 연결 중 (192.168.4.1)...<br><small style=\"color:#cbd5e1;\">스마트폰이 BMS_Setup Wi-Fi에 연결되어 있는지 확인하세요!</small>",
@@ -947,14 +953,14 @@
             ru: {
                 appTitle: "BMS Radar",
                 appsHeader: "📱 Android App",
+                badgeRecommended: "🔥 РЕКОМЕНДУЕМ",
                 ipLabel: "IP адрес контроллера",
                 ipStatusOnline: "В сети (Телеметрия активна)",
                 ipStatusOffline: "Не в сети / Ожидание",
                 ipStatusChecking: "Проверка связи...",
-                firstRunTip: "Первый запуск? Следуйте 3 шагам инструкции ниже 👇",
+                firstRunTip: "Первый запуск? Следуйте инструкции ниже 👇",
                 btnOpen: "Открыть дашборд",
                 btnSync: "Авто-синхронизация с платой",
-                syncHint: "💡 Перед подключением: включите раздачу <b>BMS</b> (Вариант А) или подключитесь к Wi-Fi <b>BMS_Setup</b> (Вариант Б).<br><span style='color: #60a5fa; text-decoration: underline;'>👉 Открыть инструкцию</span>",
                 btnManual: "Ввести IP вручную",
                 btnSaveIp: "Сохранить",
                 autoText: "<b>Контроллер охлаждения работает автономно.</b> Телефон нужен только для просмотра телеметрии.",
@@ -972,20 +978,18 @@
                 installDescIos: "Нажмите кнопку <b>Поделиться ⎋</b> в Safari и выберите <b>«На экран Домой» ➕</b>.",
                 step1Title: "Подключение к авто и запуск",
                 step1Body: "Вставьте контроллер в <b>OBD2 разъем</b> автомобиля и включите зажигание (режим <b>READY</b>).",
-                step2Title: "Выбор режима Wi-Fi",
-                optATitle: "🔹 Вариант А: Раздача с телефона (Рекомендуется)",
-                optADesc: "<b>Переименуйте Точку доступа</b> на телефоне в:",
-                optANet: "Имя сети: <code>BMS</code>",
-                optAPwd: "Пароль: <code>bmslocal</code>",
-                optANote: "Подключится за ~10 сек. Найдите IP в настройках точки доступа или попробуйте открыть <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> (для iPhone/ПК). Если не открывается — используйте Вариант Б (Авто-синхронизацию).",
-                optAWarn: "⚠️ <b>Важно:</b> Поддерживается только <b>2.4GHz Wi-Fi</b>. На iPhone включите <i>«Максимальная совместимость»</i>.",
-                optBTitle: "🔸 Вариант Б: Прямая сеть контроллера (Настройка)",
-                optBDesc: "Подключите телефон к Wi-Fi сети контроллера:",
-                optBNet: "Имя сети: <code>BMS_Setup</code>",
-                optBPwd: "Пароль: <code>bmslocal</code>",
-                optBNote: "Откройте <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> или <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> для входа в настройки, или нажмите «Авто-синхронизация» выше.",
-                step3Title: "Запуск дашборда",
-                step3Body: "После подключения к сети нажмите <b>«🚀 Открыть дашборд»</b> выше для перехода к телеметрии.",
+                step2Title: "Включите раздачу с телефона",
+                step2Desc: "Включите <b>Точку доступа</b> на телефоне со следующими параметрами:",
+                step2Net: "Имя сети: <code>BMS</code>",
+                step2Pwd: "Пароль: <code>bmslocal</code>",
+                step2Warn: "⚠️ <b>Важно:</b> Поддерживается только <b>2.4GHz Wi-Fi</b>. На iPhone включите <i>«Максимальная совместимость»</i>.",
+                step2Note: "Контроллер автоматически подключится к раздаче за 5–10 секунд.",
+                step3Title: "Определение IP в 1 клик (Авто-синхронизация)",
+                step3Desc: "Подключите Wi-Fi телефона к сети контроллера <code>BMS_Setup</code> (пароль: <code>bmslocal</code>), затем нажмите:",
+                btnGuideSync: "Авто-синхронизация с платой",
+                step3Note: "Контроллер передаст свой IP Радару, выключит сеть BMS_Setup и вернет вас на главный экран с уже сохраненным IP.",
+                step4Title: "Запуск дашборда",
+                step4Body: "После подключения нажмите <b>«🚀 Открыть дашборд»</b> выше для перехода к телеметрии.",
                 tr1Q: "🔴 Дашборд не открывается или не в сети?",
                 tr1A: "• Убедитесь, что зажигание включено (режим <b>READY</b>).<br>• Убедитесь, что включена раздача: стандартная сеть <code>BMS</code> (пароль <code>bmslocal</code>) либо заданная вами в настройках контроллера.<br>• На iPhone включите <i>«Максимальная совместимость»</i> в настройках модема.<br>• На Android выберите диапазон частот точки доступа <b>2.4 ГГц</b>.",
                 tr2Q: "📶 Подсказки для сети BMS_Setup:",
@@ -994,7 +998,9 @@
                 tr3A: "• Подключитесь к сети <code>BMS_Setup</code> и нажмите <i>«Авто-синхронизация»</i>.<br>• Или посмотрите IP в настройках точки доступа телефона и введите вручную.",
                 trAndroidQ: "🤖 Настройка 2.4GHz на телефонах Android:",
                 trAndroidA: "В меню <i>Настройки ➔ Точка доступа Wi-Fi ➔ Настройка точки доступа</i> переключите пункт <b>Диапазон частот (AP Band)</b> на <b>2.4 ГГц</b> (вместо 5 ГГц).",
-                tr4Q: "⚙️ Сбросить или перенастроить Wi-Fi?",
+                trCustomQ: "⚙️ Как подключить контроллер к своей сети Wi-Fi (своё имя и пароль)?",
+                trCustomA: "1. Выключите раздачу с телефона на 15 сек — контроллер поднимет временную сеть <code>BMS_Setup</code> (пароль <code>bmslocal</code>).<br>2. Подключитесь к Wi-Fi <code>BMS_Setup</code>, перейдите на <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> или нажмите <b>«Авто-синхронизация»</b> выше.<br>3. В блоке настроек Wi-Fi введите SSID и пароль вашей постоянной сети (роутера или модема) и сохраните. Контроллер сохранит параметры в NVS память и будет подключаться к вашей сети автоматически!",
+                tr4Q: "🔄 Сбросить или перенастроить Wi-Fi?",
                 tr4A: "Выключите раздачу с телефона на 15 сек. Подключитесь к Wi-Fi <code>BMS_Setup</code> и откройте <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> или <a href='http://bms.local' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://bms.local</a> для настройки.",
                 toastLinked: "✅ Контроллер привязан: ",
                 toastConnecting: "📡 Подключение (192.168.4.1)...<br><small style=\"color:#cbd5e1;\">Убедитесь, что вы подключены к Wi-Fi сети BMS_Setup!</small>",
@@ -1035,12 +1041,12 @@
             // Text elements
             if (document.getElementById('t-app-title')) document.getElementById('t-app-title').innerText = t.appTitle;
             if (document.getElementById('t-apps-header')) document.getElementById('t-apps-header').innerText = t.appsHeader;
+            if (document.getElementById('t-badge-recommended')) document.getElementById('t-badge-recommended').innerText = t.badgeRecommended;
             if (document.getElementById('t-auto-text')) document.getElementById('t-auto-text').innerHTML = t.autoText;
             if (document.getElementById('t-ip-label')) document.getElementById('t-ip-label').innerText = t.ipLabel;
             if (document.getElementById('t-first-run-tip')) document.getElementById('t-first-run-tip').innerText = t.firstRunTip;
             if (document.getElementById('t-btn-open')) document.getElementById('t-btn-open').innerText = t.btnOpen;
             if (document.getElementById('t-btn-sync')) document.getElementById('t-btn-sync').innerText = t.btnSync;
-            if (document.getElementById('t-sync-hint')) document.getElementById('t-sync-hint').innerHTML = t.syncHint;
             if (document.getElementById('t-btn-manual')) document.getElementById('t-btn-manual').innerText = t.btnManual;
             if (document.getElementById('t-manual-ip-hint')) document.getElementById('t-manual-ip-hint').innerText = t.manualIpHint;
             if (document.getElementById('t-btn-save-ip')) document.getElementById('t-btn-save-ip').innerText = t.btnSaveIp;
@@ -1062,19 +1068,17 @@
             if (document.getElementById('t-step1-title')) document.getElementById('t-step1-title').innerText = t.step1Title;
             if (document.getElementById('t-step1-body')) document.getElementById('t-step1-body').innerHTML = t.step1Body;
             if (document.getElementById('t-step2-title')) document.getElementById('t-step2-title').innerText = t.step2Title;
-            if (document.getElementById('t-opt-a-title')) document.getElementById('t-opt-a-title').innerText = t.optATitle;
-            if (document.getElementById('t-opt-a-desc')) document.getElementById('t-opt-a-desc').innerHTML = t.optADesc;
-            if (document.getElementById('t-opt-a-net')) document.getElementById('t-opt-a-net').innerHTML = t.optANet;
-            if (document.getElementById('t-opt-a-pwd')) document.getElementById('t-opt-a-pwd').innerHTML = t.optAPwd;
-            if (document.getElementById('t-opt-a-note')) document.getElementById('t-opt-a-note').innerHTML = t.optANote;
-            if (document.getElementById('t-opt-a-warn')) document.getElementById('t-opt-a-warn').innerHTML = t.optAWarn;
-            if (document.getElementById('t-opt-b-title')) document.getElementById('t-opt-b-title').innerText = t.optBTitle;
-            if (document.getElementById('t-opt-b-desc')) document.getElementById('t-opt-b-desc').innerText = t.optBDesc;
-            if (document.getElementById('t-opt-b-net')) document.getElementById('t-opt-b-net').innerHTML = t.optBNet;
-            if (document.getElementById('t-opt-b-pwd')) document.getElementById('t-opt-b-pwd').innerHTML = t.optBPwd;
-            if (document.getElementById('t-opt-b-note')) document.getElementById('t-opt-b-note').innerHTML = t.optBNote;
+            if (document.getElementById('t-step2-desc')) document.getElementById('t-step2-desc').innerHTML = t.step2Desc;
+            if (document.getElementById('t-step2-net')) document.getElementById('t-step2-net').innerHTML = t.step2Net;
+            if (document.getElementById('t-step2-pwd')) document.getElementById('t-step2-pwd').innerHTML = t.step2Pwd;
+            if (document.getElementById('t-step2-warn')) document.getElementById('t-step2-warn').innerHTML = t.step2Warn;
+            if (document.getElementById('t-step2-note')) document.getElementById('t-step2-note').innerHTML = t.step2Note;
             if (document.getElementById('t-step3-title')) document.getElementById('t-step3-title').innerText = t.step3Title;
-            if (document.getElementById('t-step3-body')) document.getElementById('t-step3-body').innerHTML = t.step3Body;
+            if (document.getElementById('t-step3-desc')) document.getElementById('t-step3-desc').innerHTML = t.step3Desc;
+            if (document.getElementById('t-btn-guide-sync')) document.getElementById('t-btn-guide-sync').innerText = t.btnGuideSync;
+            if (document.getElementById('t-step3-note')) document.getElementById('t-step3-note').innerHTML = t.step3Note;
+            if (document.getElementById('t-step4-title')) document.getElementById('t-step4-title').innerText = t.step4Title;
+            if (document.getElementById('t-step4-body')) document.getElementById('t-step4-body').innerHTML = t.step4Body;
 
             if (document.getElementById('t-tr-1-q')) document.getElementById('t-tr-1-q').innerText = t.tr1Q;
             if (document.getElementById('t-tr-1-a')) document.getElementById('t-tr-1-a').innerHTML = t.tr1A;
@@ -1084,6 +1088,8 @@
             if (document.getElementById('t-tr-3-a')) document.getElementById('t-tr-3-a').innerHTML = t.tr3A;
             if (document.getElementById('t-tr-android-q')) document.getElementById('t-tr-android-q').innerText = t.trAndroidQ;
             if (document.getElementById('t-tr-android-a')) document.getElementById('t-tr-android-a').innerHTML = t.trAndroidA;
+            if (document.getElementById('t-tr-custom-q')) document.getElementById('t-tr-custom-q').innerText = t.trCustomQ;
+            if (document.getElementById('t-tr-custom-a')) document.getElementById('t-tr-custom-a').innerHTML = t.trCustomA;
             if (document.getElementById('t-tr-4-q')) document.getElementById('t-tr-4-q').innerText = t.tr4Q;
             if (document.getElementById('t-tr-4-a')) document.getElementById('t-tr-4-a').innerHTML = t.tr4A;
         }
