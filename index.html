@@ -726,26 +726,26 @@
                     <div class="guide-step">
                         <div class="step-header">
                             <span class="step-num">1</span>
-                            <span class="step-title" id="t-step1-title">Plug into Car & Power ON</span>
+                            <span class="step-title" id="t-step1-title">Turn ON Phone Hotspot</span>
                         </div>
-                        <div class="step-body" id="t-step1-body">
-                            Insert the controller into your vehicle's <b>OBD2 port</b> (under the steering wheel) and power on the car (<b>READY</b> mode).
+                        <div class="step-body">
+                            <div id="t-step1-desc">Enable <b>Personal Hotspot</b> on your phone with the following credentials:</div>
+                            <div class="cred-row">
+                                <span id="t-step1-net">Network: <code>BMS</code></span>
+                                <span id="t-step1-pwd">Password: <code>bmslocal</code></span>
+                            </div>
+                            <div class="option-note" style="color: #f59e0b; margin-top: 4px;" id="t-step1-warn">⚠️ <b>Important:</b> Only supports <b>2.4GHz Wi-Fi</b>. On iPhone, turn ON <i>«Maximize Compatibility»</i>.</div>
+                            <div class="option-note" id="t-step1-note">Turn on hotspot first so the controller connects immediately upon startup.</div>
                         </div>
                     </div>
 
                     <div class="guide-step">
                         <div class="step-header">
                             <span class="step-num">2</span>
-                            <span class="step-title" id="t-step2-title">Turn ON Phone Hotspot</span>
+                            <span class="step-title" id="t-step2-title">Plug into Car & Power ON</span>
                         </div>
-                        <div class="step-body">
-                            <div id="t-step2-desc">Enable <b>Personal Hotspot</b> on your phone with the following credentials:</div>
-                            <div class="cred-row">
-                                <span id="t-step2-net">Network: <code>BMS</code></span>
-                                <span id="t-step2-pwd">Password: <code>bmslocal</code></span>
-                            </div>
-                            <div class="option-note" style="color: #f59e0b; margin-top: 4px;" id="t-step2-warn">⚠️ <b>Important:</b> Only supports <b>2.4GHz Wi-Fi</b>. On iPhone, turn ON <i>«Maximize Compatibility»</i>.</div>
-                            <div class="option-note" id="t-step2-note">The controller will connect to your phone in ~5–10 seconds.</div>
+                        <div class="step-body" id="t-step2-body">
+                            Insert the controller into your vehicle's <b>OBD2 port</b> (under the steering wheel) and power on the car (<b>READY</b> mode).
                         </div>
                     </div>
 
@@ -896,14 +896,14 @@
                 btnInstall: "Install",
                 installTitleIos: "📲 Install on iPhone",
                 installDescIos: "Tap the <b>Share button ⎋</b> in Safari, then select <b>«Add to Home Screen» ➕</b>.",
-                step1Title: "Plug into Car & Power ON",
-                step1Body: "Insert the controller into your vehicle's <b>OBD2 port</b> (under the steering wheel) and power on the car (<b>READY</b> mode).",
-                step2Title: "Turn ON Phone Hotspot",
-                step2Desc: "Enable <b>Personal Hotspot</b> on your phone with the following credentials:",
-                step2Net: "Network: <code>BMS</code>",
-                step2Pwd: "Password: <code>bmslocal</code>",
-                step2Warn: "⚠️ <b>Important:</b> Only supports <b>2.4GHz Wi-Fi</b>. On iPhone, turn ON <i>«Maximize Compatibility»</i>.",
-                step2Note: "The controller will connect to your phone in ~5–10 seconds.",
+                step1Title: "Turn ON Phone Hotspot",
+                step1Desc: "Enable <b>Personal Hotspot</b> on your phone with the following credentials:",
+                step1Net: "Network: <code>BMS</code>",
+                step1Pwd: "Password: <code>bmslocal</code>",
+                step1Warn: "⚠️ <b>Important:</b> Only supports <b>2.4GHz Wi-Fi</b>. On iPhone, turn ON <i>«Maximize Compatibility»</i>.",
+                step1Note: "Turn on hotspot first so the controller connects immediately upon startup.",
+                step2Title: "Plug into Car & Power ON",
+                step2Body: "Insert the controller into your vehicle's <b>OBD2 port</b> (under the steering wheel) and power on the car (<b>READY</b> mode).",
                 step3Title: "IP Discovery (Auto-Sync)",
                 step3Desc: "Connect phone Wi-Fi to controller network <code>BMS_Setup</code> (password: <code>bmslocal</code>).",
                 step3Tips: "• Turn <b>OFF</b> «Auto-reconnect» for BMS_Setup.<br>• If prompted «No internet access», select «Stay connected».",
@@ -962,14 +962,14 @@
                 btnInstall: "立即安装",
                 installTitleIos: "📲 在 iPhone 上添加",
                 installDescIos: "在 Safari 浏览器中点击底部<b>分享按钮 ⎋</b>，然后选择<b>“添加到主屏幕” ➕</b>。",
-                step1Title: "插入车辆并通电",
-                step1Body: "将控制器插入车辆方向盘下方的 <b>OBD2 接口</b>，并将车辆启动至 <b>READY</b> 模式。",
-                step2Title: "开启手机热点",
-                step2Desc: "请在手机上开启<b>个人热点</b>，参数如下：",
-                step2Net: "热点名称：<code>BMS</code>",
-                step2Pwd: "热点密码：<code>bmslocal</code>",
-                step2Warn: "⚠️ <b>特别注意：</b> 仅支持 <b>2.4GHz Wi-Fi</b>。iPhone 用户请开启<i>“最大兼容性”</i>。",
-                step2Note: "控制器将在 5–10 秒内自动连上手机热点。",
+                step1Title: "开启手机热点",
+                step1Desc: "请在手机上开启<b>个人热点</b>，参数如下：",
+                step1Net: "热点名称：<code>BMS</code>",
+                step1Pwd: "热点密码：<code>bmslocal</code>",
+                step1Warn: "⚠️ <b>特别注意：</b> 仅支持 <b>2.4GHz Wi-Fi</b>。iPhone 用户请开启<i>“最大兼容性”</i>。",
+                step1Note: "请先开启热点，以便控制器通电后立即自动连上。",
+                step2Title: "插入车辆并通电",
+                step2Body: "将控制器插入车辆方向盘下方的 <b>OBD2 接口</b>，并将车辆启动至 <b>READY</b> 模式。",
                 step3Title: "IP 检测（自动同步）",
                 step3Desc: "手机 Wi-Fi 连接到控制器热点 <code>BMS_Setup</code>（密码：<code>bmslocal</code>）。",
                 step3Tips: "• 请<b>关闭</b> BMS_Setup 网络的“自动连接”。<br>• 若系统提示“无法连接互联网”，请选择“保持连接”。",
@@ -1028,14 +1028,14 @@
                 btnInstall: "설치하기",
                 installTitleIos: "📲 iPhone에 추가하기",
                 installDescIos: "Safari 하단의 <b>공유 버튼 ⎋</b>을 탭한 후 <b>«홈 화면에 추가» ➕</b>를 선택하세요.",
-                step1Title: "차량 OBD2에 연결 및 전원 켜기",
-                step1Body: "컨트롤러를 운전대 아래 <b>OBD2 단자</b>에 연결하고 차량 전원을 켜세요 (<b>READY</b> 모드).",
-                step2Title: "스마트폰 핫스팟 켜기",
-                step2Desc: "스마트폰에서 다음 정보로 <b>개인용 핫스팟</b>을 켜세요:",
-                step2Net: "네트워크 이름: <code>BMS</code>",
-                step2Pwd: "비밀번호: <code>bmslocal</code>",
-                step2Warn: "⚠️ <b>중요 알림:</b> <b>2.4GHz Wi-Fi</b>만 지원합니다. iPhone은 <i>«호환성 최대화»</i>를 켜주세요.",
-                step2Note: "컨트롤러가 5~10초 내에 자동으로 연결됩니다.",
+                step1Title: "스마트폰 핫스팟 켜기",
+                step1Desc: "스마트폰에서 다음 정보로 <b>개인용 핫스팟</b>을 켜세요:",
+                step1Net: "네트워크 이름: <code>BMS</code>",
+                step1Pwd: "비밀번호: <code>bmslocal</code>",
+                step1Warn: "⚠️ <b>중요 알림:</b> <b>2.4GHz Wi-Fi</b>만 지원합니다. iPhone은 <i>«호환성 최대화»</i>를 켜주세요.",
+                step1Note: "핫스팟을 먼저 켜두면 컨트롤러 시동 시 즉시 자동 연결됩니다.",
+                step2Title: "차량 OBD2에 연결 및 전원 켜기",
+                step2Body: "컨트롤러를 운전대 아래 <b>OBD2 단자</b>에 연결하고 차량 전원을 켜세요 (<b>READY</b> 모드).",
                 step3Title: "IP 확인 (자동 동기화)",
                 step3Desc: "스마트폰 Wi-Fi를 컨트롤러 네트워크 <code>BMS_Setup</code> (비밀번호: <code>bmslocal</code>)에 연결하세요.",
                 step3Tips: "• BMS_Setup의 <i>«자동 다시 연결»</i>을 꺼주세요.<br>• <i>«인터넷 없음»</i> 알림 창이 뜨면 <b>«연결 유지»</b>를 선택하세요.",
@@ -1094,14 +1094,14 @@
                 btnInstall: "Установить",
                 installTitleIos: "📲 Установка на iPhone",
                 installDescIos: "Нажмите кнопку <b>Поделиться ⎋</b> в Safari и выберите <b>«На экран Домой» ➕</b>.",
-                step1Title: "Подключение к авто и запуск",
-                step1Body: "Вставьте контроллер в <b>OBD2 разъем</b> автомобиля и включите зажигание (режим <b>READY</b>).",
-                step2Title: "Включите раздачу с телефона",
-                step2Desc: "Включите <b>Точку доступа</b> на телефоне со следующими параметрами:",
-                step2Net: "Имя сети: <code>BMS</code>",
-                step2Pwd: "Пароль: <code>bmslocal</code>",
-                step2Warn: "⚠️ <b>Важно:</b> Поддерживается только <b>2.4GHz Wi-Fi</b>. На iPhone включите <i>«Максимальная совместимость»</i>.",
-                step2Note: "Контроллер автоматически подключится к раздаче за 5–10 секунд.",
+                step1Title: "Включите раздачу с телефона",
+                step1Desc: "Включите <b>Точку доступа</b> на телефоне со следующими параметрами:",
+                step1Net: "Имя сети: <code>BMS</code>",
+                step1Pwd: "Пароль: <code>bmslocal</code>",
+                step1Warn: "⚠️ <b>Важно:</b> Поддерживается только <b>2.4GHz Wi-Fi</b>. На iPhone включите <i>«Максимальная совместимость»</i>.",
+                step1Note: "Включите раздачу заранее, чтобы контроллер подключился к ней сразу при старте.",
+                step2Title: "Подключение к авто и запуск",
+                step2Body: "Вставьте контроллер в <b>OBD2 разъем</b> автомобиля и включите зажигание (режим <b>READY</b>).",
                 step3Title: "Определение IP (Авто-синхронизация)",
                 step3Desc: "Подключите Wi-Fi телефона к сети контроллера <code>BMS_Setup</code> (пароль: <code>bmslocal</code>).",
                 step3Tips: "• Выключите <i>«Автоподключение»</i> для BMS_Setup.<br>• При появлении окна <i>«Нет интернета»</i> выберите <b>«Оставаться подключенным»</b>.",
@@ -1189,13 +1189,13 @@
             if (document.getElementById('t-install-desc-ios')) document.getElementById('t-install-desc-ios').innerHTML = t.installDescIos;
 
             if (document.getElementById('t-step1-title')) document.getElementById('t-step1-title').innerText = t.step1Title;
-            if (document.getElementById('t-step1-body')) document.getElementById('t-step1-body').innerHTML = t.step1Body;
+            if (document.getElementById('t-step1-desc')) document.getElementById('t-step1-desc').innerHTML = t.step1Desc;
+            if (document.getElementById('t-step1-net')) document.getElementById('t-step1-net').innerHTML = t.step1Net;
+            if (document.getElementById('t-step1-pwd')) document.getElementById('t-step1-pwd').innerHTML = t.step1Pwd;
+            if (document.getElementById('t-step1-warn')) document.getElementById('t-step1-warn').innerHTML = t.step1Warn;
+            if (document.getElementById('t-step1-note')) document.getElementById('t-step1-note').innerHTML = t.step1Note;
             if (document.getElementById('t-step2-title')) document.getElementById('t-step2-title').innerText = t.step2Title;
-            if (document.getElementById('t-step2-desc')) document.getElementById('t-step2-desc').innerHTML = t.step2Desc;
-            if (document.getElementById('t-step2-net')) document.getElementById('t-step2-net').innerHTML = t.step2Net;
-            if (document.getElementById('t-step2-pwd')) document.getElementById('t-step2-pwd').innerHTML = t.step2Pwd;
-            if (document.getElementById('t-step2-warn')) document.getElementById('t-step2-warn').innerHTML = t.step2Warn;
-            if (document.getElementById('t-step2-note')) document.getElementById('t-step2-note').innerHTML = t.step2Note;
+            if (document.getElementById('t-step2-body')) document.getElementById('t-step2-body').innerHTML = t.step2Body;
             if (document.getElementById('t-step3-title')) document.getElementById('t-step3-title').innerText = t.step3Title;
             if (document.getElementById('t-step3-desc')) document.getElementById('t-step3-desc').innerHTML = t.step3Desc;
             if (document.getElementById('t-step3-tips')) document.getElementById('t-step3-tips').innerHTML = t.step3Tips;
