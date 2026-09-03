@@ -273,6 +273,7 @@
             border-radius: 14px;
             padding: 14px 16px;
             text-align: left;
+            margin-bottom: 20px;
         }
         .help-toggle {
             display: flex;
@@ -617,6 +618,32 @@
                 </div>
                 <div class="sync-hint" id="t-manual-ip-hint" style='text-align: left; margin-top: 2px;'>Find IP in Hotspot settings (e.g. 10.48.33.x)</div>
             </div>
+
+            <!-- Android App Collapsible Button (shown on Android / Desktop) -->
+            <button type="button" id="btn-toggle-apk" class="btn-secondary" onclick="toggleApkDetails()" style="display: none; justify-content: space-between; padding: 11px 14px; border-color: rgba(245, 158, 11, 0.45); background: rgba(245, 158, 11, 0.08); margin-top: 10px;">
+                <div style="display: flex; align-items: center; gap: 6px; font-weight: 600; color: #fde68a;">
+                    <span>🤖</span>
+                    <span id="t-btn-apk-toggle">Android App</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <span class="badge-recommended" id="t-badge-recommended" style="font-size: 10px; padding: 2px 7px;">🔥 RECOMMENDED</span>
+                    <span id="apk-toggle-arrow" style="font-size: 11px; color: #fde68a; transition: transform 0.2s;">▼</span>
+                </div>
+            </button>
+
+            <!-- Android App Collapsible Details -->
+            <div id="apk-details-box" style="display: none; margin-top: 10px; background: #202024; border: 1px solid #2d2d32; border-radius: 12px; padding: 14px; text-align: left;">
+                <div style="font-size: 14px; font-weight: 700; color: #f4f4f5; margin-bottom: 4px;" id="t-apk-title">BMS Monitor</div>
+                <div style="font-size: 12px; color: #a1a1aa; line-height: 1.4; margin-bottom: 10px;" id="t-apk-desc">Native Android app with live battery HUD widget:</div>
+                <div style="display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: #cbd5e1; margin-bottom: 12px;">
+                    <span>⚡</span>
+                    <span id="t-apk-f2">Auto-connects when phone hotspot is on</span>
+                </div>
+                <a href="./BMS_Monitor.apk" download="BMS_Monitor.apk" class="btn-apk" id="btn-download-apk" onclick="onApkDownload()">
+                    <span>⬇️</span>
+                    <span id="t-btn-download-apk">Download APK</span>
+                </a>
+            </div>
         </div>
 
         <!-- Setup & Help Guide -->
@@ -685,7 +712,7 @@
                             <span class="step-title" id="t-step4-title">Launch Dashboard</span>
                         </div>
                         <div class="step-body" id="t-step4-body">
-                            Tap <b>«🚀 Open Dashboard»</b> above to view live telemetry.
+                            After obtaining the IP address, tap <b>«🚀 Open Dashboard»</b> above to view live telemetry.
                         </div>
                     </div>
                 </div>
@@ -742,26 +769,6 @@
             </div>
         </div>
 
-        <!-- Android APK section (shown only on Android) -->
-        <div id="apk-banner-android" class="apk-card" style="margin-top: 16px; margin-bottom: 24px;">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
-                <div class="apk-badge" id="t-apps-header">📱 Android App</div>
-                <div class="badge-recommended" id="t-badge-recommended">🔥 RECOMMENDED</div>
-            </div>
-            <div class="apk-title" id="t-apk-title">BMS Monitor</div>
-            <div class="apk-desc" id="t-apk-desc">Native Android app with live battery HUD widget:</div>
-            <div class="apk-features">
-                <div class="apk-feat-item">
-                    <span>⚡</span>
-                    <span id="t-apk-f2">Auto-connects when phone hotspot is on</span>
-                </div>
-            </div>
-            <a href="./BMS_Monitor.apk" download="BMS_Monitor.apk" class="btn-apk" id="btn-download-apk" onclick="onApkDownload()">
-                <span>⬇️</span>
-                <span id="t-btn-download-apk">Download APK</span>
-            </a>
-        </div>
-
     </div>
     <script>
         // Translations Dictionary
@@ -769,6 +776,7 @@
             en: {
                 appTitle: "BMS Radar",
                 appsHeader: "📱 Android App",
+                btnApkToggle: "Android App",
                 badgeRecommended: "🔥 RECOMMENDED",
                 ipLabel: "Controller IP Address",
                 ipStatusOnline: "Online (Telemetry Active)",
@@ -806,7 +814,7 @@
                 btnGuideSync: "Auto-Sync with Controller",
                 step3Note: "The controller will send its IP to BMS Radar, disable BMS_Setup, and redirect you back with IP saved.",
                 step4Title: "Launch Dashboard",
-                step4Body: "Tap <b>«🚀 Open Dashboard»</b> above to view live telemetry.",
+                step4Body: "After obtaining the IP address, tap <b>«🚀 Open Dashboard»</b> above to view live telemetry.",
                 tr1Q: "🔴 Dashboard not opening or offline?",
                 tr1A: "• Ensure vehicle is in <b>READY</b> mode.<br>• Verify hotspot is ON: default network <code>BMS</code> (password <code>bmslocal</code>) or your custom network.<br>• On iPhone, turn <b>ON</b> <i>«Maximize Compatibility»</i> in Personal Hotspot settings.<br>• On Android, set Hotspot AP Band to <b>2.4 GHz</b>.",
                 tr2Q: "📶 Tips for BMS_Setup Wi-Fi:",
@@ -831,6 +839,7 @@
             zh: {
                 appTitle: "BMS Radar",
                 appsHeader: "📱 Android 应用",
+                btnApkToggle: "Android 应用",
                 badgeRecommended: "🔥 推荐",
                 ipLabel: "控制器 IP 地址",
                 ipStatusOnline: "在线 (遥测正常)",
@@ -868,7 +877,7 @@
                 btnGuideSync: "与控制器自动同步",
                 step3Note: "控制器将自动将 IP 发送给雷达，关闭临时热点，并带您返回主屏（已保存 IP）。",
                 step4Title: "打开仪表板",
-                step4Body: "点击上方的<b>«🚀 打开仪表板»</b>即可查看实时电池遥测数据。",
+                step4Body: "获取 IP 地址后，点击上方的<b>«🚀 打开仪表板»</b>即可查看实时电池遥测数据。",
                 tr1Q: "🔴 无法打开仪表板或设备离线？",
                 tr1A: "• 确保车辆处于通电状态（<b>READY</b> 模式）。<br>• 检查手机热点是否开启：默认网络 <code>BMS</code>（密码 <code>bmslocal</code>）或您设置的自定义网络。<br>• iPhone 用户请务必在个人热点设置中开启<i>“最大兼容性”</i>。<br>• Android 用户请将热点 AP 频段设置为 <b>2.4 GHz</b>。",
                 tr2Q: "📶 连接 BMS_Setup 时的注意事项：",
@@ -893,6 +902,7 @@
             ko: {
                 appTitle: "BMS Radar",
                 appsHeader: "📱 Android 앱",
+                btnApkToggle: "Android 앱",
                 badgeRecommended: "🔥 추천",
                 ipLabel: "컨트롤러 IP 주소",
                 ipStatusOnline: "온라인 (원격 제어 활성)",
@@ -930,7 +940,7 @@
                 btnGuideSync: "컨트롤러와 자동 동기화",
                 step3Note: "컨트롤러가 BMS Radar로 IP 주소를 전송하고 BMS_Setup을 끈 후 IP가 저장된 상태로 돌아옵니다.",
                 step4Title: "대시보드 실행",
-                step4Body: "상단의 <b>«🚀 대시보드 열기»</b>를 누르면 실시간 데이터를 볼 수 있습니다.",
+                step4Body: "IP 주소를 가져온 후 상단의 <b>«🚀 대시보드 열기»</b>를 누르면 실시간 데이터를 볼 수 있습니다.",
                 tr1Q: "🔴 대시보드가 열리지 않거나 오프라인인 경우:",
                 tr1A: "• 차량 시동이 켜져 있는지 확인하세요 (<b>READY</b> 모드).<br>• 스마트폰 핫스팟이 켜져 있는지 확인하세요: 기본 네트워크 <code>BMS</code> (비밀번호 <code>bmslocal</code>) 또는 컨트롤러에 설정한 네트워크.<br>• iPhone의 경우 핫스팟 설정에서 <i>«호환성 최대화»</i>를 켜주세요.<br>• Android의 경우 AP 밴드를 <b>2.4 GHz</b>로 설정하세요.",
                 tr2Q: "📶 BMS_Setup Wi-Fi 연결 주의사항:",
@@ -955,6 +965,7 @@
             ru: {
                 appTitle: "BMS Radar",
                 appsHeader: "📱 Android App",
+                btnApkToggle: "Приложение для Android",
                 badgeRecommended: "🔥 РЕКОМЕНДУЕМ",
                 ipLabel: "IP адрес контроллера",
                 ipStatusOnline: "В сети (Телеметрия активна)",
@@ -992,7 +1003,7 @@
                 btnGuideSync: "Авто-синхронизация с платой",
                 step3Note: "Контроллер передаст свой IP Радару, выключит сеть BMS_Setup и вернет вас на главный экран с уже сохраненным IP.",
                 step4Title: "Запуск дашборда",
-                step4Body: "После подключения нажмите <b>«🚀 Открыть дашборд»</b> выше для перехода к телеметрии.",
+                step4Body: "После получения IP-адреса нажмите <b>«🚀 Открыть дашборд»</b> выше для перехода к телеметрии.",
                 tr1Q: "🔴 Дашборд не открывается или не в сети?",
                 tr1A: "• Убедитесь, что зажигание включено (режим <b>READY</b>).<br>• Убедитесь, что включена раздача: стандартная сеть <code>BMS</code> (пароль <code>bmslocal</code>) либо заданная вами в настройках контроллера.<br>• На iPhone включите <i>«Максимальная совместимость»</i> в настройках модема.<br>• На Android выберите диапазон частот точки доступа <b>2.4 ГГц</b>.",
                 tr2Q: "📶 Подсказки для сети BMS_Setup:",
@@ -1044,6 +1055,7 @@
             // Text elements
             if (document.getElementById('t-app-title')) document.getElementById('t-app-title').innerText = t.appTitle;
             if (document.getElementById('t-apps-header')) document.getElementById('t-apps-header').innerText = t.appsHeader;
+            if (document.getElementById('t-btn-apk-toggle')) document.getElementById('t-btn-apk-toggle').innerText = t.btnApkToggle;
             if (document.getElementById('t-badge-recommended')) document.getElementById('t-badge-recommended').innerText = t.badgeRecommended;
             if (document.getElementById('t-auto-text')) document.getElementById('t-auto-text').innerHTML = t.autoText;
             if (document.getElementById('t-ip-label')) document.getElementById('t-ip-label').innerText = t.ipLabel;
@@ -1126,14 +1138,30 @@
             (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches)
         );
 
+        // Toggle APK Card in Main View
+        function toggleApkDetails() {
+            const box = document.getElementById('apk-details-box');
+            const arrow = document.getElementById('apk-toggle-arrow');
+            if (!box) return;
+            const isHidden = (box.style.display === 'none' || !box.style.display);
+            if (isHidden) {
+                box.style.display = 'block';
+                if (arrow) arrow.style.transform = 'rotate(180deg)';
+                box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } else {
+                box.style.display = 'none';
+                if (arrow) arrow.style.transform = 'rotate(0deg)';
+            }
+        }
+
         // Dismissal handlers for APK Card
         function onApkDownload() {
             // Tracking or UI updates can happen here
         }
 
         if (isAndroid || !isIOS) {
-            const apkBanner = document.getElementById('apk-banner-android');
-            if (apkBanner) apkBanner.style.display = 'block';
+            const btnApk = document.getElementById('btn-toggle-apk');
+            if (btnApk) btnApk.style.display = 'flex';
         }
 
         if (isIOS && !isStandalone) {
