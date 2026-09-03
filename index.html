@@ -266,6 +266,33 @@
             background: #3f3f46;
         }
 
+        .btn-ghost {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.02);
+            color: #a1a1aa;
+            border: 1px solid #2d2d32;
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-size: 12.5px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: all 0.2s ease;
+        }
+        .btn-ghost:hover {
+            color: #f4f4f5;
+            border-color: #3f3f46;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .btn-ghost:active {
+            transform: scale(0.99);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
         /* Guide & Troubleshooting Accordion */
         .help-card {
             background: #18181b;
@@ -564,6 +591,8 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
         .dash-error-box {
             background: rgba(239, 68, 68, 0.12);
@@ -614,7 +643,7 @@
         <div class="auto-card" id="auto-card">
             <span class="auto-icon">🛡️</span>
             <div class="auto-text" id="t-auto-text">
-                <b>Autonomous hybrid battery cooling.</b> Phone is used for monitoring and settings.
+                <b>Autonomous hybrid battery cooling.</b> Phone is used only for monitoring and settings.
             </div>
         </div>
 
@@ -638,7 +667,7 @@
                 <span id="t-btn-sync">Auto-Sync via BMS_Setup</span>
             </button>
 
-            <button class="btn-secondary" onclick="toggleEditIp()">
+            <button class="btn-ghost" onclick="toggleEditIp()">
                 <span>✏️</span>
                 <span id="t-btn-manual">Set IP Manually</span>
             </button>
@@ -654,12 +683,12 @@
 
             <!-- Android App Collapsible Button (shown on Android / Desktop) -->
             <button type="button" id="btn-toggle-apk" class="btn-secondary" onclick="toggleApkDetails()" style="display: none; justify-content: space-between; padding: 11px 14px; border-color: rgba(245, 158, 11, 0.45); background: rgba(245, 158, 11, 0.08); margin-top: 10px;">
-                <div style="display: flex; align-items: center; gap: 6px; font-weight: 600; color: #fde68a;">
+                <div style="display: flex; align-items: center; gap: 6px; font-weight: 600; color: #fde68a; white-space: nowrap;">
                     <span>🤖</span>
                     <span id="t-btn-apk-toggle">Android App</span>
                 </div>
-                <div style="display: flex; align-items: center; gap: 6px;">
-                    <span class="badge-recommended" id="t-badge-recommended" style="font-size: 10px; padding: 2px 7px;">🔥 RECOMMENDED</span>
+                <div style="display: flex; align-items: center; gap: 6px; white-space: nowrap; flex-shrink: 0;">
+                    <span class="badge-recommended" id="t-badge-recommended" style="font-size: 10px; padding: 2px 7px; white-space: nowrap;">🔥 RECOMMENDED</span>
                     <span id="apk-toggle-arrow" style="font-size: 11px; color: #fde68a; transition: transform 0.2s;">▼</span>
                 </div>
             </button>
@@ -668,9 +697,9 @@
             <div id="apk-details-box" style="display: none; margin-top: 10px; background: #202024; border: 1px solid #2d2d32; border-radius: 12px; padding: 14px; text-align: left;">
                 <div style="font-size: 14px; font-weight: 700; color: #f4f4f5; margin-bottom: 4px;" id="t-apk-title">BMS Monitor</div>
                 <div style="font-size: 12px; color: #a1a1aa; line-height: 1.4; margin-bottom: 10px;" id="t-apk-desc">Android app with live battery HUD widget:</div>
-                <div style="display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: #cbd5e1; margin-bottom: 12px;">
-                    <span>⚡</span>
-                    <span id="t-apk-f2">Auto-connects when phone hotspot is on</span>
+                <div style="display: flex; align-items: flex-start; gap: 8px; font-size: 12px; color: #cbd5e1; margin-bottom: 12px; line-height: 1.45;">
+                    <span style="font-size: 13px; margin-top: 1px;">⚡</span>
+                    <div id="t-apk-f2"><b>Instant auto-connect</b><br><span style="color: #a1a1aa; font-size: 11.5px;">App discovers controller automatically — no IP search or manual setup.</span></div>
                 </div>
                 <a href="./BMS_Monitor.apk" download="BMS_Monitor.apk" class="btn-apk" id="btn-download-apk" onclick="onApkDownload()">
                     <span>⬇️</span>
@@ -760,7 +789,7 @@
                         </div>
                         <div class="trouble-a" id="t-tr-auto-a">
                             • <b>⚡ Full autonomy:</b> Controller is plugged into the vehicle and automatically regulates fan speed. A discharged or forgotten phone never affects battery cooling.<br>
-                            • <b>📲 Energy-efficient link:</b> Phone battery is not drained by continuous data polling. Connection is only active when viewing cell temperatures or adjusting parameters.<br>
+                            • <b>📲 Energy-efficient link:</b> Phone battery is not drained by continuous data polling. Connection is only active when viewing battery temperature or changing network settings.<br>
                             • <b>🔄 Support & updates:</b> Both controller and mobile app are engineered with support for wireless updates.
                         </div>
                     </div>
@@ -854,13 +883,13 @@
                 btnSync: "Auto-Sync via BMS_Setup",
                 btnManual: "Set IP Manually",
                 btnSaveIp: "Save",
-                autoText: "<b>Controller operates fully autonomously.</b> Phone is used for monitoring and settings.",
+                autoText: "<b>Controller operates fully autonomously.</b> Phone is used only for monitoring and settings.",
                 guideTitle: "📖 Setup & Help Guide",
                 tabSetup: "🚀 First-Time Setup",
                 tabTrouble: "❓ Help & FAQ",
                 apkTitle: "BMS Monitor",
                 apkDesc: "Android app with live battery HUD widget:",
-                apkF2: "Auto-connects when phone hotspot is on",
+                apkF2: "<b>Instant auto-connect</b><br><span style=\"color: #a1a1aa; font-size: 11.5px;\">App discovers controller automatically — no IP search or manual setup.</span>",
                 btnDownloadApk: "Download APK",
                 installTitleAndroid: "📲 Install Application",
                 installDescAndroid: "Add BMS Radar to your home screen for quick one-tap access.",
@@ -884,7 +913,7 @@
                 step4Title: "Launch Dashboard",
                 step4Body: "After obtaining the IP address, tap <b>«🚀 Open Dashboard»</b> above to view live telemetry.",
                 trAutoQ: "🛡️ How does autonomy and updates work?",
-                trAutoA: "• <b>⚡ Full autonomy:</b> Controller is plugged into the vehicle and automatically regulates fan speed. A discharged or forgotten phone never affects battery cooling.<br>• <b>📲 Energy-efficient link:</b> Phone battery is not drained by continuous data polling. Connection is only active when viewing cell temperatures or adjusting parameters.<br>• <b>🔄 Support & updates:</b> Both controller and mobile app are engineered with support for wireless updates.",
+                trAutoA: "• <b>⚡ Full autonomy:</b> Controller is plugged into the vehicle and automatically regulates fan speed. A discharged or forgotten phone never affects battery cooling.<br>• <b>📲 Energy-efficient link:</b> Phone battery is not drained by continuous data polling. Connection is only active when viewing battery temperature or changing network settings.<br>• <b>🔄 Support & updates:</b> Both controller and mobile app are engineered with support for wireless updates.",
                 tr1Q: "🔴 Dashboard not opening or offline?",
                 tr1A: "• Ensure vehicle is in <b>READY</b> mode.<br>• Verify hotspot is ON: default network <code>BMS</code> (password <code>bmslocal</code>) or your custom network.<br>• On iPhone, turn <b>ON</b> <i>«Maximize Compatibility»</i> in Personal Hotspot settings.<br>• On Android, set Hotspot AP Band to <b>2.4 GHz</b>.",
                 tr2Q: "📶 Tips for BMS_Setup Wi-Fi:",
@@ -926,7 +955,7 @@
                 tabTrouble: "❓ 常见问题与帮助",
                 apkTitle: "BMS Monitor",
                 apkDesc: "支持悬浮窗实时监控的 Android 应用：",
-                apkF2: "开启手机热点即可秒级极速自动直连",
+                apkF2: "<b>秒级极速自动直连</b><br><span style=\"color: #a1a1aa; font-size: 11.5px;\">应用自动发现控制器 — 无需查找 IP 与手动设置。</span>",
                 btnDownloadApk: "下载 APK",
                 installTitleAndroid: "📲 安装应用程序",
                 installDescAndroid: "将 BMS Radar 添加到主屏幕，享受一键快速访问。",
@@ -950,7 +979,7 @@
                 step4Title: "打开仪表板",
                 step4Body: "获取 IP 地址后，点击上方的<b>«🚀 打开仪表板»</b>即可查看实时电池遥测数据。",
                 trAutoQ: "🛡️ 自主运行与系统更新机制？",
-                trAutoA: "• <b>⚡ 完全自主运行：</b>控制器硬件直连车辆，完全自动独立调节散热风扇转速。手机没电或遗忘绝不影响电池散热。<br>• <b>📲 超低功耗连接：</b>手机不会因持续通信而耗电。仅在您需要查看电芯温度或调整设置时才发起连接。<br>• <b>🔄 长期维护与更新：</b>控制器硬件与移动端 App 均具备无线更新支持。",
+                trAutoA: "• <b>⚡ 完全自主运行：</b>控制器硬件直连车辆，完全自动独立调节散热风扇转速。手机没电或遗忘绝不影响电池散热。<br>• <b>📲 超低功耗连接：</b>手机不会因持续通信而耗电。仅在您需要查看电池温度或更改网络设置时才发起连接。<br>• <b>🔄 长期维护与更新：</b>控制器硬件与移动端 App 均具备无线更新支持。",
                 tr1Q: "🔴 无法打开仪表板或设备离线？",
                 tr1A: "• 确保车辆处于通电状态（<b>READY</b> 模式）。<br>• 检查手机热点是否开启：默认网络 <code>BMS</code>（密码 <code>bmslocal</code>）或您设置的自定义网络。<br>• iPhone 用户请务必在个人热点设置中开启<i>“最大兼容性”</i>。<br>• Android 用户请将热点 AP 频段设置为 <b>2.4 GHz</b>。",
                 tr2Q: "📶 连接 BMS_Setup 时的注意事项：",
@@ -986,13 +1015,13 @@
                 btnSync: "BMS_Setup을 통한 자동 동기화",
                 btnManual: "수동으로 IP 입력",
                 btnSaveIp: "저장",
-                autoText: "<b>컨트롤러는 완전 자율 작동합니다.</b> 스마트폰은 모니터링 및 설정에 사용됩니다.",
+                autoText: "<b>컨트롤러는 완전 자율 작동합니다.</b> 스마트폰은 모니터링 및 설정에만 사용됩니다.",
                 guideTitle: "📖 연결 및 도움말 가이드",
                 tabSetup: "🚀 최초 설정 가이드",
                 tabTrouble: "❓ 자주 묻는 질문 (FAQ)",
                 apkTitle: "BMS Monitor",
                 apkDesc: "실시간 배터리 HUD 위젯을 지원하는 Android 앱:",
-                apkF2: "스마트폰 핫스팟 켜짐 시 자동 즉시 연결",
+                apkF2: "<b>자동 즉시 연결</b><br><span style=\"color: #a1a1aa; font-size: 11.5px;\">앱이 컨트롤러를 자동 검색 — IP 검색이나 수동 설정 불필요.</span>",
                 btnDownloadApk: "APK 다운로드",
                 installTitleAndroid: "📲 앱 설치하기",
                 installDescAndroid: "원터치 빠른 실행을 위해 홈 화면에 BMS Radar를 추가하세요.",
@@ -1016,7 +1045,7 @@
                 step4Title: "대시보드 실행",
                 step4Body: "IP 주소를 가져온 후 상단의 <b>«🚀 대시보드 열기»</b>를 누르면 실시간 데이터를 볼 수 있습니다.",
                 trAutoQ: "🛡️ 자율 냉각 및 업데이트 방식 안내",
-                trAutoA: "• <b>⚡ 완전 자율 작동:</b> 컨트롤러가 차량에 직접 연결되어 팬 속도를 스스로 조절합니다. 스마트폰이 꺼지거나 없어도 배터리 냉각에는 아무런 영향을 주지 않습니다.<br>• <b>📲 배터리 절약형 통신:</b> 스마트폰 배터리를 지속적으로 소모하지 않습니다. 셀 온도나 설정을 확인/변경할 때만 연결됩니다.<br>• <b>🔄 지원 및 업데이트:</b> 컨트롤러와 모바일 앱 모두 무선 업데이트를 지원하도록 설계되었습니다.",
+                trAutoA: "• <b>⚡ 완전 자율 작동:</b> 컨트롤러가 차량에 직접 연결되어 팬 속도를 스스로 조절합니다. 스마트폰이 꺼지거나 없어도 배터리 냉각에는 아무런 영향을 주지 않습니다.<br>• <b>📲 배터리 절약형 통신:</b> 스마트폰 배터리를 지속적으로 소모하지 않습니다. 배터리 온도를 확인하거나 네트워크 설정을 변경할 때만 연결됩니다.<br>• <b>🔄 지원 및 업데이트:</b> 컨트롤러와 모바일 앱 모두 무선 업데이트를 지원하도록 설계되었습니다.",
                 tr1Q: "🔴 대시보드가 열리지 않거나 오프라인인 경우:",
                 tr1A: "• 차량 시동이 켜져 있는지 확인하세요 (<b>READY</b> 모드).<br>• 스마트폰 핫스팟이 켜져 있는지 확인하세요: 기본 네트워크 <code>BMS</code> (비밀번호 <code>bmslocal</code>) 또는 컨트롤러에 설정한 네트워크.<br>• iPhone의 경우 핫스팟 설정에서 <i>«호환성 최대화»</i>를 켜주세요.<br>• Android의 경우 AP 밴드를 <b>2.4 GHz</b>로 설정하세요.",
                 tr2Q: "📶 BMS_Setup Wi-Fi 연결 주의사항:",
@@ -1052,13 +1081,13 @@
                 btnSync: "Авто-синхронизация с платой",
                 btnManual: "Ввести IP вручную",
                 btnSaveIp: "Сохранить",
-                autoText: "<b>Контроллер работает полностью автономно.</b> Телефон используется для мониторинга и настройки.",
+                autoText: "<b>Контроллер работает полностью автономно.</b> Телефон используется только для мониторинга и настройки.",
                 guideTitle: "📖 Инструкция и помощь",
                 tabSetup: "🚀 Первое подключение",
                 tabTrouble: "❓ Вопросы и ответы",
                 apkTitle: "BMS Monitor",
                 apkDesc: "Android приложение с плавающим HUD виджетом:",
-                apkF2: "Мгновенный авто-коннект при включении точки доступа",
+                apkF2: "<b>Мгновенное автоподключение</b><br><span style=\"color: #a1a1aa; font-size: 11.5px;\">Приложение само находит контроллер — без поиска IP и ручных настроек.</span>",
                 btnDownloadApk: "Скачать APK",
                 installTitleAndroid: "📲 Установить приложение",
                 installDescAndroid: "Добавьте BMS Radar на главный экран для быстрого доступа.",
@@ -1082,7 +1111,7 @@
                 step4Title: "Запуск дашборда",
                 step4Body: "После получения IP-адреса нажмите <b>«🚀 Открыть дашборд»</b> выше для перехода к телеметрии.",
                 trAutoQ: "🛡️ Как устроена автономность и обновления?",
-                trAutoA: "• <b>⚡ Полная автономность:</b> Контроллер подключен к автомобилю и сам регулирует обороты вентилятора. Забытый или разряженный телефон никак не влияет на охлаждение батареи.<br>• <b>📲 Энергоэффективная связь:</b> Телефон не сажает батарею постоянным обменом данными. Соединение требуется только тогда, когда вы хотите посмотреть температуры ячеек или изменить параметры.<br>• <b>🔄 Поддержка и обновления:</b> Контроллер и мобильное приложение спроектированы с поддержкой обновлений.",
+                trAutoA: "• <b>⚡ Полная автономность:</b> Контроллер подключен к автомобилю и сам регулирует обороты вентилятора. Забытый или разряженный телефон никак не влияет на охлаждение батареи.<br>• <b>📲 Энергоэффективная связь:</b> Телефон не сажает батарею постоянным обменом данными. Соединение требуется только тогда, когда вы хотите посмотреть температуру батареи или изменить параметры сети.<br>• <b>🔄 Поддержка и обновления:</b> Контроллер и мобильное приложение спроектированы с поддержкой обновлений.",
                 tr1Q: "🔴 Дашборд не открывается или не в сети?",
                 tr1A: "• Убедитесь, что зажигание включено (режим <b>READY</b>).<br>• Убедитесь, что включена раздача: стандартная сеть <code>BMS</code> (пароль <code>bmslocal</code>) либо заданная вами в настройках контроллера.<br>• На iPhone включите <i>«Максимальная совместимость»</i> в настройках модема.<br>• На Android выберите диапазон частот точки доступа <b>2.4 ГГц</b>.",
                 tr2Q: "📶 Подсказки для сети BMS_Setup:",
@@ -1150,7 +1179,7 @@
 
             if (document.getElementById('t-apk-title')) document.getElementById('t-apk-title').innerText = t.apkTitle;
             if (document.getElementById('t-apk-desc')) document.getElementById('t-apk-desc').innerText = t.apkDesc;
-            if (document.getElementById('t-apk-f2')) document.getElementById('t-apk-f2').innerText = t.apkF2;
+            if (document.getElementById('t-apk-f2')) document.getElementById('t-apk-f2').innerHTML = t.apkF2;
             if (document.getElementById('t-btn-download-apk')) document.getElementById('t-btn-download-apk').innerText = t.btnDownloadApk;
 
             if (document.getElementById('t-install-title-android')) document.getElementById('t-install-title-android').innerText = t.installTitleAndroid;
