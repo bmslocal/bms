@@ -1155,6 +1155,20 @@
             return IP_REGEX.test((value || '').trim());
         }
 
+        // IP State Management (Top-level declaration to prevent TDZ)
+        let currentIp = localStorage.getItem('bms_saved_ip') || '';
+        const queryIp = urlParams.get('ip');
+        let justLinkedFromUrl = false;
+        if (queryIp && isValidIp(queryIp)) {
+            currentIp = queryIp.trim();
+            localStorage.setItem('bms_saved_ip', currentIp);
+            localStorage.setItem('bms_last_saved', new Date().toISOString());
+            justLinkedFromUrl = true;
+            if (window.history.replaceState) {
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        }
+
         // Automatic Language Detection (Russian -> Korean -> Chinese -> English default)
         function detectLanguage() {
             const urlLang = (urlParams.get('lang') || '').toLowerCase();
@@ -1311,7 +1325,7 @@
             // Tracking or UI updates can happen here
         }
 
-        if (isAndroid || !isIOS) {
+        if (isAndroid) {
             const btnApk = document.getElementById('btn-toggle-apk');
             if (btnApk) btnApk.style.display = 'flex';
         }
@@ -1344,9 +1358,6 @@
             });
         }
 
-        // IP State Management
-        let currentIp = localStorage.getItem('bms_saved_ip') || '';
-
         function updateUI() {
             const displayEl = document.getElementById('display-ip');
             const manualIpInput = document.getElementById('manual-ip');
@@ -1370,6 +1381,12 @@
         // Apply saved IP immediately to DOM
         updateUI();
 
+        // If linked from URL parameter (?ip=...)
+        if (justLinkedFromUrl) {
+            const t = I18N[currentLang] || I18N.en;
+            showToast(`${t.toastLinked}${currentIp}`);
+        }
+
         // Auto-expand setup accordion for first-time visitors if IP is not set
         if (!currentIp || currentIp === '--') {
             const content = document.getElementById('setup-content');
@@ -1378,26 +1395,6 @@
                 content.style.display = 'block';
                 arrow.innerText = '▲';
             }
-        }
-
-        // Check URL Query Parameter (?ip=10.48.33.xxx)
-        const queryIp = urlParams.get('ip');
-
-        if (queryIp && isValidIp(queryIp)) {
-            currentIp = queryIp.trim();
-            localStorage.setItem('bms_saved_ip', currentIp);
-            localStorage.setItem('bms_last_saved', new Date().toISOString());
-
-            // Immediately update UI so the IP displays with zero delay
-            updateUI();
-
-            // Clean URL bar
-            if (window.history.replaceState) {
-                window.history.replaceState({}, document.title, window.location.pathname);
-            }
-
-            const t = I18N[currentLang] || I18N.en;
-            showToast(`${t.toastLinked}${currentIp}`);
         }
 
         function openAndScrollToGuide() {
@@ -1433,6 +1430,9 @@
                 showToast(t.toastSetupFirst);
                 return;
             }
+
+            const firstRunTip = document.getElementById('first-run-tip');
+            if (firstRunTip) firstRunTip.style.display = 'none';
 
             // Show smart fallback hint after 1.5s in case the page navigation doesn't take over (e.g. board offline/IP changed)
             const hint = document.getElementById('ip-unreachable-hint');
