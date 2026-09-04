@@ -818,7 +818,9 @@
                     <div class="option-note" id="t-step3-note">The controller will send its IP to Live Radar, disable LiveMonitor_Setup, and redirect you back with IP saved.</div>
 
                     <!-- Option B: Manual IP Input in Step 3 -->
-                    <div style="margin-top: 12px; border-top: 1px dashed #3f3f46; padding-top: 10px;">
+                    <div style="margin-top: 12px; border-top: 1px dashed #3f3f46; padding-top: 12px;">
+                        <div style="font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 4px;" id="t-step3-advanced-title">Для продвинутых пользователей</div>
+                        <div style="font-size: 12px; color: #a1a1aa; margin-bottom: 8px; line-height: 1.4;" id="t-step3-advanced-desc">Где взять IP-адрес? В настройках точки доступа телефона перейдите в раздел «Подключенные устройства». Нажмите «Ввести IP вручную» и сохраните его.</div>
                         <div style="display: flex; align-items: center; justify-content: space-between;">
                             <span style="font-size: 12px; color: #a1a1aa;" id="t-step3-or">Или укажите IP вручную:</span>
                             <button type="button" class="btn-ghost" onclick="toggleEditIp()" style="width: auto; padding: 4px 10px; margin: 0; font-size: 11.5px;">
@@ -831,7 +833,6 @@
                                 <input type="text" id="manual-ip" class="input-ip" placeholder="10.48.33.187" inputmode="decimal" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="15">
                                 <button class="btn-save-ip" id="t-btn-save-ip" onclick="saveManualIp()">Save</button>
                             </div>
-                            <div class="sync-hint" id="t-manual-ip-hint" style="text-align: left; margin-top: 4px;">Find IP in Hotspot settings (e.g. 10.48.33.x)</div>
                         </div>
                     </div>
                 </div>
@@ -844,6 +845,12 @@
                 </div>
                 <div class="step-body" id="t-step4-body">
                     After obtaining the IP address, tap <b>«📊 Live Monitor»</b> above to view live telemetry.
+                </div>
+                <div style="margin-top: 12px; padding-top: 12px; border-top: 1px dashed #3f3f46;">
+                    <button type="button" class="btn-primary" onclick="openDashboard()" style="margin: 0; width: 100%;">
+                        <span style="font-size: 16px; margin-right: 6px;">📊</span>
+                        <span id="t-step4-btn">Live Monitor</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -951,6 +958,9 @@
                 btnSyncSub: "Auto-detect IP address",
                 btnManual: "Set IP Manually",
                 step3Or: "Or enter controller IP manually:",
+                step3AdvancedTitle: "For advanced users",
+                step3AdvancedDesc: "Where to find the IP address? Go to the 'Connected devices' section in your phone's hotspot settings. Tap 'Enter IP manually' and save it.",
+                step4Btn: "Live Monitor",
                 btnSaveIp: "Save",
                 autoText: "<b>Controller operates fully autonomously.</b> Phone is used only for monitoring and settings.",
                 accordionSetupFirst: "First-Time Setup",
@@ -1023,6 +1033,9 @@
                 btnSyncSub: "自动检测 IP 地址",
                 btnManual: "手动设置 IP",
                 step3Or: "或手动输入控制器 IP：",
+                step3AdvancedTitle: "对于高级用户",
+                step3AdvancedDesc: "哪里可以找到 IP 地址？进入手机热点设置的“已连接设备”部分。点击“手动输入 IP”并保存。",
+                step4Btn: "Live Monitor",
                 btnSaveIp: "保存",
                 autoText: "<b>控制器完全自主运行。</b> 手机仅用于监控与设置。",
                 accordionSetupFirst: "首次连接指南",
@@ -1095,6 +1108,9 @@
                 btnSyncSub: "IP 주소 자동 검색",
                 btnManual: "수동으로 IP 입력",
                 step3Or: "또는 수동으로 IP 입력:",
+                step3AdvancedTitle: "고급 사용자용",
+                step3AdvancedDesc: "IP 주소는 어디서 찾나요? 휴대폰 핫스팟 설정의 '연결된 기기' 섹션으로 이동하세요. '수동으로 IP 입력'을 누르고 저장하세요.",
+                step4Btn: "Live Monitor",
                 btnSaveIp: "저장",
                 autoText: "<b>컨트롤러는 완전 자율 작동합니다.</b> 스마트폰은 모니터링 및 설정에만 사용됩니다.",
                 accordionSetupFirst: "최초 설정 가이드",
@@ -1167,6 +1183,9 @@
                 btnSyncSub: "Автопоиск IP-адреса",
                 btnManual: "Ввести IP вручную",
                 step3Or: "Или укажите IP вручную:",
+                step3AdvancedTitle: "Для продвинутых пользователей",
+                step3AdvancedDesc: "Где взять IP-адрес? В настройках точки доступа телефона перейдите в раздел «Подключенные устройства». Нажмите «Ввести IP вручную» и сохраните его.",
+                step4Btn: "Live Monitor",
                 btnSaveIp: "Сохранить",
                 autoText: "<b>Контроллер работает полностью автономно.</b> Телефон используется только для мониторинга и настройки.",
                 accordionSetupFirst: "Первое подключение",
@@ -1302,6 +1321,9 @@
                 document.getElementById('t-faq-sub').innerText = t.faqSub;
             }
             if (document.getElementById('t-step3-or') && t.step3Or) document.getElementById('t-step3-or').innerText = t.step3Or;
+            if (document.getElementById('t-step3-advanced-title') && t.step3AdvancedTitle) document.getElementById('t-step3-advanced-title').innerHTML = t.step3AdvancedTitle;
+            if (document.getElementById('t-step3-advanced-desc') && t.step3AdvancedDesc) document.getElementById('t-step3-advanced-desc').innerHTML = t.step3AdvancedDesc;
+            if (document.getElementById('t-step4-btn') && t.step4Btn) document.getElementById('t-step4-btn').innerHTML = t.step4Btn;
 
             if (document.getElementById('t-apk-title')) document.getElementById('t-apk-title').innerText = t.apkTitle;
             if (document.getElementById('t-apk-desc')) document.getElementById('t-apk-desc').innerText = t.apkDesc;
