@@ -1,4 +1,4 @@
-const CACHE_NAME = 'live-radar-v48';
+const CACHE_NAME = 'live-radar-v49';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
