@@ -324,39 +324,90 @@
             background: rgba(255, 255, 255, 0.08);
         }
 
-        /* Guide & Troubleshooting Accordion */
-        .help-card {
+        /* Bento Grid Navigation (2 square tiles in a row) */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .bento-tile {
             background: #18181b;
             border: 1px solid #27272a;
             border-radius: 14px;
-            padding: 14px 16px;
-            text-align: left;
-            margin-bottom: 12px;
-        }
-        #faq-card {
-            margin-bottom: 20px;
-        }
-        .help-toggle {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 13px 13px 11px 13px;
             cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            color: #d4d4d8;
+            text-align: left;
             user-select: none;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 84px;
+            box-sizing: border-box;
         }
-        .help-toggle:hover {
-            color: #ffffff;
+        .bento-tile:hover {
+            border-color: #3f3f46;
+            background: #1f1f23;
         }
-        .help-content {
+        .bento-tile:active {
+            transform: scale(0.98);
+        }
+        .bento-tile.active {
+            border-color: rgba(34, 197, 94, 0.65);
+            background: rgba(34, 197, 94, 0.07);
+            box-shadow: 0 0 14px rgba(34, 197, 94, 0.12);
+        }
+        .bento-tile-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .bento-icon {
+            font-size: 20px;
+            line-height: 1;
+        }
+        .bento-arrow {
+            font-size: 10px;
+            color: #71717a;
+            transition: transform 0.2s ease, color 0.2s ease;
+        }
+        .bento-tile.active .bento-arrow {
+            color: #4ade80;
+            transform: rotate(180deg);
+        }
+        .bento-tile-title {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #f4f4f5;
+            line-height: 1.25;
+            margin-bottom: 3px;
+        }
+        .bento-tile-sub {
+            font-size: 11px;
+            color: #71717a;
+            line-height: 1.2;
+            font-weight: 500;
+        }
+        .bento-tile.active .bento-tile-sub {
+            color: #86efac;
+        }
+
+        /* Bento Content Panels (Expanded beneath tiles) */
+        .bento-content {
             display: none;
-            margin-top: 14px;
-            border-top: 1px solid #27272a;
-            padding-top: 14px;
-            font-size: 13px;
-            line-height: 1.5;
-            color: #a1a1aa;
+            background: #18181b;
+            border: 1px solid #27272a;
+            border-radius: 14px;
+            padding: 16px;
+            text-align: left;
+            margin-bottom: 16px;
+            animation: bentoFadeIn 0.2s ease;
+        }
+        @keyframes bentoFadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Steps Layout */
@@ -684,178 +735,191 @@
             </div>
         </div>
 
-        <!-- Accordion 1: Connection & Settings (Dynamic Title: First-Time Setup vs Connection & Settings) -->
-        <div class="help-card" id="setup-card">
-            <div class="help-toggle" onclick="toggleAccordion('setup')">
-                <span id="t-setup-accordion-title" style="font-weight: 700; color: #f4f4f5;">🚀 First-Time Setup</span>
-                <span id="setup-arrow" style="font-size: 11px; color: #a1a1aa; transition: transform 0.2s;">▼</span>
+        <!-- Bento Grid Navigation (2 square tiles in a row) -->
+        <div class="bento-grid" id="bento-grid">
+            <div class="bento-tile" id="tile-setup" onclick="toggleAccordion('setup')">
+                <div class="bento-tile-top">
+                    <span class="bento-icon" id="setup-tile-icon">🚀</span>
+                    <span id="setup-arrow" class="bento-arrow">▼</span>
+                </div>
+                <div>
+                    <div class="bento-tile-title" id="t-setup-accordion-title">First-Time Setup</div>
+                    <div class="bento-tile-sub" id="t-setup-sub">Step-by-step guide</div>
+                </div>
             </div>
-            <div id="setup-content" class="help-content">
-                <div class="guide-step">
-                    <div class="step-header">
-                        <span class="step-num">1</span>
-                        <span class="step-title" id="t-step1-title">Turn ON Phone Hotspot</span>
-                    </div>
-                    <div class="step-body">
-                        <div id="t-step1-desc">Enable <b>Personal Hotspot</b> on your phone with the following credentials:</div>
-                        <div class="cred-row">
-                            <span id="t-step1-net">Network: <code>BMS</code></span>
-                            <span id="t-step1-pwd">Password: <code>bmslocal</code></span>
-                        </div>
-                        <div class="option-note" style="color: #f59e0b; margin-top: 4px;" id="t-step1-warn">⚠️ <b>Important:</b> Only supports <b>2.4GHz Wi-Fi</b>. On iPhone, turn ON <i>«Maximize Compatibility»</i>.</div>
-                        <div class="option-note" id="t-step1-note">Turn on hotspot first so the controller connects immediately upon startup.</div>
-                    </div>
+
+            <div class="bento-tile" id="tile-faq" onclick="toggleAccordion('faq')">
+                <div class="bento-tile-top">
+                    <span class="bento-icon">❓</span>
+                    <span id="faq-arrow" class="bento-arrow">▼</span>
                 </div>
-
-                <div class="guide-step">
-                    <div class="step-header">
-                        <span class="step-num">2</span>
-                        <span class="step-title" id="t-step2-title">Plug into Car & Power ON</span>
-                    </div>
-                    <div class="step-body" id="t-step2-body">
-                        Insert the controller into your vehicle's <b>OBD2 port</b> (under the steering wheel) and power on the car (<b>READY</b> mode).
-                    </div>
-                </div>
-
-                <div class="guide-step" id="guide-step-3">
-                    <div class="step-header">
-                        <span class="step-num">3</span>
-                        <span class="step-title" id="t-step3-title">IP Discovery (Auto-Sync)</span>
-                    </div>
-                    <div class="step-body">
-                        <div id="t-step3-desc">Connect phone Wi-Fi to controller network <code>BMS_Setup</code> (password: <code>bmslocal</code>).</div>
-                        <div class="option-note" id="t-step3-tips" style="color: #cbd5e1; margin-top: 6px; font-size: 12px; line-height: 1.5;">
-                            • Turn <b>OFF</b> «Auto-reconnect» for BMS_Setup.<br>
-                            • If prompted «No internet access», select «Stay connected».
-                        </div>
-
-                        <!-- Option A: Auto-Sync Button -->
-                        <button type="button" class="btn-sync" id="btn-guide-sync" onclick="syncWithBoard()" style="margin-top: 10px; margin-bottom: 6px; width: 100%;">
-                            <span id="guide-sync-icon" style="font-size: 18px;">📡</span>
-                            <div style="display: flex; flex-direction: column; align-items: flex-start; text-align: left; line-height: 1.2;">
-                                <span id="t-btn-sync" style="font-size: 14.5px; font-weight: 700;">Найти контроллер</span>
-                                <span id="t-btn-sync-sub" style="font-size: 11px; color: #93c5fd; font-weight: 500; margin-top: 2px;">Автопоиск IP-адреса</span>
-                            </div>
-                        </button>
-                        <div class="option-note" id="t-step3-note">The controller will send its IP to BMS Radar, disable BMS_Setup, and redirect you back with IP saved.</div>
-
-                        <!-- Option B: Manual IP Input in Step 3 -->
-                        <div style="margin-top: 12px; border-top: 1px dashed #3f3f46; padding-top: 10px;">
-                            <div style="display: flex; align-items: center; justify-content: space-between;">
-                                <span style="font-size: 12px; color: #a1a1aa;" id="t-step3-or">Или укажите IP вручную:</span>
-                                <button type="button" class="btn-ghost" onclick="toggleEditIp()" style="width: auto; padding: 4px 10px; margin: 0; font-size: 11.5px;">
-                                    <span>✏️</span>
-                                    <span id="t-btn-manual">Ввести IP вручную</span>
-                                </button>
-                            </div>
-                            <div id="edit-row" class="edit-row" style="flex-direction: column; margin-top: 8px;">
-                                <div style="display: flex; width: 100%; gap: 8px;">
-                                    <input type="text" id="manual-ip" class="input-ip" placeholder="10.48.33.187" inputmode="decimal" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="15">
-                                    <button class="btn-save-ip" id="t-btn-save-ip" onclick="saveManualIp()">Save</button>
-                                </div>
-                                <div class="sync-hint" id="t-manual-ip-hint" style="text-align: left; margin-top: 4px;">Find IP in Hotspot settings (e.g. 10.48.33.x)</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="guide-step" style='margin-bottom: 4px;'>
-                    <div class="step-header">
-                        <span class="step-num">4</span>
-                        <span class="step-title" id="t-step4-title">Launch BMS Monitor</span>
-                    </div>
-                    <div class="step-body" id="t-step4-body">
-                        After obtaining the IP address, tap <b>«📊 BMS Monitor»</b> above to view live telemetry.
-                    </div>
+                <div>
+                    <div class="bento-tile-title" id="t-faq-accordion-title">Help & FAQ</div>
+                    <div class="bento-tile-sub" id="t-faq-sub">Knowledge base</div>
                 </div>
             </div>
         </div>
 
-        <!-- Accordion 2: Questions and Answers (FAQ) -->
-        <div class="help-card" id="faq-card">
-            <div class="help-toggle" onclick="toggleAccordion('faq')">
-                <span id="t-faq-accordion-title" style="font-weight: 700; color: #f4f4f5;">❓ Help & FAQ</span>
-                <span id="faq-arrow" style="font-size: 11px; color: #a1a1aa; transition: transform 0.2s;">▼</span>
+        <!-- Content Panel 1: Connection & Settings Guide -->
+        <div id="setup-content" class="bento-content">
+            <div class="guide-step">
+                <div class="step-header">
+                    <span class="step-num">1</span>
+                    <span class="step-title" id="t-step1-title">Turn ON Phone Hotspot</span>
+                </div>
+                <div class="step-body">
+                    <div id="t-step1-desc">Enable <b>Personal Hotspot</b> on your phone with the following credentials:</div>
+                    <div class="cred-row">
+                        <span id="t-step1-net">Network: <code>BMS</code></span>
+                        <span id="t-step1-pwd">Password: <code>bmslocal</code></span>
+                    </div>
+                    <div class="option-note" style="color: #f59e0b; margin-top: 4px;" id="t-step1-warn">⚠️ <b>Important:</b> Only supports <b>2.4GHz Wi-Fi</b>. On iPhone, turn ON <i>«Maximize Compatibility»</i>.</div>
+                    <div class="option-note" id="t-step1-note">Turn on hotspot first so the controller connects immediately upon startup.</div>
+                </div>
             </div>
-            <div id="faq-content" class="help-content">
-                <div class="trouble-item" onclick="toggleTrouble(this, event)">
-                    <div class="trouble-header">
-                        <span class="trouble-q" id="t-tr-auto-q">🛡️ How does autonomy and updates work?</span>
-                        <span class="trouble-arrow">▼</span>
+
+            <div class="guide-step">
+                <div class="step-header">
+                    <span class="step-num">2</span>
+                    <span class="step-title" id="t-step2-title">Plug into Car & Power ON</span>
+                </div>
+                <div class="step-body" id="t-step2-body">
+                    Insert the controller into your vehicle's <b>OBD2 port</b> (under the steering wheel) and power on the car (<b>READY</b> mode).
+                </div>
+            </div>
+
+            <div class="guide-step" id="guide-step-3">
+                <div class="step-header">
+                    <span class="step-num">3</span>
+                    <span class="step-title" id="t-step3-title">IP Discovery (Auto-Sync)</span>
+                </div>
+                <div class="step-body">
+                    <div id="t-step3-desc">Connect phone Wi-Fi to controller network <code>BMS_Setup</code> (password: <code>bmslocal</code>).</div>
+                    <div class="option-note" id="t-step3-tips" style="color: #cbd5e1; margin-top: 6px; font-size: 12px; line-height: 1.5;">
+                        • Turn <b>OFF</b> «Auto-reconnect» for BMS_Setup.<br>
+                        • If prompted «No internet access», select «Stay connected».
                     </div>
-                    <div class="trouble-a" id="t-tr-auto-a">
-                        • <b>⚡ Full autonomy:</b> Controller is plugged into the vehicle and automatically regulates fan speed. A discharged or forgotten phone never affects battery cooling.<br>
-                        • <b>📲 Energy-efficient link:</b> Phone battery is not drained by continuous data polling. Connection is only active when viewing battery temperature or changing network settings.<br>
-                        • <b>🔄 Support & updates:</b> Both controller and mobile app are engineered with support for wireless updates.
+
+                    <!-- Option A: Auto-Sync Button -->
+                    <button type="button" class="btn-sync" id="btn-guide-sync" onclick="syncWithBoard()" style="margin-top: 10px; margin-bottom: 6px; width: 100%;">
+                        <span id="guide-sync-icon" style="font-size: 18px;">📡</span>
+                        <div style="display: flex; flex-direction: column; align-items: flex-start; text-align: left; line-height: 1.2;">
+                            <span id="t-btn-sync" style="font-size: 14.5px; font-weight: 700;">Найти контроллер</span>
+                            <span id="t-btn-sync-sub" style="font-size: 11px; color: #93c5fd; font-weight: 500; margin-top: 2px;">Автопоиск IP-адреса</span>
+                        </div>
+                    </button>
+                    <div class="option-note" id="t-step3-note">The controller will send its IP to BMS Radar, disable BMS_Setup, and redirect you back with IP saved.</div>
+
+                    <!-- Option B: Manual IP Input in Step 3 -->
+                    <div style="margin-top: 12px; border-top: 1px dashed #3f3f46; padding-top: 10px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <span style="font-size: 12px; color: #a1a1aa;" id="t-step3-or">Или укажите IP вручную:</span>
+                            <button type="button" class="btn-ghost" onclick="toggleEditIp()" style="width: auto; padding: 4px 10px; margin: 0; font-size: 11.5px;">
+                                <span>✏️</span>
+                                <span id="t-btn-manual">Ввести IP вручную</span>
+                            </button>
+                        </div>
+                        <div id="edit-row" class="edit-row" style="flex-direction: column; margin-top: 8px;">
+                            <div style="display: flex; width: 100%; gap: 8px;">
+                                <input type="text" id="manual-ip" class="input-ip" placeholder="10.48.33.187" inputmode="decimal" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="15">
+                                <button class="btn-save-ip" id="t-btn-save-ip" onclick="saveManualIp()">Save</button>
+                            </div>
+                            <div class="sync-hint" id="t-manual-ip-hint" style="text-align: left; margin-top: 4px;">Find IP in Hotspot settings (e.g. 10.48.33.x)</div>
+                        </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="trouble-item" onclick="toggleTrouble(this, event)">
-                    <div class="trouble-header">
-                        <span class="trouble-q" id="t-tr-1-q">🔴 Dashboard not opening or offline?</span>
-                        <span class="trouble-arrow">▼</span>
-                    </div>
-                    <div class="trouble-a" id="t-tr-1-a">
-                        • Ensure vehicle is in <b>READY</b> mode.<br>
-                        • Verify hotspot is ON: default network <code>BMS</code> (password <code>bmslocal</code>) or your custom network.<br>
-                        • On iPhone, turn <b>ON</b> <i>«Maximize Compatibility»</i> in Personal Hotspot settings.<br>
-                        • On Android, set Hotspot AP Band to <b>2.4 GHz</b>.
-                    </div>
+            <div class="guide-step" style='margin-bottom: 4px;'>
+                <div class="step-header">
+                    <span class="step-num">4</span>
+                    <span class="step-title" id="t-step4-title">Launch BMS Monitor</span>
                 </div>
-
-                <div class="trouble-item" onclick="toggleTrouble(this, event)">
-                    <div class="trouble-header">
-                        <span class="trouble-q" id="t-tr-custom-q">⚙️ How to connect controller to custom/home Wi-Fi?</span>
-                        <span class="trouble-arrow">▼</span>
-                    </div>
-                    <div class="trouble-a" id="t-tr-custom-a">
-                        1. Turn off phone hotspot for 15s. The controller will launch its setup Wi-Fi <code>BMS_Setup</code> (password <code>bmslocal</code>).<br>
-                        2. Connect phone Wi-Fi to <code>BMS_Setup</code>, open <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> or tap <b>«Auto-Sync»</b> above.<br>
-                        3. In the Wi-Fi settings section, enter your hotspot SSID and password, then save.<br>
-                        The controller will reconnect to your network automatically!
-                    </div>
+                <div class="step-body" id="t-step4-body">
+                    After obtaining the IP address, tap <b>«📊 BMS Monitor»</b> above to view live telemetry.
                 </div>
+            </div>
+        </div>
 
-                <div class="trouble-item" onclick="toggleTrouble(this, event)">
-                    <div class="trouble-header">
-                        <span class="trouble-q" id="t-tr-4-q">❓ Changed phone or typo in Wi-Fi password?</span>
-                        <span class="trouble-arrow">▼</span>
-                    </div>
-                    <div class="trouble-a" id="t-tr-4-a">
-                        No worries: turn off phone hotspot for 15 seconds. Since the controller cannot find the network, it will re-open <code>BMS_Setup</code> (password <code>bmslocal</code>), so you can enter new credentials via <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a>.
-                    </div>
+        <!-- Content Panel 2: Questions and Answers (FAQ) -->
+        <div id="faq-content" class="bento-content">
+            <div class="trouble-item" onclick="toggleTrouble(this, event)">
+                <div class="trouble-header">
+                    <span class="trouble-q" id="t-tr-auto-q">🛡️ How does autonomy and updates work?</span>
+                    <span class="trouble-arrow">▼</span>
                 </div>
-
-                <div class="trouble-item" onclick="toggleTrouble(this, event)">
-                    <div class="trouble-header">
-                        <span class="trouble-q" id="t-tr-2-q">📶 Tips for BMS_Setup Wi-Fi:</span>
-                        <span class="trouble-arrow">▼</span>
-                    </div>
-                    <div class="trouble-a" id="t-tr-2-a">
-                        • Turn <b>OFF</b> <i>«Auto-reconnect»</i> for BMS_Setup.<br>
-                        • If prompted <i>«No Internet»</i>, tap <b>«Keep Wi-Fi connection» / «Always connect»</b>.
-                    </div>
+                <div class="trouble-a" id="t-tr-auto-a">
+                    • <b>⚡ Full autonomy:</b> Controller is plugged into the vehicle and automatically regulates fan speed. A discharged or forgotten phone never affects battery cooling.<br>
+                    • <b>📲 Energy-efficient link:</b> Phone battery is not drained by continuous data polling. Connection is only active when viewing battery temperature or changing network settings.<br>
+                    • <b>🔄 Support & updates:</b> Both controller and mobile app are engineered with support for wireless updates.
                 </div>
+            </div>
 
-                <div class="trouble-item" onclick="toggleTrouble(this, event)">
-                    <div class="trouble-header">
-                        <span class="trouble-q" id="t-tr-android-q">🤖 Android Hotspot 2.4GHz Settings:</span>
-                        <span class="trouble-arrow">▼</span>
-                    </div>
-                    <div class="trouble-a" id="t-tr-android-a">
-                        In your Android phone settings ➔ <i>Portable Hotspot / Tethering</i> ➔ <i>Set up hotspot</i>, make sure <b>AP Band</b> is set to <b>2.4 GHz Band</b> (not 5.0 GHz preferred).
-                    </div>
+            <div class="trouble-item" onclick="toggleTrouble(this, event)">
+                <div class="trouble-header">
+                    <span class="trouble-q" id="t-tr-1-q">🔴 Dashboard not opening or offline?</span>
+                    <span class="trouble-arrow">▼</span>
                 </div>
+                <div class="trouble-a" id="t-tr-1-a">
+                    • Ensure vehicle is in <b>READY</b> mode.<br>
+                    • Verify hotspot is ON: default network <code>BMS</code> (password <code>bmslocal</code>) or your custom network.<br>
+                    • On iPhone, turn <b>ON</b> <i>«Maximize Compatibility»</i> in Personal Hotspot settings.<br>
+                    • On Android, set Hotspot AP Band to <b>2.4 GHz</b>.
+                </div>
+            </div>
 
-                <div class="trouble-item" onclick="toggleTrouble(this, event)" style='margin-bottom: 4px;'>
-                    <div class="trouble-header">
-                        <span class="trouble-q" id="t-tr-3-q">🟡 IP address changed?</span>
-                        <span class="trouble-arrow">▼</span>
-                    </div>
-                    <div class="trouble-a" id="t-tr-3-a">
-                        • Connect phone Wi-Fi to <code>BMS_Setup</code> and tap <i>«Auto-Sync via BMS_Setup»</i>.<br>
-                        • Or check phone Hotspot settings for the connected device IP and save it manually.
-                    </div>
+            <div class="trouble-item" onclick="toggleTrouble(this, event)">
+                <div class="trouble-header">
+                    <span class="trouble-q" id="t-tr-custom-q">⚙️ How to connect controller to custom/home Wi-Fi?</span>
+                    <span class="trouble-arrow">▼</span>
+                </div>
+                <div class="trouble-a" id="t-tr-custom-a">
+                    1. Turn off phone hotspot for 15s. The controller will launch its setup Wi-Fi <code>BMS_Setup</code> (password <code>bmslocal</code>).<br>
+                    2. Connect phone Wi-Fi to <code>BMS_Setup</code>, open <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> or tap <b>«Auto-Sync»</b> above.<br>
+                    3. In the Wi-Fi settings section, enter your hotspot SSID and password, then save.<br>
+                    The controller will reconnect to your network automatically!
+                </div>
+            </div>
+
+            <div class="trouble-item" onclick="toggleTrouble(this, event)">
+                <div class="trouble-header">
+                    <span class="trouble-q" id="t-tr-4-q">❓ Changed phone or typo in Wi-Fi password?</span>
+                    <span class="trouble-arrow">▼</span>
+                </div>
+                <div class="trouble-a" id="t-tr-4-a">
+                    No worries: turn off phone hotspot for 15 seconds. Since the controller cannot find the network, it will re-open <code>BMS_Setup</code> (password <code>bmslocal</code>), so you can enter new credentials via <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a>.
+                </div>
+            </div>
+
+            <div class="trouble-item" onclick="toggleTrouble(this, event)">
+                <div class="trouble-header">
+                    <span class="trouble-q" id="t-tr-2-q">📶 Tips for BMS_Setup Wi-Fi:</span>
+                    <span class="trouble-arrow">▼</span>
+                </div>
+                <div class="trouble-a" id="t-tr-2-a">
+                    • Turn <b>OFF</b> <i>«Auto-reconnect»</i> for BMS_Setup.<br>
+                    • If prompted <i>«No Internet»</i>, tap <b>«Keep Wi-Fi connection» / «Always connect»</b>.
+                </div>
+            </div>
+
+            <div class="trouble-item" onclick="toggleTrouble(this, event)">
+                <div class="trouble-header">
+                    <span class="trouble-q" id="t-tr-android-q">🤖 Android Hotspot 2.4GHz Settings:</span>
+                    <span class="trouble-arrow">▼</span>
+                </div>
+                <div class="trouble-a" id="t-tr-android-a">
+                    In your Android phone settings ➔ <i>Portable Hotspot / Tethering</i> ➔ <i>Set up hotspot</i>, make sure <b>AP Band</b> is set to <b>2.4 GHz Band</b> (not 5.0 GHz preferred).
+                </div>
+            </div>
+
+            <div class="trouble-item" onclick="toggleTrouble(this, event)" style='margin-bottom: 4px;'>
+                <div class="trouble-header">
+                    <span class="trouble-q" id="t-tr-3-q">🟡 IP address changed?</span>
+                    <span class="trouble-arrow">▼</span>
+                </div>
+                <div class="trouble-a" id="t-tr-3-a">
+                    • Connect phone Wi-Fi to <code>BMS_Setup</code> and tap <i>«Auto-Sync via BMS_Setup»</i>.<br>
+                    • Or check phone Hotspot settings for the connected device IP and save it manually.
                 </div>
             </div>
         </div>
@@ -882,9 +946,11 @@
                 step3Or: "Or enter controller IP manually:",
                 btnSaveIp: "Save",
                 autoText: "<b>Controller operates fully autonomously.</b> Phone is used only for monitoring and settings.",
-                accordionSetupFirst: "🚀 First-Time Setup",
-                accordionSetupConfig: "⚙️ Connection & Settings",
-                accordionFaq: "❓ Help & FAQ",
+                accordionSetupFirst: "First-Time Setup",
+                accordionSetupConfig: "Connection & Setup",
+                accordionFaq: "Help & FAQ",
+                setupSub: "Step-by-step guide",
+                faqSub: "Knowledge base",
                 apkTitle: "BMS Monitor",
                 apkDesc: "Android app with live battery HUD widget:",
                 apkF2: "<b>Instant auto-connect via smartphone hotspot</b><br><span style=\"color: #a1a1aa; font-size: 11.5px;\">App discovers controller automatically — no IP search or manual setup.</span>",
@@ -952,9 +1018,11 @@
                 step3Or: "或手动输入控制器 IP：",
                 btnSaveIp: "保存",
                 autoText: "<b>控制器完全自主运行。</b> 手机仅用于监控与设置。",
-                accordionSetupFirst: "🚀 首次连接指南",
-                accordionSetupConfig: "⚙️ 连接与设置",
-                accordionFaq: "❓ 常见问题 (FAQ)",
+                accordionSetupFirst: "首次连接指南",
+                accordionSetupConfig: "连接与设置",
+                accordionFaq: "常见问题 (FAQ)",
+                setupSub: "逐步设置指南",
+                faqSub: "知识库与 FAQ",
                 apkTitle: "BMS Monitor",
                 apkDesc: "支持悬浮窗实时监控的 Android 应用：",
                 apkF2: "<b>智能手机热点极速自动直连</b><br><span style=\"color: #a1a1aa; font-size: 11.5px;\">应用自动发现控制器 — 无需查找 IP 与手动设置。</span>",
@@ -1022,9 +1090,11 @@
                 step3Or: "또는 수동으로 IP 입력:",
                 btnSaveIp: "저장",
                 autoText: "<b>컨트롤러는 완전 자율 작동합니다.</b> 스마트폰은 모니터링 및 설정에만 사용됩니다.",
-                accordionSetupFirst: "🚀 최초 설정 가이드",
-                accordionSetupConfig: "⚙️ 연결 및 설정",
-                accordionFaq: "❓ 자주 묻는 질문 (FAQ)",
+                accordionSetupFirst: "최초 설정 가이드",
+                accordionSetupConfig: "연결 및 설정",
+                accordionFaq: "자주 묻는 질문 (FAQ)",
+                setupSub: "단계별 설정 가이드",
+                faqSub: "도움말 및 FAQ",
                 apkTitle: "BMS Monitor",
                 apkDesc: "실시간 배터리 HUD 위젯을 지원하는 Android 앱:",
                 apkF2: "<b>스마트폰 핫스팟 자동 즉시 연결</b><br><span style=\"color: #a1a1aa; font-size: 11.5px;\">앱이 컨트롤러를 자동 검색 — IP 검색이나 수동 설정 불필요.</span>",
@@ -1092,9 +1162,11 @@
                 step3Or: "Или укажите IP вручную:",
                 btnSaveIp: "Сохранить",
                 autoText: "<b>Контроллер работает полностью автономно.</b> Телефон используется только для мониторинга и настройки.",
-                accordionSetupFirst: "🚀 Первое подключение",
-                accordionSetupConfig: "⚙️ Подключение и настройки",
-                accordionFaq: "❓ Вопросы и ответы (FAQ)",
+                accordionSetupFirst: "Первое подключение",
+                accordionSetupConfig: "Настройка и связь",
+                accordionFaq: "Вопросы и ответы",
+                setupSub: "Пошаговый гид",
+                faqSub: "База знаний (FAQ)",
                 apkTitle: "BMS Monitor",
                 apkDesc: "Android приложение с плавающим HUD виджетом:",
                 apkF2: "<b>Мгновенное автоподключение к точке доступа смартфона</b><br><span style=\"color: #a1a1aa; font-size: 11.5px;\">Приложение само находит контроллер — без поиска IP и ручных настроек.</span>",
@@ -1210,8 +1282,17 @@
             if (document.getElementById('t-setup-accordion-title')) {
                 document.getElementById('t-setup-accordion-title').innerText = isIpConfigured ? t.accordionSetupConfig : t.accordionSetupFirst;
             }
+            if (document.getElementById('setup-tile-icon')) {
+                document.getElementById('setup-tile-icon').innerText = isIpConfigured ? '⚙️' : '🚀';
+            }
+            if (document.getElementById('t-setup-sub') && t.setupSub) {
+                document.getElementById('t-setup-sub').innerText = t.setupSub;
+            }
             if (document.getElementById('t-faq-accordion-title')) {
                 document.getElementById('t-faq-accordion-title').innerText = t.accordionFaq;
+            }
+            if (document.getElementById('t-faq-sub') && t.faqSub) {
+                document.getElementById('t-faq-sub').innerText = t.faqSub;
             }
             if (document.getElementById('t-step3-or') && t.step3Or) document.getElementById('t-step3-or').innerText = t.step3Or;
 
@@ -1363,6 +1444,7 @@
             const manualIpInput = document.getElementById('manual-ip');
             const firstRunTip = document.getElementById('first-run-tip');
             const setupTitle = document.getElementById('t-setup-accordion-title');
+            const setupIcon = document.getElementById('setup-tile-icon');
             const t = I18N[currentLang] || I18N.en;
 
             if (currentIp && currentIp !== '--') {
@@ -1370,11 +1452,13 @@
                 if (manualIpInput) manualIpInput.value = currentIp;
                 if (firstRunTip) firstRunTip.style.display = 'none';
                 if (setupTitle) setupTitle.innerText = t.accordionSetupConfig;
+                if (setupIcon) setupIcon.innerText = '⚙️';
             } else {
                 if (displayEl) displayEl.innerText = '--';
                 if (manualIpInput) manualIpInput.value = '';
                 if (firstRunTip) firstRunTip.style.display = 'flex';
                 if (setupTitle) setupTitle.innerText = t.accordionSetupFirst;
+                if (setupIcon) setupIcon.innerText = '🚀';
             }
         }
 
@@ -1390,36 +1474,34 @@
         // Auto-expand setup accordion for first-time visitors if IP is not set
         if (!currentIp || currentIp === '--') {
             const content = document.getElementById('setup-content');
-            const arrow = document.getElementById('setup-arrow');
-            if (content && arrow) {
-                content.style.display = 'block';
-                arrow.innerText = '▲';
-            }
+            const tile = document.getElementById('tile-setup');
+            if (content) content.style.display = 'block';
+            if (tile) tile.classList.add('active');
         }
 
         function openAndScrollToGuide() {
-            const content = document.getElementById('setup-content');
-            const arrow = document.getElementById('setup-arrow');
-            const setupCard = document.getElementById('setup-card');
-            if (content) {
-                content.style.display = 'block';
-                if (arrow) arrow.innerText = '▲';
-            }
-            if (setupCard) {
-                setupCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            const setupContent = document.getElementById('setup-content');
+            const setupTile = document.getElementById('tile-setup');
+            const faqContent = document.getElementById('faq-content');
+            const faqTile = document.getElementById('tile-faq');
+
+            if (faqContent) faqContent.style.display = 'none';
+            if (faqTile) faqTile.classList.remove('active');
+
+            if (setupContent) setupContent.style.display = 'block';
+            if (setupTile) {
+                setupTile.classList.add('active');
+                setupTile.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         }
 
         function openAndScrollToStep3() {
-            const content = document.getElementById('setup-content');
-            const arrow = document.getElementById('setup-arrow');
+            openAndScrollToGuide();
             const step3El = document.getElementById('guide-step-3');
-            if (content) {
-                content.style.display = 'block';
-                if (arrow) arrow.innerText = '▲';
-            }
             if (step3El) {
-                step3El.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setTimeout(() => {
+                    step3El.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 100);
             }
         }
 
@@ -1476,15 +1558,28 @@
         }
 
         function toggleAccordion(type) {
-            const content = document.getElementById(type + '-content');
-            const arrow = document.getElementById(type + '-arrow');
-            if (!content || !arrow) return;
-            if (content.style.display === 'block') {
-                content.style.display = 'none';
-                arrow.innerText = '▼';
+            const isSetup = (type === 'setup');
+            const targetContent = document.getElementById(type + '-content');
+            const targetTile = document.getElementById('tile-' + type);
+
+            const otherType = isSetup ? 'faq' : 'setup';
+            const otherContent = document.getElementById(otherType + '-content');
+            const otherTile = document.getElementById('tile-' + otherType);
+
+            if (!targetContent) return;
+
+            const isOpen = (targetContent.style.display === 'block');
+
+            if (isOpen) {
+                targetContent.style.display = 'none';
+                if (targetTile) targetTile.classList.remove('active');
             } else {
-                content.style.display = 'block';
-                arrow.innerText = '▲';
+                if (otherContent) otherContent.style.display = 'none';
+                if (otherTile) otherTile.classList.remove('active');
+
+                targetContent.style.display = 'block';
+                if (targetTile) targetTile.classList.add('active');
+                targetTile.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }
         }
 
