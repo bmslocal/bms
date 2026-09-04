@@ -42,27 +42,55 @@
 
         /* Autonomous Callout Card */
         .auto-card {
-            background: rgba(34, 197, 94, 0.08);
-            border: 1px solid rgba(34, 197, 94, 0.25);
-            border-radius: 12px;
-            padding: 12px 14px;
+            background: rgba(34, 197, 94, 0.12);
+            border: 1px solid rgba(74, 222, 128, 0.38);
+            border-radius: 14px;
+            padding: 13px 40px 13px 14px;
             margin-bottom: 14px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             text-align: left;
+            position: relative;
+            box-shadow: 0 2px 10px rgba(34, 197, 94, 0.08);
         }
         .auto-icon {
-            font-size: 20px;
+            font-size: 24px;
             flex-shrink: 0;
         }
         .auto-text {
-            font-size: 12.5px;
+            font-size: 13.5px;
             line-height: 1.45;
             color: #d1d5db;
         }
         .auto-text b {
             color: #4ade80;
+            font-size: 14px;
+            display: block;
+            margin-bottom: 2px;
+        }
+        .auto-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            font-size: 13px;
+            line-height: 1;
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            padding: 0;
+            transition: all 0.2s;
+        }
+        .auto-close-btn:hover {
+            color: #f4f4f5;
+            background: rgba(255, 255, 255, 0.15);
         }
 
         /* Banner install */
@@ -209,34 +237,35 @@
             justify-content: center;
             gap: 8px;
             width: 100%;
-            background: #22c55e;
-            color: #09090b;
-            border: none;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: #ffffff;
+            border: 1px solid #3b82f6;
             border-radius: 12px;
-            padding: 16px;
-            font-size: 16px;
+            padding: 13px 16px;
+            font-size: 15.5px;
             font-weight: 700;
             cursor: pointer;
-            transition: transform 0.1s, background 0.2s;
+            min-height: 48px;
+            box-shadow: 0 3px 10px rgba(37, 99, 235, 0.28);
+            transition: transform 0.1s, background 0.2s, box-shadow 0.2s;
         }
         .btn-primary:active {
             transform: scale(0.98);
-            background: #16a34a;
+            background: #1e40af;
         }
 
         .btn-sync {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
             width: 100%;
             background: #1e293b;
             color: #38bdf8;
             border: 1px solid #0284c7;
             border-radius: 12px;
-            padding: 14px;
-            font-size: 14.5px;
-            font-weight: 600;
+            padding: 11px 16px;
+            min-height: 48px;
             cursor: pointer;
             margin-top: 10px;
             transition: 0.2s;
@@ -336,11 +365,11 @@
         }
         .guide-tab {
             flex: 1;
-            padding: 8px 10px;
+            padding: 9px 12px;
             text-align: center;
-            font-size: 12.5px;
+            font-size: 14px;
             font-weight: 600;
-            border-radius: 7px;
+            border-radius: 8px;
             border: none;
             background: transparent;
             color: #a1a1aa;
@@ -359,7 +388,7 @@
             background: #202024;
             border: 1px solid #2d2d32;
             border-radius: 10px;
-            padding: 12px 14px;
+            padding: 13px 15px;
         }
         .step-header {
             display: flex;
@@ -371,25 +400,25 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 22px;
-            height: 22px;
+            width: 24px;
+            height: 24px;
             background: #3b82f6;
             color: #ffffff;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 700;
             border-radius: 50%;
             flex-shrink: 0;
         }
         .step-title {
-            font-size: 13.5px;
-            font-weight: 600;
+            font-size: 15px;
+            font-weight: 700;
             color: #f4f4f5;
         }
         .step-body {
-            font-size: 12.5px;
-            line-height: 1.5;
-            color: #a1a1aa;
-            padding-left: 30px;
+            font-size: 14px;
+            line-height: 1.55;
+            color: #cbd5e1;
+            padding-left: 32px;
         }
         .step-body b {
             color: #e4e4e7;
@@ -397,10 +426,11 @@
         .step-body code, .trouble-a code {
             background: #18181b;
             color: #38bdf8;
-            padding: 2px 6px;
-            border-radius: 4px;
+            padding: 2px 7px;
+            border-radius: 5px;
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-            font-size: 12px;
+            font-size: 13px;
+            font-weight: 600;
             border: 1px solid #3f3f46;
         }
 
@@ -414,20 +444,21 @@
         .option-title {
             font-weight: 600;
             color: #93c5fd;
-            font-size: 12px;
+            font-size: 13px;
             margin-bottom: 4px;
         }
         .cred-row {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            margin: 6px 0;
-            font-size: 12px;
+            margin: 8px 0;
+            font-size: 13.5px;
         }
         .option-note {
-            font-size: 11.5px;
-            color: #71717a;
-            margin-top: 4px;
+            font-size: 12.5px;
+            line-height: 1.5;
+            color: #94a3b8;
+            margin-top: 6px;
         }
 
         /* Troubleshooting List & Accordion */
@@ -455,7 +486,7 @@
             user-select: none;
         }
         .trouble-q {
-            font-size: 13px;
+            font-size: 14.5px;
             font-weight: 600;
             color: #f4f4f5;
         }
@@ -471,9 +502,9 @@
         }
         .trouble-a {
             display: none;
-            font-size: 12px;
-            line-height: 1.55;
-            color: #a1a1aa;
+            font-size: 13.5px;
+            line-height: 1.6;
+            color: #cbd5e1;
             margin-top: 10px;
             padding-top: 10px;
             border-top: 1px solid #2d2d32;
@@ -553,17 +584,19 @@
             display: none;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 8px;
             background: rgba(59, 130, 246, 0.12);
             border: 1px solid rgba(59, 130, 246, 0.35);
             color: #93c5fd;
-            border-radius: 9px;
-            padding: 8px 12px;
-            font-size: 12px;
-            margin-bottom: 12px;
+            border-radius: 12px;
+            padding: 11px 14px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 14px;
             cursor: pointer;
             text-align: center;
             line-height: 1.4;
+            min-height: 44px;
             transition: all 0.2s ease;
         }
         .first-run-tip:hover {
@@ -643,8 +676,9 @@
         <div class="auto-card" id="auto-card">
             <span class="auto-icon">🛡️</span>
             <div class="auto-text" id="t-auto-text">
-                <b>Autonomous hybrid battery cooling.</b> Phone is used only for monitoring and settings.
+                <b>Контроллер работает полностью автономно.</b> Телефон используется только для мониторинга и настройки.
             </div>
+            <button type="button" class="auto-close-btn" onclick="dismissAutoCard(event)" title="Скрыть" aria-label="Скрыть">✕</button>
         </div>
 
         <!-- Main Card -->
@@ -663,8 +697,11 @@
             <div id="dash-error-box" class="dash-error-box"></div>
 
             <button id="btn-sync-board" class="btn-sync" onclick="syncWithBoard()">
-                <span id="sync-btn-icon">📡</span>
-                <span id="t-btn-sync">Auto-Sync via BMS_Setup</span>
+                <span id="sync-btn-icon" style="font-size: 18px; flex-shrink: 0;">📡</span>
+                <div style="display: flex; flex-direction: column; align-items: flex-start; text-align: left; line-height: 1.2;">
+                    <span id="t-btn-sync" style="font-size: 15px; font-weight: 700;">Найти контроллер</span>
+                    <span id="t-btn-sync-sub" style="font-size: 11.5px; color: #93c5fd; font-weight: 500; margin-top: 2px;">Автопоиск IP-адреса</span>
+                </div>
             </button>
 
             <button class="btn-ghost" onclick="toggleEditIp()">
@@ -705,6 +742,9 @@
                     <span>⬇️</span>
                     <span id="t-btn-download-apk">Download APK</span>
                 </a>
+                <div id="t-apk-install-hint" style="font-size: 12px; color: #94a3b8; margin-top: 8px; text-align: center; line-height: 1.4;">
+                    После загрузки откройте файл из шторки телефона для установки
+                </div>
             </div>
         </div>
 
@@ -880,7 +920,8 @@
                 ipStatusChecking: "Checking status...",
                 firstRunTip: "First time setup? Follow the steps in the guide below 👇",
                 btnOpen: "Open Dashboard",
-                btnSync: "Auto-Sync via BMS_Setup",
+                btnSync: "Find Controller",
+                btnSyncSub: "Auto-detect IP address",
                 btnManual: "Set IP Manually",
                 btnSaveIp: "Save",
                 autoText: "<b>Controller operates fully autonomously.</b> Phone is used only for monitoring and settings.",
@@ -891,6 +932,7 @@
                 apkDesc: "Android app with live battery HUD widget:",
                 apkF2: "<b>Instant auto-connect via smartphone hotspot</b><br><span style=\"color: #a1a1aa; font-size: 11.5px;\">App discovers controller automatically — no IP search or manual setup.</span>",
                 btnDownloadApk: "Download APK",
+                apkInstallHint: "After downloading, open the APK from notifications to install",
                 installTitleAndroid: "📲 Install Application",
                 installDescAndroid: "Add BMS Radar to your home screen for quick one-tap access.",
                 btnInstall: "Install",
@@ -946,7 +988,8 @@
                 ipStatusChecking: "检查状态中...",
                 firstRunTip: "首次使用？请先按照下方指南操作 👇",
                 btnOpen: "打开仪表板",
-                btnSync: "通过 BMS_Setup 自动同步",
+                btnSync: "查找控制器",
+                btnSyncSub: "自动检测 IP 地址",
                 btnManual: "手动设置 IP",
                 btnSaveIp: "保存",
                 autoText: "<b>控制器完全自主运行。</b> 手机仅用于监控与设置。",
@@ -957,6 +1000,7 @@
                 apkDesc: "支持悬浮窗实时监控的 Android 应用：",
                 apkF2: "<b>智能手机热点极速自动直连</b><br><span style=\"color: #a1a1aa; font-size: 11.5px;\">应用自动发现控制器 — 无需查找 IP 与手动设置。</span>",
                 btnDownloadApk: "下载 APK",
+                apkInstallHint: "下载完成后，请从手机通知栏打开文件以完成安装",
                 installTitleAndroid: "📲 安装应用程序",
                 installDescAndroid: "将 BMS Radar 添加到主屏幕，享受一键快速访问。",
                 btnInstall: "立即安装",
@@ -1012,7 +1056,8 @@
                 ipStatusChecking: "상태 확인 중...",
                 firstRunTip: "처음이신가요? 아래 가이드에 따라 설정하세요 👇",
                 btnOpen: "대시보드 열기",
-                btnSync: "BMS_Setup을 통한 자동 동기화",
+                btnSync: "컨트롤러 찾기",
+                btnSyncSub: "IP 주소 자동 검색",
                 btnManual: "수동으로 IP 입력",
                 btnSaveIp: "저장",
                 autoText: "<b>컨트롤러는 완전 자율 작동합니다.</b> 스마트폰은 모니터링 및 설정에만 사용됩니다.",
@@ -1023,6 +1068,7 @@
                 apkDesc: "실시간 배터리 HUD 위젯을 지원하는 Android 앱:",
                 apkF2: "<b>스마트폰 핫스팟 자동 즉시 연결</b><br><span style=\"color: #a1a1aa; font-size: 11.5px;\">앱이 컨트롤러를 자동 검색 — IP 검색이나 수동 설정 불필요.</span>",
                 btnDownloadApk: "APK 다운로드",
+                apkInstallHint: "다운로드 후 스마트폰 알림창에서 파일을 열어 설치하세요",
                 installTitleAndroid: "📲 앱 설치하기",
                 installDescAndroid: "원터치 빠른 실행을 위해 홈 화면에 BMS Radar를 추가하세요.",
                 btnInstall: "설치하기",
@@ -1070,7 +1116,7 @@
             ru: {
                 appTitle: "BMS Radar",
                 appsHeader: "📱 Android App",
-                btnApkToggle: "Приложение для Android",
+                btnApkToggle: "Android App",
                 badgeRecommended: "🔥 РЕКОМЕНДУЕМ",
                 ipLabel: "IP адрес контроллера",
                 ipStatusOnline: "В сети (Телеметрия активна)",
@@ -1078,7 +1124,8 @@
                 ipStatusChecking: "Проверка связи...",
                 firstRunTip: "Первый запуск? Следуйте инструкции ниже 👇",
                 btnOpen: "Открыть дашборд",
-                btnSync: "Авто-синхронизация с платой",
+                btnSync: "Найти контроллер",
+                btnSyncSub: "Автопоиск IP-адреса",
                 btnManual: "Ввести IP вручную",
                 btnSaveIp: "Сохранить",
                 autoText: "<b>Контроллер работает полностью автономно.</b> Телефон используется только для мониторинга и настройки.",
@@ -1089,6 +1136,7 @@
                 apkDesc: "Android приложение с плавающим HUD виджетом:",
                 apkF2: "<b>Мгновенное автоподключение к точке доступа смартфона</b><br><span style=\"color: #a1a1aa; font-size: 11.5px;\">Приложение само находит контроллер — без поиска IP и ручных настроек.</span>",
                 btnDownloadApk: "Скачать APK",
+                apkInstallHint: "После загрузки откройте файл из шторки уведомлений для установки",
                 installTitleAndroid: "📲 Установить приложение",
                 installDescAndroid: "Добавьте BMS Radar на главный экран для быстрого доступа.",
                 btnInstall: "Установить",
@@ -1102,11 +1150,11 @@
                 step1Note: "Включите раздачу заранее, чтобы контроллер подключился к ней сразу при старте.",
                 step2Title: "Подключение к авто и запуск",
                 step2Body: "Вставьте контроллер в <b>OBD2 разъем</b> автомобиля и включите зажигание (режим <b>READY</b>).",
-                step3Title: "Определение IP (Авто-синхронизация)",
+                step3Title: "Определение IP (Автопоиск)",
                 step3Desc: "Подключите Wi-Fi телефона к сети контроллера <code>BMS_Setup</code> (пароль: <code>bmslocal</code>).",
                 step3Tips: "• Выключите <i>«Автоподключение»</i> для BMS_Setup.<br>• При появлении окна <i>«Нет интернета»</i> выберите <b>«Оставаться подключенным»</b>.",
                 step3Action: "Затем нажмите кнопку:",
-                btnGuideSync: "Авто-синхронизация с платой",
+                btnGuideSync: "Найти контроллер (Автопоиск IP)",
                 step3Note: "Контроллер передаст свой IP Радару, выключит сеть BMS_Setup и вернет вас на главный экран с уже сохраненным IP.",
                 step4Title: "Запуск дашборда",
                 step4Body: "После получения IP-адреса нажмите <b>«🚀 Открыть дашборд»</b> выше для перехода к телеметрии.",
@@ -1117,11 +1165,11 @@
                 tr2Q: "📶 Подсказки для сети BMS_Setup:",
                 tr2A: "• Выключите <i>«Автоподключение»</i> для BMS_Setup.<br>• При появлении окна <i>«Нет интернета»</i> выберите <i>«Оставаться подключенным»</i>.",
                 tr3Q: "🟡 Сменился IP адрес?",
-                tr3A: "• Подключитесь к сети <code>BMS_Setup</code> и нажмите <i>«Авто-синхронизация»</i>.<br>• Или посмотрите IP в настройках точки доступа телефона и введите вручную.",
+                tr3A: "• Подключитесь к сети <code>BMS_Setup</code> и нажмите <i>«Найти контроллер»</i>.<br>• Или посмотрите IP в настройках точки доступа телефона и введите вручную.",
                 trAndroidQ: "🤖 Настройка 2.4GHz на телефонах Android:",
                 trAndroidA: "В меню <i>Настройки ➔ Точка доступа Wi-Fi ➔ Настройка точки доступа</i> переключите пункт <b>Диапазон частот (AP Band)</b> на <b>2.4 ГГц</b> (вместо 5 ГГц).",
                 trCustomQ: "⚙️ Как подключить контроллер к своей сети Wi-Fi (своё имя и пароль)?",
-                trCustomA: "1. Выключите раздачу с телефона на 15 сек — контроллер откроет временную сеть <code>BMS_Setup</code> (пароль <code>bmslocal</code>).<br>2. Подключитесь к Wi-Fi <code>BMS_Setup</code>, перейдите на <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> или нажмите <b>«Авто-синхронизация»</b> выше.<br>3. В блоке настроек Wi-Fi введите SSID и пароль вашей точки доступа и сохраните.<br>После сохранения контроллер будет подключаться к вашей сети автоматически!",
+                trCustomA: "1. Выключите раздачу с телефона на 15 сек — контроллер откроет временную сеть <code>BMS_Setup</code> (пароль <code>bmslocal</code>).<br>2. Подключитесь к Wi-Fi <code>BMS_Setup</code>, перейдите на <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a> или нажмите <b>«Найти контроллер»</b> выше.<br>3. В блоке настроек Wi-Fi введите SSID и пароль вашей точки доступа и сохраните.<br>После сохранения контроллер будет подключаться к вашей сети автоматически!",
                 tr4Q: "❓ Сменили телефон или ошиблись в пароле Wi-Fi?",
                 tr4A: "Не переживайте: выключите раздачу на телефоне на 15 секунд. Контроллер не найдет сеть и снова откроет сервисную сеть <code>BMS_Setup</code> (пароль <code>bmslocal</code>), чтобы вы могли ввести новые данные через <a href='http://192.168.4.1' target='_blank' style='color: #4ade80; text-decoration: underline;'>http://192.168.4.1</a>.",
                 toastLinked: "✅ Контроллер привязан: ",
@@ -1129,7 +1177,7 @@
                 toastSetupFirst: "Пожалуйста, выполните подключение по инструкции ниже",
                 btnConnecting: "Подключение...",
                 alertInvalidIp: "Неверный формат IP адреса (пример: 10.48.33.187)",
-                dashUnreachable: "⚠️ <b>Не удается открыть страницу контроллера.</b><br>• Проверьте, что на телефоне включена раздача <code>BMS</code> / <code>bmslocal</code> (2.4GHz).<br>• Убедитесь, что авто в режиме <b>READY</b>.<br>• Или подключитесь к Wi-Fi сети <code>BMS_Setup</code> и нажмите <b>«Авто-синхронизация с платой»</b>.",
+                dashUnreachable: "⚠️ <b>Не удается открыть страницу контроллера.</b><br>• Проверьте, что на телефоне включена раздача <code>BMS</code> / <code>bmslocal</code> (2.4GHz).<br>• Убедитесь, что авто в режиме <b>READY</b>.<br>• Или подключитесь к Wi-Fi сети <code>BMS_Setup</code> и нажмите <b>«Найти контроллер»</b>.",
                 errNoSetupNetwork: "⚠️ Сначала подключитесь к сети BMS_Setup",
                 manualIpHint: "Найдите IP в настройках точки доступа (например: 10.48.33.x)"
             }
@@ -1170,6 +1218,7 @@
             if (document.getElementById('t-first-run-tip')) document.getElementById('t-first-run-tip').innerText = t.firstRunTip;
             if (document.getElementById('t-btn-open')) document.getElementById('t-btn-open').innerText = t.btnOpen;
             if (document.getElementById('t-btn-sync')) document.getElementById('t-btn-sync').innerText = t.btnSync;
+            if (document.getElementById('t-btn-sync-sub') && t.btnSyncSub) document.getElementById('t-btn-sync-sub').innerText = t.btnSyncSub;
             if (document.getElementById('t-btn-manual')) document.getElementById('t-btn-manual').innerText = t.btnManual;
             if (document.getElementById('t-manual-ip-hint')) document.getElementById('t-manual-ip-hint').innerText = t.manualIpHint;
             if (document.getElementById('t-btn-save-ip')) document.getElementById('t-btn-save-ip').innerText = t.btnSaveIp;
@@ -1181,6 +1230,7 @@
             if (document.getElementById('t-apk-desc')) document.getElementById('t-apk-desc').innerText = t.apkDesc;
             if (document.getElementById('t-apk-f2')) document.getElementById('t-apk-f2').innerHTML = t.apkF2;
             if (document.getElementById('t-btn-download-apk')) document.getElementById('t-btn-download-apk').innerText = t.btnDownloadApk;
+            if (document.getElementById('t-apk-install-hint') && t.apkInstallHint) document.getElementById('t-apk-install-hint').innerText = t.apkInstallHint;
 
             if (document.getElementById('t-install-title-android')) document.getElementById('t-install-title-android').innerText = t.installTitleAndroid;
             if (document.getElementById('t-install-desc-android')) document.getElementById('t-install-desc-android').innerText = t.installDescAndroid;
@@ -1233,6 +1283,22 @@
 
         // Apply language as soon as defined
         applyLanguage();
+
+        // Autonomous Card Dismissal
+        function dismissAutoCard(event) {
+            if (event) event.stopPropagation();
+            const card = document.getElementById('auto-card');
+            if (card) card.style.display = 'none';
+            try {
+                localStorage.setItem('bms_autocard_dismissed', '1');
+            } catch (e) {}
+        }
+        try {
+            if (localStorage.getItem('bms_autocard_dismissed') === '1') {
+                const card = document.getElementById('auto-card');
+                if (card) card.style.display = 'none';
+            }
+        } catch (e) {}
 
         // PWA Service Worker Registration
         if ('serviceWorker' in navigator) {
