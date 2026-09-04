@@ -237,21 +237,21 @@
             justify-content: center;
             gap: 8px;
             width: 100%;
-            background: linear-gradient(135deg, #2563eb, #1d4ed8);
-            color: #ffffff;
-            border: 1px solid #3b82f6;
+            background: rgba(34, 197, 94, 0.12);
+            color: #4ade80;
+            border: 1px solid #22c55e;
             border-radius: 12px;
-            padding: 13px 16px;
+            padding: 12px 16px;
             font-size: 15.5px;
             font-weight: 700;
             cursor: pointer;
             min-height: 48px;
-            box-shadow: 0 3px 10px rgba(37, 99, 235, 0.28);
+            box-shadow: 0 2px 10px rgba(34, 197, 94, 0.15);
             transition: transform 0.1s, background 0.2s, box-shadow 0.2s;
         }
         .btn-primary:active {
             transform: scale(0.98);
-            background: #1e40af;
+            background: rgba(34, 197, 94, 0.22);
         }
 
         .btn-sync {
@@ -283,10 +283,12 @@
             background: #27272a;
             color: #e4e4e7;
             border: 1px solid #3f3f46;
-            border-radius: 10px;
-            padding: 11px;
-            font-size: 13.5px;
-            font-weight: 500;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            min-height: 48px;
+            box-sizing: border-box;
             cursor: pointer;
             margin-top: 10px;
             transition: 0.2s;
@@ -594,6 +596,28 @@
             white-space: nowrap;
             flex-shrink: 0;
         }
+        .ip-unreachable-hint {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: rgba(245, 158, 11, 0.12);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            color: #fde68a;
+            border-radius: 10px;
+            padding: 9px 12px;
+            font-size: 12px;
+            line-height: 1.4;
+            margin-top: 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+        .ip-unreachable-hint:hover {
+            background: rgba(245, 158, 11, 0.2);
+            border-color: #fbbf24;
+            color: #ffffff;
+        }
         .notify-toast {
             background: rgba(34, 197, 94, 0.15);
             border: 1px solid #22c55e;
@@ -646,33 +670,17 @@
 
             <button id="btn-open" class="btn-primary" onclick="openDashboard()">
                 <span id="open-btn-icon">🚀</span>
-                <span id="t-btn-open">Open Dashboard</span>
+                <span id="t-btn-open">Панель мониторинга</span>
             </button>
 
-            <button id="btn-sync-board" class="btn-sync" onclick="syncWithBoard()">
-                <span id="sync-btn-icon" style="font-size: 18px; flex-shrink: 0;">📡</span>
-                <div style="display: flex; flex-direction: column; align-items: flex-start; text-align: left; line-height: 1.2;">
-                    <span id="t-btn-sync" style="font-size: 15px; font-weight: 700;">Найти контроллер</span>
-                    <span id="t-btn-sync-sub" style="font-size: 11.5px; color: #93c5fd; font-weight: 500; margin-top: 2px;">Автопоиск IP-адреса</span>
-                </div>
-            </button>
-
-            <button class="btn-ghost" onclick="toggleEditIp()">
-                <span>✏️</span>
-                <span id="t-btn-manual">Set IP Manually</span>
-            </button>
-
-            <!-- Edit IP row -->
-            <div id="edit-row" class="edit-row" style='flex-direction: column;'>
-                <div style='display: flex; width: 100%; gap: 8px;'>
-                    <input type="text" id="manual-ip" class="input-ip" placeholder="10.48.33.187" inputmode="decimal" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="15">
-                    <button class="btn-save-ip" id="t-btn-save-ip" onclick="saveManualIp()">Save</button>
-                </div>
-                <div class="sync-hint" id="t-manual-ip-hint" style='text-align: left; margin-top: 2px;'>Find IP in Hotspot settings (e.g. 10.48.33.x)</div>
+            <!-- IP Unreachable Hint (shows if user clicks dashboard but board IP is changed/unreachable) -->
+            <div id="ip-unreachable-hint" class="ip-unreachable-hint" onclick="openAndScrollToStep3()" style="display: none;">
+                <span style="font-size: 16px;">💡</span>
+                <span id="t-ip-unreachable-text">Не открывается? Возможно, сменился IP-адрес. Нажмите сюда для автопоиска 👇</span>
             </div>
 
             <!-- Android App Collapsible Button (shown on Android / Desktop) -->
-            <button type="button" id="btn-toggle-apk" class="btn-secondary" onclick="toggleApkDetails()" style="display: none; justify-content: space-between; padding: 11px 14px; border-color: rgba(245, 158, 11, 0.45); background: rgba(245, 158, 11, 0.08); margin-top: 10px;">
+            <button type="button" id="btn-toggle-apk" class="btn-secondary" onclick="toggleApkDetails()" style="display: none; justify-content: space-between; padding: 12px 14px; border-color: rgba(245, 158, 11, 0.45); background: rgba(245, 158, 11, 0.08); margin-top: 12px;">
                 <div style="display: flex; align-items: center; gap: 6px; font-weight: 600; color: #fde68a; white-space: nowrap;">
                     <span>🤖</span>
                     <span id="t-btn-apk-toggle">Android App</span>
@@ -742,7 +750,7 @@
                         </div>
                     </div>
 
-                    <div class="guide-step">
+                    <div class="guide-step" id="guide-step-3">
                         <div class="step-header">
                             <span class="step-num">3</span>
                             <span class="step-title" id="t-step3-title">IP Discovery (Auto-Sync)</span>
@@ -753,12 +761,34 @@
                                 • Turn <b>OFF</b> «Auto-reconnect» for BMS_Setup.<br>
                                 • If prompted «No internet access», select «Stay connected».
                             </div>
-                            <div id="t-step3-action" style="margin-top: 8px; font-size: 12px; color: #a1a1aa;">Then tap the button:</div>
-                            <button type="button" class="btn-sync" id="btn-guide-sync" onclick="syncWithBoard()" style="margin-top: 8px; margin-bottom: 8px; padding: 12px 14px; font-size: 13.5px; width: 100%;">
-                                <span id="guide-sync-icon">📡</span>
-                                <span id="t-btn-guide-sync">Auto-Sync with Controller</span>
+
+                            <!-- Option A: Auto-Sync Button -->
+                            <button type="button" class="btn-sync" id="btn-guide-sync" onclick="syncWithBoard()" style="margin-top: 10px; margin-bottom: 6px; width: 100%;">
+                                <span id="guide-sync-icon" style="font-size: 18px;">📡</span>
+                                <div style="display: flex; flex-direction: column; align-items: flex-start; text-align: left; line-height: 1.2;">
+                                    <span id="t-btn-sync" style="font-size: 14.5px; font-weight: 700;">Найти контроллер</span>
+                                    <span id="t-btn-sync-sub" style="font-size: 11px; color: #93c5fd; font-weight: 500; margin-top: 2px;">Автопоиск IP-адреса</span>
+                                </div>
                             </button>
                             <div class="option-note" id="t-step3-note">The controller will send its IP to BMS Radar, disable BMS_Setup, and redirect you back with IP saved.</div>
+
+                            <!-- Option B: Manual IP Input in Step 3 -->
+                            <div style="margin-top: 12px; border-top: 1px dashed #3f3f46; padding-top: 10px;">
+                                <div style="display: flex; align-items: center; justify-content: space-between;">
+                                    <span style="font-size: 12px; color: #a1a1aa;" id="t-step3-or">Или укажите IP вручную:</span>
+                                    <button type="button" class="btn-ghost" onclick="toggleEditIp()" style="width: auto; padding: 4px 10px; margin: 0; font-size: 11.5px;">
+                                        <span>✏️</span>
+                                        <span id="t-btn-manual">Ввести IP вручную</span>
+                                    </button>
+                                </div>
+                                <div id="edit-row" class="edit-row" style="flex-direction: column; margin-top: 8px;">
+                                    <div style="display: flex; width: 100%; gap: 8px;">
+                                        <input type="text" id="manual-ip" class="input-ip" placeholder="10.48.33.187" inputmode="decimal" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="15">
+                                        <button class="btn-save-ip" id="t-btn-save-ip" onclick="saveManualIp()">Save</button>
+                                    </div>
+                                    <div class="sync-hint" id="t-manual-ip-hint" style="text-align: left; margin-top: 4px;">Find IP in Hotspot settings (e.g. 10.48.33.x)</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -872,10 +902,12 @@
                 ipStatusOffline: "Offline / Standby",
                 ipStatusChecking: "Checking status...",
                 firstRunTip: "First time setup? Follow the steps in the guide below 👇",
-                btnOpen: "Open Dashboard",
+                btnOpen: "Dashboard & Telemetry",
+                ipUnreachableText: "Page not opening? IP address might have changed. Tap here to find controller 👇",
                 btnSync: "Find Controller",
                 btnSyncSub: "Auto-detect IP address",
                 btnManual: "Set IP Manually",
+                step3Or: "Or enter controller IP manually:",
                 btnSaveIp: "Save",
                 autoText: "<b>Controller operates fully autonomously.</b> Phone is used only for monitoring and settings.",
                 guideTitle: "📖 Setup & Help Guide",
@@ -940,10 +972,12 @@
                 ipStatusOffline: "离线 / 待机",
                 ipStatusChecking: "检查状态中...",
                 firstRunTip: "首次使用？请先按照下方指南操作 👇",
-                btnOpen: "打开仪表板",
+                btnOpen: "监控控制台",
+                ipUnreachableText: "无法打开？可能是 IP 地址已变更。点击此处查找控制器 👇",
                 btnSync: "查找控制器",
                 btnSyncSub: "自动检测 IP 地址",
                 btnManual: "手动设置 IP",
+                step3Or: "或手动输入控制器 IP：",
                 btnSaveIp: "保存",
                 autoText: "<b>控制器完全自主运行。</b> 手机仅用于监控与设置。",
                 guideTitle: "📖 设置与帮助指南",
@@ -1008,10 +1042,12 @@
                 ipStatusOffline: "오프라인 / 대기",
                 ipStatusChecking: "상태 확인 중...",
                 firstRunTip: "처음이신가요? 아래 가이드에 따라 설정하세요 👇",
-                btnOpen: "대시보드 열기",
+                btnOpen: "모니터링 대시보드",
+                ipUnreachableText: "열리지 않나요? IP 주소가 변경되었을 수 있습니다. 컨트롤러 찾기 클릭 👇",
                 btnSync: "컨트롤러 찾기",
                 btnSyncSub: "IP 주소 자동 검색",
                 btnManual: "수동으로 IP 입력",
+                step3Or: "또는 수동으로 IP 입력:",
                 btnSaveIp: "저장",
                 autoText: "<b>컨트롤러는 완전 자율 작동합니다.</b> 스마트폰은 모니터링 및 설정에만 사용됩니다.",
                 guideTitle: "📖 연결 및 도움말 가이드",
@@ -1076,10 +1112,12 @@
                 ipStatusOffline: "Не в сети / Ожидание",
                 ipStatusChecking: "Проверка связи...",
                 firstRunTip: "Первый запуск? Следуйте инструкции ниже 👇",
-                btnOpen: "Открыть дашборд",
+                btnOpen: "Панель мониторинга",
+                ipUnreachableText: "Не открывается? Возможно, сменился IP-адрес. Нажмите сюда для автопоиска 👇",
                 btnSync: "Найти контроллер",
                 btnSyncSub: "Автопоиск IP-адреса",
                 btnManual: "Ввести IP вручную",
+                step3Or: "Или укажите IP вручную:",
                 btnSaveIp: "Сохранить",
                 autoText: "<b>Контроллер работает полностью автономно.</b> Телефон используется только для мониторинга и настройки.",
                 guideTitle: "📖 Инструкция и помощь",
@@ -1176,6 +1214,7 @@
             if (document.getElementById('t-ip-label')) document.getElementById('t-ip-label').innerText = t.ipLabel;
             if (document.getElementById('t-first-run-tip')) document.getElementById('t-first-run-tip').innerText = t.firstRunTip;
             if (document.getElementById('t-btn-open')) document.getElementById('t-btn-open').innerText = t.btnOpen;
+            if (document.getElementById('t-ip-unreachable-text') && t.ipUnreachableText) document.getElementById('t-ip-unreachable-text').innerText = t.ipUnreachableText;
             if (document.getElementById('t-btn-sync')) document.getElementById('t-btn-sync').innerText = t.btnSync;
             if (document.getElementById('t-btn-sync-sub') && t.btnSyncSub) document.getElementById('t-btn-sync-sub').innerText = t.btnSyncSub;
             if (document.getElementById('t-btn-manual')) document.getElementById('t-btn-manual').innerText = t.btnManual;
@@ -1184,6 +1223,7 @@
             if (document.getElementById('t-guide-title')) document.getElementById('t-guide-title').innerText = t.guideTitle;
             if (document.getElementById('tab-btn-setup')) document.getElementById('tab-btn-setup').innerText = t.tabSetup;
             if (document.getElementById('tab-btn-trouble')) document.getElementById('tab-btn-trouble').innerText = t.tabTrouble;
+            if (document.getElementById('t-step3-or') && t.step3Or) document.getElementById('t-step3-or').innerText = t.step3Or;
 
             if (document.getElementById('t-apk-title')) document.getElementById('t-apk-title').innerText = t.apkTitle;
             if (document.getElementById('t-apk-desc')) document.getElementById('t-apk-desc').innerText = t.apkDesc;
@@ -1394,6 +1434,20 @@
             }
         }
 
+        function openAndScrollToStep3() {
+            const content = document.getElementById('help-content');
+            const arrow = document.getElementById('help-arrow');
+            const step3El = document.getElementById('guide-step-3');
+            if (content) {
+                content.style.display = 'block';
+                if (arrow) arrow.innerText = '▲';
+            }
+            switchGuideTab('setup');
+            if (step3El) {
+                step3El.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
         function openDashboard() {
             if (!currentIp || currentIp === '--') {
                 openAndScrollToGuide();
@@ -1401,6 +1455,15 @@
                 showToast(t.toastSetupFirst);
                 return;
             }
+
+            // Show smart fallback hint after 1.5s in case the page navigation doesn't take over (e.g. board offline/IP changed)
+            const hint = document.getElementById('ip-unreachable-hint');
+            if (hint) {
+                setTimeout(() => {
+                    hint.style.display = 'flex';
+                }, 1200);
+            }
+
             window.location.href = 'http://' + currentIp + '/';
         }
 
