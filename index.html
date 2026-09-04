@@ -579,25 +579,32 @@
             display: none;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            background: rgba(59, 130, 246, 0.12);
-            border: 1px solid rgba(59, 130, 246, 0.35);
-            color: #93c5fd;
+            gap: 10px;
+            background: #ffffff;
+            color: #09090b;
+            border: 1px solid #ffffff;
             border-radius: 12px;
-            padding: 11px 14px;
-            font-size: 13px;
-            font-weight: 500;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-weight: 700;
             margin-bottom: 14px;
             cursor: pointer;
             text-align: center;
-            line-height: 1.4;
-            min-height: 44px;
-            transition: all 0.2s ease;
+            line-height: 1.35;
+            min-height: 48px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), 0 0 20px rgba(255, 255, 255, 0.12);
+            transition: transform 0.15s ease, background 0.2s ease, box-shadow 0.2s ease;
+            box-sizing: border-box;
+            width: 100%;
         }
         .first-run-tip:hover {
-            background: rgba(59, 130, 246, 0.22);
-            border-color: #60a5fa;
-            color: #ffffff;
+            background: #f4f4f5;
+            color: #000000;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4), 0 0 24px rgba(255, 255, 255, 0.18);
+        }
+        .first-run-tip:active {
+            transform: scale(0.98);
+            background: #e4e4e7;
         }
         .sync-hint {
             font-size: 11.5px;
@@ -690,8 +697,8 @@
             <div class="ip-label" id="t-ip-label">Controller IP Address</div>
             <div id="display-ip" class="ip-value">--</div>
             <div id="first-run-tip" class="first-run-tip" onclick="openAndScrollToGuide()">
-                <span>📖</span>
-                <span id="t-first-run-tip">First time setup? Follow the steps in the guide below 👇</span>
+                <span style="font-size: 16px; line-height: 1;">📖</span>
+                <span id="t-first-run-tip">First-time setup: follow the guide below 👇</span>
             </div>
 
             <button id="btn-open" class="btn-primary" onclick="openDashboard()">
@@ -937,7 +944,7 @@
                 ipStatusOnline: "Online (Telemetry Active)",
                 ipStatusOffline: "Offline / Standby",
                 ipStatusChecking: "Checking status...",
-                firstRunTip: "First time setup? Follow the steps in the guide below 👇",
+                firstRunTip: "First-time setup: follow the guide below 👇",
                 btnOpen: "BMS Monitor",
                 ipUnreachableText: "Page not opening? IP address might have changed. Tap here to find controller 👇",
                 btnSync: "Find Controller",
@@ -1009,7 +1016,7 @@
                 ipStatusOnline: "在线 (遥测正常)",
                 ipStatusOffline: "离线 / 待机",
                 ipStatusChecking: "检查状态中...",
-                firstRunTip: "首次使用？请先按照下方指南操作 👇",
+                firstRunTip: "首次设置：请按照下方指南操作 👇",
                 btnOpen: "BMS Monitor",
                 ipUnreachableText: "无法打开？可能是 IP 地址已变更。点击此处查找控制器 👇",
                 btnSync: "查找控制器",
@@ -1081,7 +1088,7 @@
                 ipStatusOnline: "온라인 (원격 제어 활성)",
                 ipStatusOffline: "오프라인 / 대기",
                 ipStatusChecking: "상태 확인 중...",
-                firstRunTip: "처음이신가요? 아래 가이드에 따라 설정하세요 👇",
+                firstRunTip: "최초 설정: 아래 가이드에 따라 진행하세요 👇",
                 btnOpen: "BMS Monitor",
                 ipUnreachableText: "열리지 않나요? IP 주소가 변경되었을 수 있습니다. 컨트롤러 찾기 클릭 👇",
                 btnSync: "컨트롤러 찾기",
@@ -1153,7 +1160,7 @@
                 ipStatusOnline: "В сети (Телеметрия активна)",
                 ipStatusOffline: "Не в сети / Ожидание",
                 ipStatusChecking: "Проверка связи...",
-                firstRunTip: "Первый запуск? Следуйте инструкции ниже 👇",
+                firstRunTip: "Первый запуск: следуйте инструкции ниже 👇",
                 btnOpen: "BMS Monitor",
                 ipUnreachableText: "Не открывается? Возможно, сменился IP-адрес. Нажмите сюда для автопоиска 👇",
                 btnSync: "Найти контроллер",
