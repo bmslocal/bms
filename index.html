@@ -832,21 +832,21 @@
                         </div>
                     </button>
                     <div class="option-note" id="t-step3-note">The controller will send its IP to Live Radar, disable LiveMonitor_Setup, and redirect you back with IP saved.</div>
+                </div>
+            </div>
 
-                    <!-- Option B: Manual IP Input in Step 3 -->
-                    <div style="margin-top: 12px; border-top: 1px dashed #3f3f46; padding-top: 12px;">
-                        <div style="font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 4px;" id="t-step3-advanced-title">Для продвинутых пользователей</div>
-                        <div style="font-size: 12px; color: #a1a1aa; margin-bottom: 8px; line-height: 1.4;" id="t-step3-advanced-desc">Где взять IP-адрес? В настройках точки доступа телефона перейдите в раздел «Подключенные устройства». Нажмите «Ввести IP вручную» и сохраните его.</div>
-                        <button type="button" class="btn-ghost" onclick="toggleEditIp()" style="width: 100%; padding: 8px 10px; margin: 0; font-size: 13px; justify-content: center; background: rgba(255, 255, 255, 0.03);">
-                            <span>✏️</span>
-                            <span id="t-btn-manual">Ввести IP вручную</span>
-                        </button>
-                        <div id="edit-row" class="edit-row" style="flex-direction: column; margin-top: 8px;">
-                            <div style="display: flex; width: 100%; gap: 8px;">
-                                <input type="text" id="manual-ip" class="input-ip" placeholder="10.48.33.187" inputmode="decimal" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="15">
-                                <button class="btn-save-ip" id="t-btn-save-ip" onclick="saveManualIp()">Save</button>
-                            </div>
-                        </div>
+            <!-- Option B: Manual IP Input in Step 3 -->
+            <div class="guide-step">
+                <div style="font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 8px;" id="t-step3-advanced-title">Для продвинутых пользователей</div>
+                <div style="font-size: 12px; color: #a1a1aa; margin-bottom: 12px; line-height: 1.4;" id="t-step3-advanced-desc">Где взять IP-адрес? В настройках точки доступа телефона перейдите в раздел «Подключенные устройства». Нажмите «Ввести IP вручную» и сохраните его.</div>
+                <button type="button" class="btn-ghost" onclick="toggleEditIp()" style="width: 100%; padding: 8px 10px; margin: 0; font-size: 13px; justify-content: center; background: rgba(255, 255, 255, 0.03);">
+                    <span>✏️</span>
+                    <span id="t-btn-manual">Ввести IP вручную</span>
+                </button>
+                <div id="edit-row" class="edit-row" style="flex-direction: column; margin-top: 8px;">
+                    <div style="display: flex; width: 100%; gap: 8px;">
+                        <input type="text" id="manual-ip" class="input-ip" placeholder="10.48.33.187" inputmode="decimal" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="15">
+                        <button class="btn-save-ip" id="t-btn-save-ip" onclick="saveManualIp()">Save</button>
                     </div>
                 </div>
             </div>
