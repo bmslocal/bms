@@ -634,17 +634,26 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            background: rgba(245, 158, 11, 0.12);
-            border: 1px solid rgba(245, 158, 11, 0.4);
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid #fbbf24;
             color: #fde68a;
-            border-radius: 10px;
-            padding: 9px 12px;
-            font-size: 12px;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 13px;
             line-height: 1.4;
-            margin-top: 10px;
             cursor: pointer;
             text-align: center;
             transition: all 0.2s ease;
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
         .ip-unreachable-hint:hover {
             background: rgba(245, 158, 11, 0.2);
@@ -658,10 +667,19 @@
             padding: 12px;
             border-radius: 10px;
             font-size: 13.5px;
-            margin-bottom: 16px;
             display: none;
             text-align: center;
             font-weight: 500;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
     </style>
 </head>
@@ -719,7 +737,7 @@
             <!-- IP Unreachable Hint (shows if user clicks dashboard but board IP is changed/unreachable) -->
             <div id="ip-unreachable-hint" class="ip-unreachable-hint" onclick="openAndScrollToStep3()" style="display: none;">
                 <span style="font-size: 16px;">💡</span>
-                <span id="t-ip-unreachable-text">Не открывается? Возможно, сменился IP-адрес. Нажмите сюда для автопоиска 👇</span>
+                <span id="t-ip-unreachable-text">Не открывается? Возможно, сменился IP-адрес. Нажмите сюда для автопоиска</span>
             </div>
 
             <!-- Android App Collapsible Button (shown on Android / Desktop) -->
@@ -831,13 +849,10 @@
                     <div style="margin-top: 12px; border-top: 1px dashed #3f3f46; padding-top: 12px;">
                         <div style="font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 4px;" id="t-step3-advanced-title">Для продвинутых пользователей</div>
                         <div style="font-size: 12px; color: #a1a1aa; margin-bottom: 8px; line-height: 1.4;" id="t-step3-advanced-desc">Где взять IP-адрес? В настройках точки доступа телефона перейдите в раздел «Подключенные устройства». Нажмите «Ввести IP вручную» и сохраните его.</div>
-                        <div style="display: flex; align-items: center; justify-content: space-between;">
-                            <span style="font-size: 12px; color: #a1a1aa;" id="t-step3-or">Или укажите IP вручную:</span>
-                            <button type="button" class="btn-ghost" onclick="toggleEditIp()" style="width: auto; padding: 4px 10px; margin: 0; font-size: 11.5px;">
-                                <span>✏️</span>
-                                <span id="t-btn-manual">Ввести IP вручную</span>
-                            </button>
-                        </div>
+                        <button type="button" class="btn-ghost" onclick="toggleEditIp()" style="width: 100%; padding: 8px 10px; margin: 0; font-size: 13px; justify-content: center; background: rgba(255, 255, 255, 0.03);">
+                            <span>✏️</span>
+                            <span id="t-btn-manual">Ввести IP вручную</span>
+                        </button>
                         <div id="edit-row" class="edit-row" style="flex-direction: column; margin-top: 8px;">
                             <div style="display: flex; width: 100%; gap: 8px;">
                                 <input type="text" id="manual-ip" class="input-ip" placeholder="10.48.33.187" inputmode="decimal" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="15">
@@ -963,7 +978,7 @@
                 ipStatusChecking: "Checking status...",
                 firstRunTip: "First-time setup: follow the guide below 👇",
                 btnOpen: "Live Monitor",
-                ipUnreachableText: "Page not opening? IP address might have changed. Tap here to find controller 👇",
+                ipUnreachableText: "Page not opening? IP address might have changed. Tap here to find controller",
                 btnSync: "Find Controller",
                 btnSyncSub: "Auto-detect IP address",
                 btnManual: "Set IP Manually",
@@ -1038,7 +1053,7 @@
                 ipStatusChecking: "检查状态中...",
                 firstRunTip: "首次设置：请按照下方指南操作 👇",
                 btnOpen: "Live Monitor",
-                ipUnreachableText: "无法打开？可能是 IP 地址已变更。点击此处查找控制器 👇",
+                ipUnreachableText: "无法打开？可能是 IP 地址已变更。点击此处查找控制器",
                 btnSync: "查找控制器",
                 btnSyncSub: "自动检测 IP 地址",
                 btnManual: "手动设置 IP",
@@ -1113,7 +1128,7 @@
                 ipStatusChecking: "상태 확인 중...",
                 firstRunTip: "최초 설정: 아래 가이드에 따라 진행하세요 👇",
                 btnOpen: "Live Monitor",
-                ipUnreachableText: "열리지 않나요? IP 주소가 변경되었을 수 있습니다. 컨트롤러 찾기 클릭 👇",
+                ipUnreachableText: "열리지 않나요? IP 주소가 변경되었을 수 있습니다. 컨트롤러 찾기 클릭",
                 btnSync: "컨트롤러 찾기",
                 btnSyncSub: "IP 주소 자동 검색",
                 btnManual: "수동으로 IP 입력",
@@ -1188,7 +1203,7 @@
                 ipStatusChecking: "Проверка связи...",
                 firstRunTip: "Первый запуск: следуйте инструкции ниже 👇",
                 btnOpen: "Live Monitor",
-                ipUnreachableText: "Не открывается? Возможно, сменился IP-адрес. Нажмите сюда для автопоиска 👇",
+                ipUnreachableText: "Не открывается? Возможно, сменился IP-адрес. Нажмите сюда для автопоиска",
                 btnSync: "Найти контроллер",
                 btnSyncSub: "Автопоиск IP-адреса",
                 btnManual: "Ввести IP вручную",
@@ -1555,12 +1570,12 @@
             const firstRunTip = document.getElementById('first-run-tip');
             if (firstRunTip) firstRunTip.style.display = 'none';
 
-            // Show smart fallback hint after 1.5s in case the page navigation doesn't take over (e.g. board offline/IP changed)
+            // Show smart fallback hint after 2.5s in case the page navigation doesn't take over (e.g. board offline/IP changed)
             const hint = document.getElementById('ip-unreachable-hint');
             if (hint) {
                 setTimeout(() => {
                     hint.style.display = 'flex';
-                }, 1200);
+                }, 2500);
             }
 
             window.location.href = 'http://' + currentIp + '/';
