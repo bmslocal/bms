@@ -95,8 +95,8 @@
 
         /* Banner install */
         .install-card {
-            background: #18181b;
-            border: 1px solid #27272a;
+            background: transparent;
+            /* border: 1px solid #27272a; */
             border-radius: 12px;
             padding: 14px 16px;
             margin-bottom: 0;
@@ -136,7 +136,7 @@
             background: rgba(2, 132, 199, 0.1);
             border: 1px solid #0284c7;
             border-radius: 12px;
-            padding: 16px;
+            padding: 0;
             margin-bottom: 12px;
             display: none;
             text-align: left;
@@ -208,8 +208,8 @@
 
         /* Main IP Card */
         .card {
-            background: #18181b;
-            border: 1px solid #27272a;
+            background: transparent;
+            /* border: 1px solid #27272a; */
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 16px;
@@ -332,8 +332,8 @@
             margin-bottom: 12px;
         }
         .bento-tile {
-            background: #18181b;
-            border: 1px solid #27272a;
+            background: transparent;
+            /* border: 1px solid #27272a; */
             border-radius: 14px;
             padding: 13px 13px 11px 13px;
             cursor: pointer;
@@ -397,10 +397,10 @@
         /* Bento Content Panels (Expanded beneath tiles) */
         .bento-content {
             display: none;
-            background: #18181b;
-            border: 1px solid #27272a;
+            background: transparent;
+            /* border: 1px solid #27272a; */
             border-radius: 14px;
-            padding: 16px;
+            padding: 0;
             text-align: left;
             margin-bottom: 16px;
             animation: bentoFadeIn 0.2s ease;
@@ -452,7 +452,7 @@
             color: #e4e4e7;
         }
         .step-body code, .trouble-a code {
-            background: #18181b;
+            background: transparent;
             color: #38bdf8;
             padding: 2px 7px;
             border-radius: 5px;
@@ -463,7 +463,7 @@
         }
 
         .option-box {
-            background: #18181b;
+            background: transparent;
             border: 1px solid #2e2e34;
             border-radius: 8px;
             padding: 10px 12px;
@@ -798,7 +798,7 @@
                     <div class="cred-row">
                         <span id="t-step1-net">Network: <code>LiveMonitor</code></span>
                         <span id="t-step1-pwd">Password: <code>livelocal</code></span>
-__TMP_END_DIV__
+                    </div>
                     <div class="option-note" style="color: #f59e0b; margin-top: 4px;" id="t-step1-warn">⚠️ <b>Important:</b> Only supports <b>2.4GHz Wi-Fi</b>. On iPhone, turn ON <i>«Maximize Compatibility»</i>.</div>
                     <div class="option-note" id="t-step1-note">Turn on hotspot first so the controller connects immediately upon startup.</div>
                 </div>
@@ -822,6 +822,7 @@ __TMP_END_DIV__
                 <div class="step-body">
                                         <div class="option-note" id="t-step3-tips" style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 8px; padding: 10px; margin-bottom: 12px; color: #e4e4e7; font-size: 12.5px; line-height: 1.5;"></div>
                     <div id="t-step3-desc">Connect phone Wi-Fi to controller network <code>LiveMonitor_Setup</code> (password: <code>livelocal</code>).</div>
+                    <div id="t-step3-action" style="margin-top: 10px; margin-bottom: 4px; font-weight: 500; font-size: 13.5px; color: #e4e4e7;">Then tap the button:</div>
                     <!-- Option A: Auto-Sync Button -->
                     <button type="button" class="btn-sync" id="btn-guide-sync" onclick="syncWithBoard()" style="margin-top: 10px; margin-bottom: 6px; width: 100%;">
                         <span id="guide-sync-icon" style="font-size: 18px;">📡</span>
@@ -844,9 +845,9 @@ __TMP_END_DIV__
                             <div style="display: flex; width: 100%; gap: 8px;">
                                 <input type="text" id="manual-ip" class="input-ip" placeholder="10.48.33.187" inputmode="decimal" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="15">
                                 <button class="btn-save-ip" id="t-btn-save-ip" onclick="saveManualIp()">Save</button>
-        __TMP_END_DIV__
-    __TMP_END_DIV__
-__TMP_END_DIV__
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
