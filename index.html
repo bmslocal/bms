@@ -798,7 +798,7 @@
                     <div class="cred-row">
                         <span id="t-step1-net">Network: <code>LiveMonitor</code></span>
                         <span id="t-step1-pwd">Password: <code>livelocal</code></span>
-                    </div>
+__TMP_END_DIV__
                     <div class="option-note" style="color: #f59e0b; margin-top: 4px;" id="t-step1-warn">⚠️ <b>Important:</b> Only supports <b>2.4GHz Wi-Fi</b>. On iPhone, turn ON <i>«Maximize Compatibility»</i>.</div>
                     <div class="option-note" id="t-step1-note">Turn on hotspot first so the controller connects immediately upon startup.</div>
                 </div>
@@ -820,11 +820,12 @@
                     <span class="step-title" id="t-step3-title">IP Discovery (Auto-Sync)</span>
                 </div>
                 <div class="step-body">
+                                        <div class="option-note" id="t-step3-tips" style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 8px; padding: 10px; margin-bottom: 12px; color: #e4e4e7; font-size: 12.5px; line-height: 1.5;"></div>
                     <div id="t-step3-desc">Connect phone Wi-Fi to controller network <code>LiveMonitor_Setup</code> (password: <code>livelocal</code>).</div>
-                    <div class="option-note" id="t-step3-tips" style="color: #cbd5e1; margin-top: 6px; font-size: 12px; line-height: 1.5;">
-                        • Turn <b>OFF</b> «Auto-reconnect» for LiveMonitor_Setup.<br>
-                        • If prompted «No internet access», select «Stay connected».
-                    </div>
+                    __TMP_TIPS__
+__TMP_TIPS_1__
+__TMP_TIPS_2__
+__TMP_END_DIV__
 
                     <!-- Option A: Auto-Sync Button -->
                     <button type="button" class="btn-sync" id="btn-guide-sync" onclick="syncWithBoard()" style="margin-top: 10px; margin-bottom: 6px; width: 100%;">
@@ -832,7 +833,7 @@
                         <div style="display: flex; flex-direction: column; align-items: flex-start; text-align: left; line-height: 1.2;">
                             <span id="t-btn-sync" style="font-size: 14.5px; font-weight: 700;">Найти контроллер</span>
                             <span id="t-btn-sync-sub" style="font-size: 11px; color: #93c5fd; font-weight: 500; margin-top: 2px;">Автопоиск IP-адреса</span>
-                        </div>
+    __TMP_END_DIV__
                     </button>
                     <div class="option-note" id="t-step3-note">The controller will send its IP to Live Radar, disable LiveMonitor_Setup, and redirect you back with IP saved.</div>
 
@@ -848,9 +849,9 @@
                             <div style="display: flex; width: 100%; gap: 8px;">
                                 <input type="text" id="manual-ip" class="input-ip" placeholder="10.48.33.187" inputmode="decimal" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="15">
                                 <button class="btn-save-ip" id="t-btn-save-ip" onclick="saveManualIp()">Save</button>
-                            </div>
-                        </div>
-                    </div>
+        __TMP_END_DIV__
+    __TMP_END_DIV__
+__TMP_END_DIV__
                 </div>
             </div>
 
@@ -969,7 +970,7 @@
                 ipStatusChecking: "Checking status...",
                 firstRunTip: "First-time setup: follow the guide below 👇",
                 btnOpen: "Live Monitor",
-                ipUnreachableText: "Page not opening? IP address might have changed. Tap here to find controller",
+                ipUnreachableText: "No connection. Turn on Mobile Hotspot. If it's already on, tap here to find IP.",
                 btnSync: "Find Controller",
                 btnSyncSub: "Auto-detect IP address",
                 btnManual: "Set IP Manually",
@@ -1004,7 +1005,7 @@
                 step2Body: "Insert the controller into your vehicle's <b>OBD2 port</b> (under the steering wheel) and power on the car (<b>READY</b> mode).",
                 step3Title: "IP Discovery (Auto-Sync)",
                 step3Desc: "Connect phone Wi-Fi to controller network <code>LiveMonitor_Setup</code> (password: <code>livelocal</code>).",
-                step3Tips: "• Turn <b>OFF</b> «Auto-reconnect» for LiveMonitor_Setup.<br>• If prompted «No internet access», select «Stay connected».",
+                step3Tips: "<b style='color: #fde68a;'>⚠️ IMPORTANT before connecting:</b><ul style='margin-top: 6px; margin-bottom: 0; padding-left: 20px;'><li>Turn <b>OFF</b> «Auto-reconnect».</li><li>If prompted «No internet access», select <b>«Stay connected»</b>.</li></ul>",
                 step3Action: "Then tap the button:",
                 btnGuideSync: "Auto-Sync with Controller",
                 step3Note: "The controller will send its IP to Live Radar, disable LiveMonitor_Setup, and redirect you back with IP saved.",
@@ -1044,7 +1045,7 @@
                 ipStatusChecking: "检查状态中...",
                 firstRunTip: "首次设置：请按照下方指南操作 👇",
                 btnOpen: "Live Monitor",
-                ipUnreachableText: "无法打开？可能是 IP 地址已变更。点击此处查找控制器",
+                ipUnreachableText: "无法连接。请开启手机热点。如果已开启，请点击此处查找新 IP。",
                 btnSync: "查找控制器",
                 btnSyncSub: "自动检测 IP 地址",
                 btnManual: "手动设置 IP",
@@ -1079,7 +1080,7 @@
                 step2Body: "将控制器插入车辆方向盘下方的 <b>OBD2 接口</b>，并将车辆启动至 <b>READY</b>模式。",
                 step3Title: "IP 检测（自动同步）",
                 step3Desc: "手机 Wi-Fi 连接到控制器热点 <code>LiveMonitor_Setup</code>（密码：<code>livelocal</code>）。",
-                step3Tips: "• 请<b>关闭</b> LiveMonitor_Setup 网络的“自动连接”。<br>• 若系统提示“无法连接互联网”，请选择“保持连接”。",
+                step3Tips: "<b style='color: #fde68a;'>⚠️ 连接前重要提示：</b><ul style='margin-top: 6px; margin-bottom: 0; padding-left: 20px;'><li>关闭 <b>“自动连接”</b>。</li><li>如果提示“无网络”，请选择 <b>“保持连接”</b>。</li></ul>",
                 step3Action: "然后点击下方按钮：",
                 btnGuideSync: "与控制器自动同步",
                 step3Note: "控制器将自动将 IP 发送给雷达，关闭临时热点，并带您返回主屏（已保存 IP）。",
@@ -1119,7 +1120,7 @@
                 ipStatusChecking: "상태 확인 중...",
                 firstRunTip: "최초 설정: 아래 가이드에 따라 진행하세요 👇",
                 btnOpen: "Live Monitor",
-                ipUnreachableText: "열리지 않나요? IP 주소가 변경되었을 수 있습니다. 컨트롤러 찾기 클릭",
+                ipUnreachableText: "연결 없음. 모바일 핫스팟을 켜세요. 켜져 있다면 여기를 눌러 IP를 찾으세요.",
                 btnSync: "컨트롤러 찾기",
                 btnSyncSub: "IP 주소 자동 검색",
                 btnManual: "수동으로 IP 입력",
@@ -1154,7 +1155,7 @@
                 step2Body: "컨트롤러를 운전대 아래 <b>OBD2 단자</b>에 연결하고 차량 전원을 켜세요 (<b>READY</b> 모드).",
                 step3Title: "IP 확인 (자동 동기화)",
                 step3Desc: "스마트폰 Wi-Fi를 컨트롤러 네트워크 <code>LiveMonitor_Setup</code> (비밀번호: <code>livelocal</code>)에 연결하세요.",
-                step3Tips: "• LiveMonitor_Setup의 <i>«자동 다시 연결»</i>을 꺼주세요.<br>• <i>«인터넷 없음»</i> 알림 창이 뜨면 <b>«연결 유지»</b>를 선택하세요.",
+                step3Tips: "<b style='color: #fde68a;'>⚠️ 연결 전 중요 사항:</b><ul style='margin-top: 6px; margin-bottom: 0; padding-left: 20px;'><li><b>«자동 연결»</b>을 끕니다.</li><li>«인터넷 없음» 팝업 시 <b>«연결 유지»</b>를 선택합니다.</li></ul>",
                 step3Action: "그런 다음 아래 버튼을 누르세요:",
                 btnGuideSync: "컨트롤러와 자동 동기화",
                 step3Note: "컨트롤러가 Live Radar로 IP 주소를 전송하고 LiveMonitor_Setup을 끈 후 IP가 저장된 상태로 돌아옵니다.",
@@ -1194,7 +1195,7 @@
                 ipStatusChecking: "Проверка связи...",
                 firstRunTip: "Первый запуск: следуйте инструкции ниже 👇",
                 btnOpen: "Live Monitor",
-                ipUnreachableText: "Не открывается? Возможно, сменился IP-адрес. Нажмите сюда для автопоиска",
+                ipUnreachableText: "Нет связи. Включите Точку доступа. Если она включена — нажмите сюда для поиска IP.",
                 btnSync: "Найти контроллер",
                 btnSyncSub: "Автопоиск IP-адреса",
                 btnManual: "Ввести IP вручную",
@@ -1229,7 +1230,7 @@
                 step2Body: "Вставьте контроллер в <b>OBD2 разъем</b> автомобиля и включите зажигание (режим <b>READY</b>).",
                 step3Title: "Определение IP (Автопоиск)",
                 step3Desc: "Подключите Wi-Fi телефона к сети контроллера <code>LiveMonitor_Setup</code> (пароль: <code>livelocal</code>).",
-                step3Tips: "• Выключите <i>«Автоподключение»</i> для LiveMonitor_Setup.<br>• При появлении окна <i>«Нет интернета»</i> выберите <b>«Оставаться подключенным»</b>.",
+                step3Tips: "<b style='color: #fde68a;'>⚠️ ВАЖНО перед подключением:</b><ul style='margin-top: 6px; margin-bottom: 0; padding-left: 20px;'><li>Выключите <b>«Автоподключение»</b>.</li><li>При окне «Нет интернета» выберите <b>«Оставаться подключенным»</b>.</li></ul>",
                 step3Action: "Затем нажмите кнопку:",
                 btnGuideSync: "Найти контроллер (Автопоиск IP)",
                 step3Note: "Контроллер передаст свой IP Радару, выключит сеть LiveMonitor_Setup и вернет вас на главный экран с уже сохраненным IP.",
@@ -1550,7 +1551,7 @@
             }
         }
 
-        function openDashboard() {
+        async function openDashboard() {
             if (!currentIp || currentIp === '--') {
                 openAndScrollToGuide();
                 const t = I18N[currentLang] || I18N.en;
@@ -1561,15 +1562,37 @@
             const firstRunTip = document.getElementById('first-run-tip');
             if (firstRunTip) firstRunTip.style.display = 'none';
 
-            // Show smart fallback hint after 2.5s in case the page navigation doesn't take over (e.g. board offline/IP changed)
             const hint = document.getElementById('ip-unreachable-hint');
-            if (hint) {
-                setTimeout(() => {
-                    hint.style.display = 'flex';
-                }, 2500);
-            }
+            if (hint) hint.style.display = 'none';
 
-            window.location.href = 'http://' + currentIp + '/';
+            const btnOpen = document.getElementById('btn-open');
+            const originalOpacity = btnOpen.style.opacity;
+            btnOpen.style.opacity = '0.5';
+            btnOpen.style.pointerEvents = 'none';
+
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 2000);
+                
+                await fetch('http://' + currentIp + '/', { mode: 'no-cors', signal: controller.signal });
+                clearTimeout(timeoutId);
+                
+                window.location.href = 'http://' + currentIp + '/';
+                setTimeout(() => {
+                    if(btnOpen) {
+                        btnOpen.style.opacity = originalOpacity;
+                        btnOpen.style.pointerEvents = 'auto';
+                    }
+                }, 1000);
+            } catch (e) {
+                if(btnOpen) {
+                    btnOpen.style.opacity = originalOpacity;
+                    btnOpen.style.pointerEvents = 'auto';
+                }
+                if (hint) {
+                    hint.style.display = 'flex';
+                }
+            }
         }
 
         function syncWithBoard() {
