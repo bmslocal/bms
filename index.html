@@ -794,13 +794,16 @@
                     <span class="step-title" id="t-step1-title">Turn ON Phone Hotspot</span>
                 </div>
                 <div class="step-body">
-                    <div id="t-step1-desc">Enable <b>Personal Hotspot</b> on your phone with the following credentials:</div>
-                    <div class="cred-row">
-                        <span id="t-step1-net">Network: <code>Bms</code></span>
-                        <span id="t-step1-pwd">Password: <code>bmslocal</code></span>
+                    <div style="border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 8px; margin-bottom: 12px; overflow: hidden;">
+                        <div style="padding: 10px 10px 4px 10px;">
+                            <div id="t-step1-desc">Enable <b>Personal Hotspot</b> on your phone with the following credentials:</div>
+                            <div class="cred-row" style="margin-bottom: 0;">
+                                <span id="t-step1-net">Network: <code>Bms</code></span>
+                                <span id="t-step1-pwd">Password: <code>bmslocal</code></span>
+                            </div>
+                        </div>
+                        <div class="option-note" id="t-step1-warn" style="background: rgba(245, 158, 11, 0.1); border-top: 1px solid rgba(245, 158, 11, 0.2); border-left: none; border-right: none; border-bottom: none; border-radius: 0; padding: 10px; margin: 0; color: #e4e4e7; font-size: 13.5px; line-height: 1.5;">⚠️ <b>Important:</b> Only supports <b>2.4GHz Wi-Fi</b>. On iPhone, turn ON <i>«Maximize Compatibility»</i>.</div>
                     </div>
-                    <div class="option-note" style="color: #f59e0b; margin-top: 4px;" id="t-step1-warn">⚠️ <b>Important:</b> Only supports <b>2.4GHz Wi-Fi</b>. On iPhone, turn ON <i>«Maximize Compatibility»</i>.</div>
-                    <div class="option-note" id="t-step1-note">Turn on hotspot first so the controller connects immediately upon startup.</div>
                 </div>
             </div>
 
@@ -821,7 +824,13 @@
                 </div>
                 <div class="step-body">
                     <div style="border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 8px; margin-bottom: 12px; overflow: hidden;">
-                        <div id="t-step3-desc" style="padding: 10px;">Connect phone Wi-Fi to controller network <code>Bms_Setup</code> (password: <code>bmslocal</code>).</div>
+                        <div style="padding: 10px 10px 4px 10px;">
+                            <div id="t-step3-desc">Connect phone Wi-Fi to controller network with the following credentials:</div>
+                            <div class="cred-row" style="margin-bottom: 0;">
+                                <span id="t-step3-net">Network: <code>Bms_Setup</code></span>
+                                <span id="t-step3-pwd">Password: <code>bmslocal</code></span>
+                            </div>
+                        </div>
                         <div class="option-note" id="t-step3-tips" style="background: rgba(245, 158, 11, 0.1); border-top: 1px solid rgba(245, 158, 11, 0.2); border-left: none; border-right: none; border-bottom: none; border-radius: 0; padding: 10px; margin: 0; color: #e4e4e7; font-size: 13.5px; line-height: 1.5;"></div>
                     </div>
                     <div id="t-step3-action" style="margin-top: 10px; margin-bottom: 4px; font-weight: 500; font-size: 13.5px; color: #e4e4e7;">Then tap the button:</div>
@@ -998,11 +1007,13 @@
                 step1Net: "Network: <code>Bms</code>",
                 step1Pwd: "Password: <code>bmslocal</code>",
                 step1Warn: "⚠️ <b>Important:</b> Only supports <b>2.4GHz Wi-Fi</b>. On iPhone, turn ON <i>«Maximize Compatibility»</i>.",
-                step1Note: "Turn on hotspot first so the controller connects immediately upon startup.",
+                step1Note: "",
                 step2Title: "Plug into Car & Power ON",
                 step2Body: "Insert the controller into your vehicle's <b>OBD2 port</b> (under the steering wheel) and power on the car (<b>READY</b> mode).",
                 step3Title: "IP Discovery (Auto-Sync)",
-                step3Desc: "Connect phone Wi-Fi to controller network <code>Bms_Setup</code> (password: <code>bmslocal</code>).",
+                step3Desc: "Connect phone Wi-Fi to controller network with the following credentials:",
+                step3Net: "Network: <code>Bms_Setup</code>",
+                step3Pwd: "Password: <code>bmslocal</code>",
                 step3Tips: "<b style='color: #fde68a;'>⚠️ IMPORTANT:</b> In the settings of this Wi-Fi network, turn <b>OFF</b> «Auto-reconnect». If prompted, select <b>«Stay connected»</b>.",
                 step3Action: "Then tap the button:",
                 btnGuideSync: "Auto-Sync with Controller",
@@ -1073,11 +1084,13 @@
                 step1Net: "热点名称：<code>Bms</code>",
                 step1Pwd: "热点密码：<code>bmslocal</code>",
                 step1Warn: "⚠️ <b>特别注意：</b> 仅支持 <b>2.4GHz Wi-Fi</b>。iPhone 用户请开启<i>“最大兼容性”</i>。",
-                step1Note: "请先开启热点，以便控制器通电后立即自动连上。",
+                step1Note: "",
                 step2Title: "插入车辆并通电",
                 step2Body: "将控制器插入车辆方向盘下方的 <b>OBD2 接口</b>，并将车辆启动至 <b>READY</b>模式。",
                 step3Title: "IP 检测（自动同步）",
-                step3Desc: "手机 Wi-Fi 连接到控制器热点 <code>Bms_Setup</code>（密码：<code>bmslocal</code>）。",
+                step3Desc: "请在手机上连接控制器热点，参数如下：",
+                step3Net: "热点名称：<code>Bms_Setup</code>",
+                step3Pwd: "热点密码：<code>bmslocal</code>",
                 step3Tips: "<b style='color: #fde68a;'>⚠️ 重要提示：</b> 在此 Wi-Fi 网络的设置中，<b>关闭“自动连接”</b>。如果提示“无网络”，请选择<b>“保持连接”</b>。",
                 step3Action: "然后点击下方按钮：",
                 btnGuideSync: "与控制器自动同步",
@@ -1148,11 +1161,13 @@
                 step1Net: "네트워크 이름: <code>Bms</code>",
                 step1Pwd: "비밀번호: <code>bmslocal</code>",
                 step1Warn: "⚠️ <b>중요 알림:</b> <b>2.4GHz Wi-Fi</b>만 지원합니다. iPhone은 <i>«호환성 최대화»</i>를 켜주세요.",
-                step1Note: "핫스팟을 먼저 켜두면 컨트롤러 시동 시 즉시 자동 연결됩니다.",
+                step1Note: "",
                 step2Title: "차량 OBD2에 연결 및 전원 켜기",
                 step2Body: "컨트롤러를 운전대 아래 <b>OBD2 단자</b>에 연결하고 차량 전원을 켜세요 (<b>READY</b> 모드).",
                 step3Title: "IP 확인 (자동 동기화)",
-                step3Desc: "스마트폰 Wi-Fi를 컨트롤러 네트워크 <code>Bms_Setup</code> (비밀번호: <code>bmslocal</code>)에 연결하세요.",
+                step3Desc: "스마트폰 Wi-Fi를 컨트롤러 네트워크에 연결하세요. 매개변수는 다음과 같습니다:",
+                step3Net: "네트워크 이름: <code>Bms_Setup</code>",
+                step3Pwd: "비밀번호: <code>bmslocal</code>",
                 step3Tips: "<b style='color: #fde68a;'>⚠️ 중요:</b> 이 Wi-Fi 네트워크 설정에서 <b>«자동 연결»</b>을 끕니다. 팝업 시 <b>«연결 유지»</b>를 선택합니다.",
                 step3Action: "그런 다음 아래 버튼을 누르세요:",
                 btnGuideSync: "컨트롤러와 자동 동기화",
@@ -1223,11 +1238,13 @@
                 step1Net: "Имя сети: <code>Bms</code>",
                 step1Pwd: "Пароль: <code>bmslocal</code>",
                 step1Warn: "⚠️ <b>Важно:</b> Поддерживается только <b>2.4GHz Wi-Fi</b>. На iPhone включите <i>«Максимальная совместимость»</i>.",
-                step1Note: "Включите раздачу заранее, чтобы контроллер подключился к ней сразу при старте.",
+                step1Note: "",
                 step2Title: "Подключение к авто и запуск",
                 step2Body: "Вставьте контроллер в <b>OBD2 разъем</b> автомобиля и включите зажигание (режим <b>READY</b>).",
                 step3Title: "Определение IP (Автопоиск)",
-                step3Desc: "Подключите Wi-Fi телефона к сети контроллера <code>Bms_Setup</code> (пароль: <code>bmslocal</code>).",
+                step3Desc: "Подключите Wi-Fi телефона к сети контроллера со следующими параметрами:",
+                step3Net: "Имя сети: <code>Bms_Setup</code>",
+                step3Pwd: "Пароль: <code>bmslocal</code>",
                 step3Tips: "<b style='color: #fde68a;'>⚠️ ВАЖНО:</b> В настройках этой Wi-Fi сети выключите <b>«Автоподключение»</b>. При окне «Нет интернета» выберите <b>«Оставаться подключенным»</b>.",
                 step3Action: "Затем нажмите кнопку:",
                 btnGuideSync: "Найти контроллер (Автопоиск IP)",
@@ -1358,6 +1375,8 @@
             if (document.getElementById('t-step1-pwd')) document.getElementById('t-step1-pwd').innerHTML = t.step1Pwd;
             if (document.getElementById('t-step1-warn')) document.getElementById('t-step1-warn').innerHTML = t.step1Warn;
             if (document.getElementById('t-step1-note')) document.getElementById('t-step1-note').innerHTML = t.step1Note;
+            if (document.getElementById('t-step3-net')) document.getElementById('t-step3-net').innerHTML = t.step3Net;
+            if (document.getElementById('t-step3-pwd')) document.getElementById('t-step3-pwd').innerHTML = t.step3Pwd;
             if (document.getElementById('t-step2-title')) document.getElementById('t-step2-title').innerText = t.step2Title;
             if (document.getElementById('t-step2-body')) document.getElementById('t-step2-body').innerHTML = t.step2Body;
             if (document.getElementById('t-step3-title')) document.getElementById('t-step3-title').innerText = t.step3Title;
